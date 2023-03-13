@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://cir4wtbahb0if"]
+
+[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="1_0dqtv"]
+[ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
+[ext_resource type="Script" path="res://scripts/player/WeaponManager.cs" id="2_0s6ya"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gayk"]
+size = Vector2(110, 210)
+
+[sub_resource type="Shader" id="Shader_6fsy6"]
+code = "shader_type canvas_item;
+
+uniform vec3 color : source_color;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = vec3(1,1,1) - (vec3(1,1,1) - COLOR.rgb) * (vec3(1,1,1) - color);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwny1"]
+shader = SubResource("Shader_6fsy6")
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[node name="Player" type="RigidBody2D"]
+lock_rotation = true
+script = ExtResource("1_gjffp")
+
+[node name="WeaponManager" type="Node2D" parent="."]
+script = ExtResource("2_0s6ya")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+process_callback = 0
+position_smoothing_enabled = true
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4gayk")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_mwny1")
+position = Vector2(25, 0)
+scale = Vector2(10, 10)
+texture = ExtResource("1_0dqtv")

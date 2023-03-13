@@ -1,0 +1,162 @@
+[gd_scene load_steps=10 format=3 uid="uid://cigjwwh2org6s"]
+
+[ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/LobbyTheme.tres" id="1_usj0r"]
+[ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_2m012"]
+[ext_resource type="Script" path="res://scripts/UI/MOTDManager.cs" id="3_1pd76"]
+[ext_resource type="AudioStream" uid="uid://c4n3k8f16hdnn" path="res://audio/realistic knocking.mp3" id="4_5u7cy"]
+[ext_resource type="Script" path="res://scripts/UI/Lobby.cs" id="4_cig11"]
+[ext_resource type="AudioStream" uid="uid://bpn8qsohuwqd0" path="res://audio/vine boom.mp3" id="5_sac73"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ethqi"]
+font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wtx0"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gd36"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_usj0r")
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -674.0
+offset_top = 50.0
+offset_right = 2025.0
+offset_bottom = 574.0
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2m012")
+
+[node name="Subtitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 350.0
+offset_right = 20.0
+offset_bottom = 401.0
+grow_horizontal = 2
+theme = ExtResource("1_usj0r")
+label_settings = SubResource("LabelSettings_ethqi")
+script = ExtResource("3_1pd76")
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -74.0
+offset_right = 320.0
+offset_bottom = -20.0
+grow_vertical = 0
+text = "Alpha - a1.0"
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 610.0
+offset_top = 420.0
+offset_right = 1310.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8wtx0")
+script = ExtResource("4_cig11")
+
+[node name="IP" type="LineEdit" parent="Panel"]
+layout_mode = 1
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 440.0
+offset_bottom = 110.0
+placeholder_text = "IP (Blank for localhost)"
+alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="Panel"]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 40.0
+offset_right = 692.0
+offset_bottom = 110.0
+min_value = 1024.0
+max_value = 65535.0
+value = 29999.0
+alignment = 1
+
+[node name="ArrowCover" type="Panel" parent="Panel/SpinBox"]
+layout_mode = 0
+offset_left = 206.0
+offset_top = 2.0
+offset_right = 227.0
+offset_bottom = 68.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1gd36")
+
+[node name="Username" type="LineEdit" parent="Panel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 130.0
+offset_right = 625.0
+offset_bottom = 183.0
+placeholder_text = "username"
+alignment = 1
+
+[node name="Join" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 210.0
+offset_right = 435.0
+offset_bottom = 260.0
+text = "join"
+
+[node name="PlayerColor" type="ColorPickerButton" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 130.0
+offset_top = -85.0
+offset_right = 210.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
+edit_alpha = false
+
+[node name="Singleplayer" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = 19.0
+offset_right = 100.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "singleplayer"
+
+[node name="DoorKnock" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5u7cy")
+
+[node name="VineBoom" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_sac73")
+
+[connection signal="pressed" from="Panel/Singleplayer" to="Panel" method="_OnSingleplayerPressed"]

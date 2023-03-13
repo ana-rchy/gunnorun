@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c4n3k8f16hdnn"
+path="res://.godot/imported/realistic knocking.mp3-7166d7608064e06800c3f6b55e988347.mp3str"
+
+[deps]
+
+source_file="res://audio/realistic knocking.mp3"
+dest_files=["res://.godot/imported/realistic knocking.mp3-7166d7608064e06800c3f6b55e988347.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
