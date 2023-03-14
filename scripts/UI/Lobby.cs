@@ -14,7 +14,7 @@ public partial class Lobby : Panel {
     #region | signals
 
     private void _OnSingleplayerPressed() {
-        Tree.ChangeSceneToFile("res://scenes/player/Player.tscn");
+        Tree.ChangeSceneToFile(WORLD_PATH + "Cave.tscn");
         Global.PlayerColor = GetNode<ColorPickerButton>("PlayerColor").Color;
     }
 
