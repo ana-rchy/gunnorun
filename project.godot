@@ -15,6 +15,11 @@ run/main_scene="res://scenes/Lobby.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://sprites/old/icon.svg"
 
+[autoload]
+
+Server="*res://scripts/networking/Client.cs"
+PlayerManager="*res://scripts/networking/PlayerManager.cs"
+
 [display]
 
 window/size/viewport_width=1920

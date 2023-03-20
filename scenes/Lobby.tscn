@@ -87,7 +87,7 @@ offset_bottom = 110.0
 placeholder_text = "IP (Blank for localhost)"
 alignment = 1
 
-[node name="SpinBox" type="SpinBox" parent="Panel"]
+[node name="Port" type="SpinBox" parent="Panel"]
 layout_mode = 0
 offset_left = 472.0
 offset_top = 40.0
@@ -98,7 +98,7 @@ max_value = 65535.0
 value = 29999.0
 alignment = 1
 
-[node name="ArrowCover" type="Panel" parent="Panel/SpinBox"]
+[node name="ArrowCover" type="Panel" parent="Panel/Port"]
 layout_mode = 0
 offset_left = 206.0
 offset_top = 2.0
@@ -159,4 +159,5 @@ stream = ExtResource("4_5u7cy")
 [node name="VineBoom" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_sac73")
 
+[connection signal="pressed" from="Panel/Join" to="Panel" method="_OnJoinPressed"]
 [connection signal="pressed" from="Panel/Singleplayer" to="Panel" method="_OnSingleplayerPressed"]

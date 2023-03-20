@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cg7wcp8cfys7j"]
+
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_8wr2y"]
+
+[resource]
+default_font = ExtResource("1_8wr2y")
+default_font_size = 75

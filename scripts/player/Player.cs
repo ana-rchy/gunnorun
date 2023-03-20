@@ -1,13 +1,18 @@
 using Godot;
 using static Godot.GD;
 using System;
+using System.Linq;
 
 public partial class Player : RigidBody2D {
+    const int CONNECTION_DISCONNECTED = 0;
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
-    WeaponManager WeaponManager;
+    PlayerManager PlayerManager;
+    PlayerUI UI;
+    Timer ActionTimer;
 
-    Vector2 Velocity;
+    public Weapon[] Weapons;
+    public Weapon CurrentWeapon;
     float MomentumMultiplier;
 
     public override void _Ready() {
@@ -15,8 +20,54 @@ public partial class Player : RigidBody2D {
         var playerColor = Global.PlayerColor;
         ((ShaderMaterial) GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
-        WeaponManager = GetNode<WeaponManager>("WeaponManager");
+        // node references
+        PlayerManager = GetNode<PlayerManager>("/root/PlayerManager");
+        UI = GetNode<PlayerUI>("PlayerUI");
+        ActionTimer = GetNode<Timer>("ActionTimer");
+
+        // etc
+        Weapons = new Weapon[] {new Shotgun(), new Machinegun(), new RPG()};
+        CurrentWeapon = Weapons[0];
+        UI.SetAmmoText(CurrentWeapon.Ammo);
+        UI.CurrentWeapon.Text = CurrentWeapon.Name;
     }
+
+    //---------------------------------------------------------------------------------//
+    #region | input loop
+
+    public override void _Input(InputEvent e) {
+        for (int i = 1; i <= 3; i++) {
+            if (e.IsActionPressed("Num" + i.ToString())) {
+                CurrentWeapon = Weapons[i-1];
+
+                UI.CurrentWeapon.Text = CurrentWeapon.Name;
+                UI.SetAmmoText(CurrentWeapon.Ammo);
+                
+                Print(Multiplayer.MultiplayerPeer.GetConnectionStatus());
+                PlayerManager.Rpc("RPC_HandleWeaponSwitch", Array.IndexOf(Weapons, CurrentWeapon));
+            }
+        }
+    }
+
+    public override void _Process(double delta) {
+        var ammoNotEmpty = (CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null);
+        
+        if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
+            CurrentWeapon.Ammo = CurrentWeapon.BaseAmmo;
+            ActionTimer.Start(CurrentWeapon.Reload);
+            UI.SetReloadText(CurrentWeapon);
+
+        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty) {
+            LinearVelocity = GetVelocity();
+
+            CurrentWeapon.Ammo--;
+            UI.SetAmmoText(CurrentWeapon.Ammo);
+
+            ActionTimer.Start(CurrentWeapon.Refire);
+        }
+    }
+
+    #endregion
 
     //---------------------------------------------------------------------------------//
     #region | physics loop
@@ -30,11 +81,12 @@ public partial class Player : RigidBody2D {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
-    public Vector2 GetVelocity(float knockback) {
+    public Vector2 GetVelocity() {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
+        PlayerManager.Rpc("RPC_HandleShoot", mousePosToPlayerPos);
 
         // get the momentum-affected velocity, and add normal weapon knockback onto it
-        return (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * knockback;
+        return (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
     }
 
     Vector2 ClampVelocity() {

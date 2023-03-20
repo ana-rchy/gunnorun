@@ -10,6 +10,6 @@ public abstract class Weapon {
     public int Damage;
     public float Range;
 
-    public float? Ammo, BaseAmmo;
+    public int? Ammo, BaseAmmo;
     public float Reload;
 }

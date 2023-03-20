@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="1_0dqtv"]
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
-[ext_resource type="Script" path="res://scripts/player/WeaponManager.cs" id="2_0s6ya"]
+[ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/PlayerUI.tscn" id="2_0rg58"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gayk"]
 size = Vector2(110, 210)
@@ -26,10 +26,9 @@ shader_parameter/color = Color(0, 0, 0, 1)
 lock_rotation = true
 script = ExtResource("1_gjffp")
 
-[node name="WeaponManager" type="Node2D" parent="."]
-script = ExtResource("2_0s6ya")
+[node name="PlayerUI" parent="." instance=ExtResource("2_0rg58")]
 
-[node name="ActionTimer" type="Timer" parent="WeaponManager"]
+[node name="ActionTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="Camera" type="Camera2D" parent="."]
