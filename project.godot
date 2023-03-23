@@ -17,8 +17,7 @@ config/icon="res://sprites/old/icon.svg"
 
 [autoload]
 
-Server="*res://scripts/networking/Client.cs"
-PlayerManager="*res://scripts/networking/PlayerManager.cs"
+Server="*res://scenes/Server.tscn"
 
 [display]
 

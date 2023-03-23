@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3t8duya8chur"]
+
+[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="1_o7tut"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="2_5t7wj"]
+[ext_resource type="Script" path="res://scripts/player/PuppetPlayer.cs" id="3_s52n3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i1jlw"]
+size = Vector2(110, 210)
+
+[sub_resource type="Shader" id="Shader_6fsy6"]
+code = "shader_type canvas_item;
+
+uniform vec3 color : source_color;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = vec3(1,1,1) - (vec3(1,1,1) - COLOR.rgb) * (vec3(1,1,1) - color);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kmu7a"]
+shader = SubResource("Shader_6fsy6")
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[node name="PuppetPlayer" type="RigidBody2D"]
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i1jlw")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_kmu7a")
+position = Vector2(25, 0)
+scale = Vector2(10, 10)
+texture = ExtResource("1_o7tut")
+
+[node name="Username" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.5
+offset_top = 110.0
+offset_right = 137.5
+offset_bottom = 164.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_5t7wj")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+script = ExtResource("3_s52n3")

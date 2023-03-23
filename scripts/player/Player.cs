@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 
 public partial class Player : RigidBody2D {
-    const int CONNECTION_DISCONNECTED = 0;
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
     PlayerManager PlayerManager;
@@ -17,17 +16,18 @@ public partial class Player : RigidBody2D {
 
     public override void _Ready() {
         // set shader color
-        var playerColor = Global.PlayerColor;
+        var playerColor = Global.PlayerData.Color;
         ((ShaderMaterial) GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         // node references
-        PlayerManager = GetNode<PlayerManager>("/root/PlayerManager");
+        PlayerManager = GetNode<PlayerManager>("/root/Server/PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
 
         // etc
         Weapons = new Weapon[] {new Shotgun(), new Machinegun(), new RPG()};
         CurrentWeapon = Weapons[0];
+        GetNode<Label>("Username").Text = Global.PlayerData.Username;
         UI.SetAmmoText(CurrentWeapon.Ammo);
         UI.CurrentWeapon.Text = CurrentWeapon.Name;
     }
@@ -43,19 +43,22 @@ public partial class Player : RigidBody2D {
                 UI.CurrentWeapon.Text = CurrentWeapon.Name;
                 UI.SetAmmoText(CurrentWeapon.Ammo);
                 
-                Print(Multiplayer.MultiplayerPeer.GetConnectionStatus());
-                PlayerManager.Rpc("RPC_HandleWeaponSwitch", Array.IndexOf(Weapons, CurrentWeapon));
+                if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
+                    PlayerManager.Rpc("RPC_WeaponSwitch", Array.IndexOf(Weapons, CurrentWeapon));
             }
         }
     }
 
     public override void _Process(double delta) {
-        var ammoNotEmpty = (CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null);
+        var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
         if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
             CurrentWeapon.Ammo = CurrentWeapon.BaseAmmo;
             ActionTimer.Start(CurrentWeapon.Reload);
             UI.SetReloadText(CurrentWeapon);
+
+            if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
+                PlayerManager.Rpc("RPC_Reload");
 
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty) {
             LinearVelocity = GetVelocity();
@@ -64,6 +67,9 @@ public partial class Player : RigidBody2D {
             UI.SetAmmoText(CurrentWeapon.Ammo);
 
             ActionTimer.Start(CurrentWeapon.Refire);
+
+            if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
+                PlayerManager.Rpc("RPC_Shoot", LinearVelocity);
         }
     }
 
@@ -81,9 +87,8 @@ public partial class Player : RigidBody2D {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
-    public Vector2 GetVelocity() {
+    Vector2 GetVelocity() {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
-        PlayerManager.Rpc("RPC_HandleShoot", mousePosToPlayerPos);
 
         // get the momentum-affected velocity, and add normal weapon knockback onto it
         return (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
