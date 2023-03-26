@@ -2,10 +2,11 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using static Godot.MultiplayerApi;
+using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class PlayerManager : Node {
-    [Rpc(RpcMode.AnyPeer)] void Server_Shoot(Vector2 velocityDirection){}
+    [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_Shoot(Vector2 velocityDirection){}
     [Rpc(RpcMode.AnyPeer)] void Server_WeaponSwitch(int currentWeaponIndex){}
     [Rpc(RpcMode.AnyPeer)] void Server_Reload() {}
 
