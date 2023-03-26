@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using MsgPack.Serialization;
 
 public partial class Client : Node {
-    const string WORLD_PATH = "/root/world/";
-
     public void JoinServer(string ip, int port) {
         var peer = new ENetMultiplayerPeer();
         peer.CreateClient(ip, port);
@@ -25,7 +23,8 @@ public partial class Client : Node {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Global.PlayerDataStruct>>();
         Dictionary<long, Global.PlayerDataStruct> playerData = serializer.UnpackSingleObject(serializedData);
         foreach (var kvp in playerData) { // create new puppetplayer and set player data
-            CreateNewPlayer(kvp.Key, kvp.Value.Username, kvp.Value.Color);
+            GD.Print(kvp.Key);
+            CallDeferred(nameof(CreateNewPlayer), kvp.Key, kvp.Value.Username, kvp.Value.Color);
         }
 
         Rpc("Server_PlayerData", Global.PlayerData.Username, Global.PlayerData.Color);
@@ -38,7 +37,7 @@ public partial class Client : Node {
     }
 
     [Rpc] void Client_PlayerDisconnected(long id) {
-        GetNode(WORLD_PATH + id.ToString()).QueueFree();
+        GetNode(Global.WORLD_PATH + id.ToString()).QueueFree();
     }
 
     #endregion
@@ -48,7 +47,7 @@ public partial class Client : Node {
 
     void CreateNewPlayer(long id, string username, Color playerColor) {
         var newPlayer = Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
-        GetNode(WORLD_PATH).CallDeferred("add_child", newPlayer);
+        GetNode(Global.WORLD_PATH).CallDeferred("add_child", newPlayer);
 
         newPlayer.Name = id.ToString();
         newPlayer.GetNode<Label>("Username").Text = username;

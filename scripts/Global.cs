@@ -12,4 +12,7 @@ public static class Global {
         public Color Color;
     }
     public static PlayerDataStruct PlayerData;
+
+    public const string WORLD_PATH = "/root/World/";
+    public const float TICK_RATE = 1 / 60f;
 }
