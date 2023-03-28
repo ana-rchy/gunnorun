@@ -22,8 +22,7 @@ void fragment() {
 shader = SubResource("Shader_6fsy6")
 shader_parameter/color = Color(0, 0, 0, 1)
 
-[node name="PuppetPlayer" type="RigidBody2D"]
-lock_rotation = true
+[node name="PuppetPlayer" type="CharacterBody2D"]
 script = ExtResource("3_s52n3")
 
 [node name="Collider" type="CollisionShape2D" parent="."]

@@ -6,9 +6,7 @@ using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class PlayerManager : Node {
-    [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_Shoot(Vector2 velocityDirection){}
-    [Rpc(RpcMode.AnyPeer)] void Server_WeaponSwitch(int currentWeaponIndex){}
-    [Rpc(RpcMode.AnyPeer)] void Server_Reload() {}
+    [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -16,13 +14,7 @@ public partial class PlayerManager : Node {
         puppetPositions.Remove(Multiplayer.GetUniqueId());
 
         foreach (var kvp in puppetPositions) {
-            GetNode<PuppetPlayer>(Global.WORLD_PATH + kvp.Key).SetPuppetPosition(kvp.Value);
+            GetNode<PuppetPlayer>(Global.WORLD_PATH + kvp.Key).PuppetPosition = kvp.Value;
         }
-    }
-
-    [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_ReconciliatePlayer(Vector2 position, Vector2 velocity) {
-        var selfPlayer = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId().ToString());
-
-        selfPlayer.ReconciliateWithServer(position, velocity);
     }
 }

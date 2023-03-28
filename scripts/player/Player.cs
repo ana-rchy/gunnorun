@@ -36,7 +36,7 @@ public partial class Player : RigidBody2D {
     }
 
     //---------------------------------------------------------------------------------//
-    #region | input loop
+    #region | godot loops
 
     public override void _Input(InputEvent e) {
         for (int i = 1; i <= 3; i++) {
@@ -52,6 +52,7 @@ public partial class Player : RigidBody2D {
         }
     }
 
+    double Timer;
     public override void _PhysicsProcess(double delta) {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
@@ -60,9 +61,6 @@ public partial class Player : RigidBody2D {
             ActionTimer.Start(CurrentWeapon.Reload);
             UI.SetReloadText(CurrentWeapon);
 
-            if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
-                PlayerManager.Rpc("Server_Reload");
-
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty) {
             SetVelocity();
 
@@ -70,26 +68,17 @@ public partial class Player : RigidBody2D {
             UI.SetAmmoText(CurrentWeapon.Ammo);
 
             ActionTimer.Start(CurrentWeapon.Refire);
-
-            if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
-                PlayerManager.Rpc("Server_Shoot", GetGlobalMousePosition().DirectionTo(GlobalPosition));
         }
+
+        if (Timer >= Global.TICK_RATE) {
+            PlayerManager.Rpc("Server_UpdatePlayerPosition", GlobalPosition);
+            Timer -= Global.TICK_RATE;
+        }
+        Timer += delta;
     }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
-    #region | physics loop
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
         state.LinearVelocity = ClampVelocity();
-    }
-
-    public void ReconciliateWithServer(Vector2 position, Vector2 velocity) {
-        if (GlobalPosition.DistanceTo(position) > 500f) {
-        GlobalPosition = position;
-        LinearVelocity = velocity;
-        }
     }
 
     #endregion
@@ -101,8 +90,7 @@ public partial class Player : RigidBody2D {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
 
         // get the momentum-affected velocity, and add normal weapon knockback onto it
-        //LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
-        LinearVelocity = mousePosToPlayerPos * CurrentWeapon.Knockback;
+        LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
     }
 
     Vector2 ClampVelocity() {
