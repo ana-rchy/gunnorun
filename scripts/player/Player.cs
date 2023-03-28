@@ -3,7 +3,7 @@ using static Godot.GD;
 using System;
 using System.Linq;
 
-public partial class Player : RigidBody2D, IPlayer {
+public partial class Player : RigidBody2D {
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
     PlayerManager PlayerManager;
@@ -52,7 +52,7 @@ public partial class Player : RigidBody2D, IPlayer {
         }
     }
 
-    public override void _Process(double delta) {
+    public override void _PhysicsProcess(double delta) {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
         if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
@@ -85,12 +85,12 @@ public partial class Player : RigidBody2D, IPlayer {
         state.LinearVelocity = ClampVelocity();
     }
 
-    public void SetPuppetPosition(Vector2 pos) {
-        if (GlobalPosition.DistanceTo(pos) > 500) {
-            var tween = CreateTween();
-            tween.TweenProperty(this, "global_position", pos, Global.TICK_RATE);
+    public void ReconciliateWithServer(Vector2 position, Vector2 velocity) {
+        if (GlobalPosition.DistanceTo(position) > 500f) {
+        GlobalPosition = position;
+        LinearVelocity = velocity;
         }
-	}
+    }
 
     #endregion
 
@@ -101,7 +101,8 @@ public partial class Player : RigidBody2D, IPlayer {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
 
         // get the momentum-affected velocity, and add normal weapon knockback onto it
-        LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
+        //LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
+        LinearVelocity = mousePosToPlayerPos * CurrentWeapon.Knockback;
     }
 
     Vector2 ClampVelocity() {
@@ -121,9 +122,9 @@ public partial class Player : RigidBody2D, IPlayer {
         if (Mathf.RadToDeg(angleDelta) <= 45) // if less than 45 degrees change, keep all momentum
             return 1f;
         
-        angleDelta -= MathF.PI / 4;
+        angleDelta -= MathF.Round(MathF.PI / 4, 4);
 
-        return (MathF.Cos((4/3) * angleDelta) + 1) / 2; // scale the momentum over a range of 135*
+        return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
     }
 
     #endregion
