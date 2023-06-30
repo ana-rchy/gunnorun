@@ -13,5 +13,7 @@ public class Machinegun : Weapon {
         
         BaseAmmo = Ammo = 100;
         Reload = 1.5f;
+
+        ReelbackStrength = 40f;
     }
 }

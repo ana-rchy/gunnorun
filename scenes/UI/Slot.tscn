@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://x1ncd56btc4b"]
+
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_ojemo"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="2_xfj3s"]
+[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="3_ikcgk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6602k"]
+bg_color = Color(0.227451, 0.227451, 0.227451, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1dabp"]
+resource_local_to_scene = true
+shader = ExtResource("2_xfj3s")
+shader_parameter/color = null
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_voe7a"]
+resource_local_to_scene = true
+bg_color = Color(0.8, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Slot" type="Panel"]
+offset_right = 500.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6602k")
+
+[node name="Username" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 480.0
+offset_bottom = 82.0
+theme_override_fonts/font = ExtResource("1_ojemo")
+theme_override_font_sizes/font_size = 60
+text_overrun_behavior = 3
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_1dabp")
+position = Vector2(560, 50)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("3_ikcgk")
+
+[node name="ReadyIndicator" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 88.0
+offset_right = 485.0
+offset_bottom = 93.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_voe7a")

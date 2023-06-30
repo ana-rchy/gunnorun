@@ -5,7 +5,7 @@ public class RPG : Weapon {
     public RPG() {
         Name = "RPG";
         
-        Knockback = 6000f;
+        Knockback = 11000f;
         Refire = 0.5f;
 
         Damage = 80;
@@ -13,5 +13,7 @@ public class RPG : Weapon {
         
         BaseAmmo = Ammo = 1;
         Reload = 3.75f;
+
+        ReelbackStrength = 10f;
     }
 }

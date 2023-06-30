@@ -1,4 +1,5 @@
 using Godot;
+using static Godot.GD;
 using System;
 
 public partial class MOTDManager : Label {
@@ -37,7 +38,19 @@ public partial class MOTDManager : Label {
 			"naaah no wayyy omg bruuuhhh",
 			"you call flipping a coin a martial art?",
 			"The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.",
-
+			"1.048596",
+			"El. Psy. Kongroo.",
+			"Official home of the Alzheimers Support Group",
+			"beta messenger vs the alpha gate of steiner",
+			"Unlimited Gun Works",
+			"A robot picked up a gun. This is what happened to their legs.",
+			"KILL WARDENS BURN WARDENS ALIVE SMASH WARDEN MORALE TURN WARDENS INTO PASTE",
+			"MAKE SOYDAWG BOOT UP MICROSOFT PAINT",
+			"Live Gun Reaction",
+			"And then, Hefest got this run...",
+			"do people die when they are killed?",
+			"apt fucking sucks",
+			"hello spez",
 		};
 
 		var rnd = new RandomNumberGenerator();
@@ -53,6 +66,8 @@ public partial class MOTDManager : Label {
 			GetNode<AudioStreamPlayer>("../VineBoom").Play();
 		} else if (Text == "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.") {
 			LabelSettings.FontSize = 8;
+		} else if (Text == "hello spez") {
+			GetNode<TextureRect>("Knight").Show();
 		}
 	}
 }

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dja0muolbdh5h"
-path="res://.godot/imported/placeholder player.png-4b1cfa71eb7be108f322a3200d093a77.ctex"
+uid="uid://ni7dvy5deri3"
+path="res://.godot/imported/cavesofgallet_tiles.png-454a15892ad225e010cc21c77c04af2c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/old/placeholder player.png"
-dest_files=["res://.godot/imported/placeholder player.png-4b1cfa71eb7be108f322a3200d093a77.ctex"]
+source_file="res://sprites/placeholder tilesheets/cavernas/cavesofgallet_tiles.png"
+dest_files=["res://.godot/imported/cavesofgallet_tiles.png-454a15892ad225e010cc21c77c04af2c.ctex"]
 
 [params]
 

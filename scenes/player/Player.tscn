@@ -36,6 +36,7 @@ one_shot = true
 zoom = Vector2(0.5, 0.5)
 process_callback = 0
 position_smoothing_enabled = true
+position_smoothing_speed = 10.0
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4gayk")

@@ -20,7 +20,7 @@ public partial class Player : RigidBody2D {
         ((ShaderMaterial) GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         // node references
-        PlayerManager = GetNode<PlayerManager>("/root/Server/PlayerManager");
+        PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
 
@@ -30,6 +30,8 @@ public partial class Player : RigidBody2D {
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
         UI.SetAmmoText(CurrentWeapon.Ammo);
         UI.CurrentWeapon.Text = CurrentWeapon.Name;
+
+        Tween = CreateTween();
 
         if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
             Name = Multiplayer.GetUniqueId().ToString();
@@ -52,7 +54,7 @@ public partial class Player : RigidBody2D {
         }
     }
 
-    double Timer;
+    double TickTimer;
     public override void _PhysicsProcess(double delta) {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
@@ -70,15 +72,21 @@ public partial class Player : RigidBody2D {
             ActionTimer.Start(CurrentWeapon.Refire);
         }
 
-        if (Timer >= Global.TICK_RATE) {
+        if (TickTimer >= Global.TICK_RATE) {
             PlayerManager.Rpc("Server_UpdatePlayerPosition", GlobalPosition);
-            Timer -= Global.TICK_RATE;
+            TickTimer -= Global.TICK_RATE;
         }
-        Timer += delta;
+        TickTimer += delta;
     }
 
+    Tween Tween;
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
-        state.LinearVelocity = ClampVelocity();
+        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
+            var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
+            var reelbackStrength = ( 1 - 1/((state.LinearVelocity.DistanceTo(new Vector2(0, 0)) - MAXIMUM_VELOCITY) / 2) ) * CurrentWeapon.ReelbackStrength;
+            state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, reelbackStrength);
+            Print(state.LinearVelocity);
+        }
     }
 
     #endregion
@@ -93,11 +101,11 @@ public partial class Player : RigidBody2D {
         LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
     }
 
-    Vector2 ClampVelocity() {
+    // deprecated
+    void ClampVelocity(ref Vector2 velocity) {
         if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
-            return LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
+            velocity = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
         }
-        return LinearVelocity;
     }
 
     #endregion

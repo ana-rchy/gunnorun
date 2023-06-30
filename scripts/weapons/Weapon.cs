@@ -12,4 +12,6 @@ public abstract class Weapon {
 
     public int? Ammo, BaseAmmo;
     public float Reload;
+
+    public float ReelbackStrength;
 }
