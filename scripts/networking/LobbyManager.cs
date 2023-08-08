@@ -16,12 +16,6 @@ public partial class LobbyManager : Node {
     }
 
     [Rpc] void Client_StartGame() {
-        Global.GameState = "Ingame";
         GetTree().ChangeSceneToFile("res://scenes/worlds/AlphaArena.tscn");
-
-        var playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
-        foreach (var player in Global.OtherPlayerData) {
-            playerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
-        }
     }
 }

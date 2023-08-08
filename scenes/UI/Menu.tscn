@@ -21,7 +21,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gd36"]
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
 
-[node name="Control" type="Control"]
+[node name="Menu" type="Control"]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 15

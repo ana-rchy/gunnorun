@@ -6,7 +6,6 @@ using System.Linq;
 public partial class Player : RigidBody2D {
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
-    PlayerManager PlayerManager;
     PlayerUI UI;
     Timer ActionTimer;
 
@@ -20,7 +19,6 @@ public partial class Player : RigidBody2D {
         ((ShaderMaterial) GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         // node references
-        PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
 
@@ -47,14 +45,10 @@ public partial class Player : RigidBody2D {
 
                 UI.CurrentWeapon.Text = CurrentWeapon.Name;
                 UI.SetAmmoText(CurrentWeapon.Ammo);
-                
-                if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
-                    PlayerManager.Rpc("Server_WeaponSwitch", Array.IndexOf(Weapons, CurrentWeapon));
             }
         }
     }
 
-    double TickTimer;
     public override void _PhysicsProcess(double delta) {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
@@ -71,12 +65,6 @@ public partial class Player : RigidBody2D {
 
             ActionTimer.Start(CurrentWeapon.Refire);
         }
-
-        if (TickTimer >= Global.TICK_RATE) {
-            PlayerManager.Rpc("Server_UpdatePlayerPosition", GlobalPosition);
-            TickTimer -= Global.TICK_RATE;
-        }
-        TickTimer += delta;
     }
 
     Tween Tween;
@@ -85,7 +73,6 @@ public partial class Player : RigidBody2D {
             var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
             var reelbackStrength = ( 1 - 1/((state.LinearVelocity.DistanceTo(new Vector2(0, 0)) - MAXIMUM_VELOCITY) / 2) ) * CurrentWeapon.ReelbackStrength;
             state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, reelbackStrength);
-            Print(state.LinearVelocity);
         }
     }
 

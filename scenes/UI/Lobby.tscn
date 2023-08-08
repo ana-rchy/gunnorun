@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bs1j1mq4ohsto"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_nfo52"]
-[ext_resource type="PackedScene" uid="uid://x1ncd56btc4b" path="res://scenes/UI/Slot.tscn" id="2_uxq0b"]
+[ext_resource type="PackedScene" uid="uid://x1ncd56btc4b" path="res://scenes/UI/UI components/Slot.tscn" id="2_uxq0b"]
 [ext_resource type="Script" path="res://scripts/UI/Lobby.cs" id="4_cig11"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ardt8"]
