@@ -24,6 +24,7 @@ shader = SubResource("Shader_6fsy6")
 shader_parameter/color = Color(0, 0, 0, 1)
 
 [node name="Player" type="RigidBody2D"]
+collision_layer = 2
 lock_rotation = true
 script = ExtResource("1_gjffp")
 

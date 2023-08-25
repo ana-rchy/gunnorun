@@ -17,5 +17,9 @@ public partial class LobbyManager : Node {
 
     [Rpc] void Client_StartGame() {
         GetTree().ChangeSceneToFile("res://scenes/worlds/AlphaArena.tscn");
+
+        foreach (var player in Global.OtherPlayerData) {
+            GetNode<PlayerManager>("../PlayerManager").CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
+        }
     }
 }

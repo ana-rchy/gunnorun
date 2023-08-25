@@ -1,7 +1,7 @@
-using Godot;
-using static Godot.GD;
 using System;
 using System.Linq;
+using Godot;
+using static Godot.GD;
 
 public partial class Player : RigidBody2D {
     [Export] float MAXIMUM_VELOCITY = 4000f;
@@ -29,10 +29,13 @@ public partial class Player : RigidBody2D {
         UI.SetAmmoText(CurrentWeapon.Ammo);
         UI.CurrentWeapon.Text = CurrentWeapon.Name;
 
-        Tween = CreateTween();
+        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+            SetDeferred("name", Multiplayer.GetUniqueId().ToString());
+        }
 
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
-            Name = Multiplayer.GetUniqueId().ToString();
+        // no-contact on spawn
+        System.Threading.Thread t = new System.Threading.Thread(SpawnInvuln);
+        t.Start();
     }
 
     //---------------------------------------------------------------------------------//
@@ -67,7 +70,6 @@ public partial class Player : RigidBody2D {
         }
     }
 
-    Tween Tween;
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
         if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
             var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
@@ -80,6 +82,11 @@ public partial class Player : RigidBody2D {
 
     //---------------------------------------------------------------------------------//
     #region | main funcs
+
+    async void SpawnInvuln() {
+        await this.Sleep(2f);
+        SetCollisionMaskValue(2, true);
+    }
 
     void SetVelocity() {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);

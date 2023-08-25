@@ -13,7 +13,9 @@ public partial class MOTDManager : Label {
 			"1 in 10 people reportedly are living",
 			"why do they call it a gun no run when you run of the gun no out gun of run",
 			"the missile knows where it is because it knows where it isnt",
+			"HE is coming.",
 			"he is coming. thats disgusting",
+			"he is coming. thats hot",
 			"id like to make an announcement", 
 			"I | Ii | II | L",
 			"this game is d",
@@ -40,8 +42,8 @@ public partial class MOTDManager : Label {
 			"The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.",
 			"1.048596",
 			"El. Psy. Kongroo.",
-			"Official home of the Alzheimers Support Group",
 			"beta messenger vs the alpha gate of steiner",
+			"Official home of the Alzheimers Support Group",
 			"Unlimited Gun Works",
 			"A robot picked up a gun. This is what happened to their legs.",
 			"KILL WARDENS BURN WARDENS ALIVE SMASH WARDEN MORALE TURN WARDENS INTO PASTE",
@@ -51,10 +53,19 @@ public partial class MOTDManager : Label {
 			"do people die when they are killed?",
 			"apt fucking sucks",
 			"hello spez",
+			"tights :3",
+			"https://play.meltyblood.club",
+			"A las barricadas!",
+			"she is coming. mmmff,,,",
+			"ぬるぽ",
+			"が",
+			"you know what? fuck you. *crashes your game*",
+			"Home of CHALLENGE PISSING",
 		};
 
 		var rnd = new RandomNumberGenerator();
 		Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
+		//Text = MotdMessages[MotdMessages.Length - 1];
 
 		if (Text == "▇▅▆▇▆▅▅█") {
 			LabelSettings.FontColor = new Color(170, 0, 0, 1);
@@ -68,6 +79,9 @@ public partial class MOTDManager : Label {
 			LabelSettings.FontSize = 8;
 		} else if (Text == "hello spez") {
 			GetNode<TextureRect>("Knight").Show();
+		} else if (Text == "you know what? fuck you. *crashes your game*") {
+			await this.Sleep(2f);
+			GetTree().Quit();
 		}
 	}
 }

@@ -6,15 +6,10 @@ using System.Collections.Generic;
 using MsgPack.Serialization;
 
 public partial class Client : Node {
-    public void JoinServer(string ip, int port) {
-        var peer = new ENetMultiplayerPeer();
-        peer.CreateClient(ip, port);
-        Multiplayer.MultiplayerPeer = peer;
-    }
-
-    private void LeaveServer() {
-        Multiplayer.MultiplayerPeer.Close();
-        GetTree().ChangeSceneToFile("res://scenes/Menu.tscn");
+    public override void _Input(InputEvent e) {
+        if (e.IsActionPressed("Leave")) {
+            LeaveServer();
+        }
     }
 
     //---------------------------------------------------------------------------------//
@@ -46,6 +41,22 @@ public partial class Client : Node {
                 GetNode<Lobby>("/root/Lobby").RefreshList();
             }
         }
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    public void JoinServer(string ip, int port) {
+        var peer = new ENetMultiplayerPeer();
+        peer.CreateClient(ip, port);
+        Multiplayer.MultiplayerPeer = peer;
+    }
+
+    private void LeaveServer() {
+        Multiplayer.MultiplayerPeer.Close();
+        GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
     }
 
     #endregion

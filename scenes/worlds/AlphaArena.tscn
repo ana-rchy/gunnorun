@@ -4477,6 +4477,8 @@ sources/1 = SubResource("TileSetAtlasSource_yxcfs")
 
 [node name="World" type="Node2D"]
 
+[node name="Player" parent="." instance=ExtResource("5_tpfhh")]
+
 [node name="Background" type="Sprite2D" parent="."]
 self_modulate = Color(0.372549, 0.666667, 0.858824, 1)
 z_index = -10
@@ -4511,9 +4513,3 @@ scale = Vector2(10, 10)
 tile_set = SubResource("5")
 format = 2
 layer_0/tile_data = PackedInt32Array(-3800939, 1114112, 0, -3800938, 1179648, 0, -3800937, 1245184, 0, -3735403, 1114112, 2, -3735402, 1114112, 4, -3735401, 1245184, 2, -3669866, 1114112, 6, 524273, 1114112, 0, 524274, 1179648, 0, 524275, 1245184, 0, 589809, 1114112, 2, 589810, 1114112, 4, 589811, 1245184, 2, 655346, 1179648, 6, 655347, 1245184, 4, 655348, 0, 9, 720881, 1179648, 4, 720882, 1048576, 6, 786418, 1048576, 4, 851954, 1114112, 6)
-
-[node name="Player" parent="." instance=ExtResource("5_tpfhh")]
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/player/Player.tscn")
-spawn_path = NodePath("..")
