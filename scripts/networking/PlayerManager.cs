@@ -24,12 +24,6 @@ public partial class PlayerManager : Node {
         Rpc(nameof(Server_UpdatePlayerPosition), GetNode<Node2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId()).Position);
     }
 
-    [Rpc] void Client_RemovePlayer(long id) {
-        Global.OtherPlayerData.Remove(id);
-        
-        GetNode(Global.WORLD_PATH + id).QueueFree();
-    }
-
     #endregion
 
     //---------------------------------------------------------------------------------//

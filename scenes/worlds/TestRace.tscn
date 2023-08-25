@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://uawrpagtjmww"]
 
-[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="1_d2ly5"]
+[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="1_7423s"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_cq1re"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="1_m82s2"]
-[ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="3_o3n8s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x8r87"]
 texture = ExtResource("1_m82s2")
@@ -39,9 +39,36 @@ sources/0 = SubResource("TileSetAtlasSource_x8r87")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l4o8m"]
 size = Vector2(50, 1920)
 
-[node name="TestRace" type="Node2D"]
+[node name="World" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_d2ly5")]
+[node name="Player" parent="." instance=ExtResource("1_7423s")]
+position = Vector2(-75, -80)
+
+[node name="ExtraUI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Overlay" type="ColorRect" parent="ExtraUI"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.313726)
+
+[node name="WinText" type="Label" parent="ExtraUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -200.0
+offset_right = 960.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_cq1re")
+theme_override_font_sizes/font_size = 110
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(10, 10)
@@ -55,10 +82,7 @@ layer_0/tile_data = PackedInt32Array(458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 4
 position = Vector2(2215, 0)
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("3_o3n8s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Finish"]
 position = Vector2(0, 160)
 shape = SubResource("RectangleShape2D_l4o8m")
-
-[connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]

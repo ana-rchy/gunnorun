@@ -19,4 +19,6 @@ public static class Global {
     public const float TICK_RATE = 1 / 60f;
     public const string WORLD_PATH = "/root/World/";
     public const string SERVER_PATH = "/root/Server/";
+
+    public const string CurrentWorld = "TestRace";
 }
