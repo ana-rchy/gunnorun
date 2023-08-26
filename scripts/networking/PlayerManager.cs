@@ -11,6 +11,7 @@ public partial class PlayerManager : Node {
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerHit(long id, int damage) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -22,6 +23,11 @@ public partial class PlayerManager : Node {
         }
 
         Rpc(nameof(Server_UpdatePlayerPosition), GetNode<Node2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId()).Position);
+    }
+
+    [Rpc] void Client_PlayerHit(int damage) {
+        Player player = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId());
+        player.UpdateHP(-damage);
     }
 
     #endregion

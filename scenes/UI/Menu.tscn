@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dm4ukwmfejyre"]
+[gd_scene load_steps=15 format=3 uid="uid://dm4ukwmfejyre"]
 
 [ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/LobbyTheme.tres" id="1_me1wg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://58bi1d0bigp6" path="res://sprites/motd/knight.png" id="4_rdpvk"]
 [ext_resource type="AudioStream" uid="uid://c4n3k8f16hdnn" path="res://audio/realistic knocking.mp3" id="5_amtii"]
 [ext_resource type="AudioStream" uid="uid://bpn8qsohuwqd0" path="res://audio/vine boom.mp3" id="6_7y4o0"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="6_j2a7j"]
+[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
+[ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ethqi"]
 font_size = 50
@@ -20,6 +23,10 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gd36"]
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmjfw"]
+shader = ExtResource("6_j2a7j")
+shader_parameter/color = null
 
 [node name="Menu" type="Control"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -78,7 +85,7 @@ offset_top = -74.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a1.0"
+text = "Alpha - a2.0"
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -164,6 +171,18 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "singleplayer"
 
+[node name="PlayerPreview" type="TextureRect" parent="Panel"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmjfw")
+layout_mode = 0
+offset_left = 601.2
+offset_top = 202.2
+offset_right = 658.8
+offset_bottom = 277.8
+texture = ExtResource("7_8sbie")
+expand_mode = 5
+script = ExtResource("8_2wb56")
+
 [node name="DoorKnock" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_amtii")
 
@@ -171,4 +190,5 @@ stream = ExtResource("5_amtii")
 stream = ExtResource("6_7y4o0")
 
 [connection signal="pressed" from="Panel/Join" to="Panel" method="_OnJoinPressed"]
+[connection signal="color_changed" from="Panel/PlayerColor" to="Panel/PlayerPreview" method="_OnColorChanged"]
 [connection signal="pressed" from="Panel/Singleplayer" to="Panel" method="_OnSingleplayerPressed"]

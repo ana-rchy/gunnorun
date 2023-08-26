@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://uawrpagtjmww"]
+[gd_scene load_steps=9 format=3 uid="uid://uawrpagtjmww"]
 
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="1_7423s"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_cq1re"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="1_m82s2"]
+[ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="4_0x04x"]
+[ext_resource type="Script" path="res://scripts/environment/LevelTimer.cs" id="5_enjhw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x8r87"]
 texture = ExtResource("1_m82s2")
@@ -52,16 +54,16 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 0.313726)
 
-[node name="WinText" type="Label" parent="ExtraUI"]
+[node name="Label" type="Label" parent="ExtraUI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -960.0
-offset_top = -200.0
+offset_top = -540.0
 offset_right = 960.0
-offset_bottom = 200.0
+offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_cq1re")
@@ -82,7 +84,13 @@ layer_0/tile_data = PackedInt32Array(458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 4
 position = Vector2(2215, 0)
 collision_layer = 0
 collision_mask = 2
+script = ExtResource("4_0x04x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Finish"]
 position = Vector2(0, 160)
 shape = SubResource("RectangleShape2D_l4o8m")
+
+[node name="LevelTimer" type="Node" parent="."]
+script = ExtResource("5_enjhw")
+
+[connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]

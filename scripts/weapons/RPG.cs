@@ -9,10 +9,10 @@ public class RPG : Weapon {
         Refire = 0.5f;
 
         Damage = 80;
-        Range = 3000f;
+        Range = 5000f;
         
         BaseAmmo = Ammo = 1;
-        Reload = 3.75f;
+        Reload = 3f;
 
         ReelbackStrength = 10f;
     }

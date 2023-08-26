@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public partial class MatchManager : Node {
-    [Rpc] void Client_PlayerWon(long id) {
+    [Rpc] async void Client_PlayerWon(long id, double time) {
         string name;
         if (id == Multiplayer.GetUniqueId()) {
             name = Global.PlayerData.Username;
@@ -12,7 +12,11 @@ public partial class MatchManager : Node {
         
         CanvasLayer extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
-        extraUI.GetNode<Label>("WinText").Text = name + " has won";
+        time = Math.Round(time, 3);
+        extraUI.GetNode<Label>("Label").Text = name + " has won\n" + time.ToString() + "s";
         extraUI.Show();
+
+        await this.Sleep(3f);
+        GetNode<Client>(Global.SERVER_PATH).LeaveServer();
     }
 }

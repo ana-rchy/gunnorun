@@ -16,7 +16,7 @@ public partial class Menu : Panel {
     #region | signals
 
     private void _OnSingleplayerPressed() {
-        Tree.ChangeSceneToFile("res://scenes/Lobby.tscn");
+        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
         Global.PlayerData.Username = GetNode<LineEdit>("Username").Text;
         Global.PlayerData.Color = GetNode<ColorPickerButton>("PlayerColor").Color;
     }
@@ -26,7 +26,7 @@ public partial class Menu : Panel {
         Global.PlayerData.Color = GetNode<ColorPickerButton>("PlayerColor").Color;
 
         var ip = GetNode<LineEdit>("IP").Text;
-        ip = ip == "" ? "localhost" : ip;
+        ip = ip == "" ? "localhost" : ip; // localhost by default, entered ip otherwise
         var port = (int) GetNode<SpinBox>("Port").Value;
 
         Client.JoinServer(ip, port);

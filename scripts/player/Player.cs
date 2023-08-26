@@ -8,10 +8,12 @@ public partial class Player : RigidBody2D {
 
     PlayerUI UI;
     Timer ActionTimer;
+    RayCast2D Raycast;
 
     public Weapon[] Weapons;
     public Weapon CurrentWeapon;
     float MomentumMultiplier;
+    int HP = 100;
 
     public override void _Ready() {
         // set shader color
@@ -21,6 +23,7 @@ public partial class Player : RigidBody2D {
         // node references
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
+        Raycast = GetNode<RayCast2D>("Raycast");
 
         // etc
         Weapons = new Weapon[] {new Shotgun(), new Machinegun(), new RPG()};
@@ -28,6 +31,7 @@ public partial class Player : RigidBody2D {
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
         UI.SetAmmoText(CurrentWeapon.Ammo);
         UI.CurrentWeapon.Text = CurrentWeapon.Name;
+
 
         if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
@@ -56,17 +60,10 @@ public partial class Player : RigidBody2D {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
         if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
-            CurrentWeapon.Ammo = CurrentWeapon.BaseAmmo;
-            ActionTimer.Start(CurrentWeapon.Reload);
-            UI.SetReloadText(CurrentWeapon);
+            Reload();
 
-        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty) {
-            SetVelocity();
-
-            CurrentWeapon.Ammo--;
-            UI.SetAmmoText(CurrentWeapon.Ammo);
-
-            ActionTimer.Start(CurrentWeapon.Refire);
+        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
+            Shoot();
         }
     }
 
@@ -83,23 +80,51 @@ public partial class Player : RigidBody2D {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
+    public async void UpdateHP(int change) {
+        HP += change;
+        Label hpLabel = UI.GetNode<Label>("Control/HP");
+        hpLabel.Text = HP.ToString();
+
+        if (HP <= 0) {
+            hpLabel.Text = "ur dead lol";
+            await this.Sleep(3f);
+            HP = 100;
+            hpLabel.Text = "100";
+        }
+    }
+
     async void SpawnInvuln() {
         await this.Sleep(2f);
         SetCollisionMaskValue(2, true);
     }
 
-    void SetVelocity() {
+    void Shoot() {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
-
         // get the momentum-affected velocity, and add normal weapon knockback onto it
         LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
+
+        CurrentWeapon.Ammo--;
+        UI.SetAmmoText(CurrentWeapon.Ammo);
+
+        ActionTimer.Start(CurrentWeapon.Refire);
+
+        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+            Raycast.TargetPosition = -mousePosToPlayerPos.Normalized() * CurrentWeapon.Range;
+            Raycast.ForceRaycastUpdate();
+
+            if (Raycast.IsColliding()) {
+                Node hitPlayer = (Node) Raycast.GetCollider();
+                PlayerManager playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
+                
+                playerManager.Rpc("Server_PlayerHit", long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
+            }
+        }
     }
 
-    // deprecated
-    void ClampVelocity(ref Vector2 velocity) {
-        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
-            velocity = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
-        }
+    void Reload() {
+        CurrentWeapon.Ammo = CurrentWeapon.BaseAmmo;
+        ActionTimer.Start(CurrentWeapon.Reload);
+        UI.SetReloadText(CurrentWeapon);
     }
 
     #endregion

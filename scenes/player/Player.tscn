@@ -64,3 +64,7 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_f6y2i")
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
+
+[node name="Raycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+collision_mask = 2
