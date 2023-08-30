@@ -64,7 +64,7 @@ public partial class Lobby : Node {
             readyButton.Text = "Unready";
         }
 
-        LobbyManager.Rpc("Server_UpdateStatus", Global.PlayerData.ReadyStatus);
+        LobbyManager.Rpc(nameof(LobbyManager.Server_UpdateStatus), Global.PlayerData.ReadyStatus);
     }
 
     #endregion

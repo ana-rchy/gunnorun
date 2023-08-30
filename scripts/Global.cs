@@ -13,12 +13,12 @@ public static class Global {
         public Color Color;
         public bool ReadyStatus = false;
     }
-    public static PlayerDataStruct PlayerData;
+    public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 255));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;
 
     public const float TICK_RATE = 1 / 60f;
     public const string WORLD_PATH = "/root/World/";
     public const string SERVER_PATH = "/root/Server/";
 
-    public const string CurrentWorld = "TestRace";
+    public const string CurrentWorld = "Cave";
 }

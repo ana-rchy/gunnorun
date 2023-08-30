@@ -11,7 +11,8 @@ public partial class PlayerManager : Node {
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
-    [Rpc(RpcMode.AnyPeer)] void Server_PlayerHit(long id, int damage) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerHit(long id, int damage) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(sbyte direction, byte frame) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -19,15 +20,27 @@ public partial class PlayerManager : Node {
         puppetPositions.Remove(Multiplayer.GetUniqueId());
 
         foreach (var kvp in puppetPositions) {
-            GetNode<PuppetPlayer>(Global.WORLD_PATH + kvp.Key).PuppetPosition = kvp.Value;
+            var puppetPlayer = GetNodeOrNull<PuppetPlayer>(Global.WORLD_PATH + kvp.Key);
+            if (puppetPlayer != null) puppetPlayer.PuppetPosition = kvp.Value;
         }
 
-        Rpc(nameof(Server_UpdatePlayerPosition), GetNode<Node2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId()).Position);
+        var player = GetNodeOrNull<Node2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId());
+        if (player != null) Rpc(nameof(Server_UpdatePlayerPosition), player.Position);
     }
 
-    [Rpc] void Client_PlayerHit(int damage) {
-        Player player = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId());
+    [Rpc] void Client_PlayerHit(long id, int damage) {     
+        var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
         player.UpdateHP(-damage);
+    }
+
+    [Rpc] void Client_PlayerFrameChanged(long id, sbyte direction, byte frame) {
+        if (id != Multiplayer.GetUniqueId()) {
+            var playerSprite = GetNode<AnimatedSprite2D>(Global.WORLD_PATH + id.ToString() + "/Sprite");
+
+            playerSprite.Position = new Vector2(Math.Abs(playerSprite.Position.X) * direction, playerSprite.Position.Y);
+            playerSprite.Scale = new Vector2(Math.Abs(playerSprite.Scale.X) * direction, playerSprite.Scale.Y);
+            playerSprite.Frame = frame;
+        }
     }
 
     #endregion
@@ -41,7 +54,7 @@ public partial class PlayerManager : Node {
 
         newPlayer.Name = id.ToString();
         newPlayer.GetNode<Label>("Username").Text = username;
-        ((ShaderMaterial) newPlayer.GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+        ((ShaderMaterial) newPlayer.GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
     }
 
     #endregion

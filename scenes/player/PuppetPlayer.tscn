@@ -1,26 +1,16 @@
 [gd_scene load_steps=7 format=3 uid="uid://d3t8duya8chur"]
 
-[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="1_o7tut"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="2_5t7wj"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="2_r2d5f"]
 [ext_resource type="Script" path="res://scripts/player/PuppetPlayer.cs" id="3_s52n3"]
+[ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="3_tlkmi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i1jlw"]
 size = Vector2(110, 210)
 
-[sub_resource type="Shader" id="Shader_6fsy6"]
-code = "shader_type canvas_item;
-
-uniform vec3 color : source_color;
-
-void fragment() {
-	COLOR = texture(TEXTURE, UV);
-	COLOR.rgb = vec3(1,1,1) - (vec3(1,1,1) - COLOR.rgb) * (vec3(1,1,1) - color);
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kmu7a"]
-shader = SubResource("Shader_6fsy6")
-shader_parameter/color = Color(0, 0, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lrhgl"]
+shader = ExtResource("2_r2d5f")
+shader_parameter/color = null
 
 [node name="PuppetPlayer" type="CharacterBody2D"]
 collision_layer = 2
@@ -30,12 +20,13 @@ script = ExtResource("3_s52n3")
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_i1jlw")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-material = SubResource("ShaderMaterial_kmu7a")
-position = Vector2(25, 0)
+material = SubResource("ShaderMaterial_lrhgl")
+position = Vector2(25, -2.38419e-06)
 scale = Vector2(10, 10)
-texture = ExtResource("1_o7tut")
+sprite_frames = ExtResource("3_tlkmi")
+animation = &"GunRotation"
 
 [node name="Username" type="Label" parent="."]
 anchors_preset = 8
@@ -52,3 +43,17 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_5t7wj")
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
+
+[node name="RedHP" type="ColorRect" parent="."]
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = -130.0
+color = Color(0.705882, 0, 0, 1)
+
+[node name="GreenHP" type="ColorRect" parent="."]
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = -130.0
+color = Color(0.054902, 0.85098, 0, 1)

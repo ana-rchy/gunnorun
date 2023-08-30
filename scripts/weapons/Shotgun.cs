@@ -5,8 +5,8 @@ public class Shotgun : Weapon {
     public Shotgun() {
         Name = "Shotgun";
         
-        Knockback = 2000f;
-        Refire = 0.4f;
+        Knockback = 1000f;
+        Refire = 0.3f;
 
         Damage = 25;
         Range = 500f;

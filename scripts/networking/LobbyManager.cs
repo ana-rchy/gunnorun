@@ -3,7 +3,7 @@ using System;
 using static Godot.MultiplayerApi;
 
 public partial class LobbyManager : Node {
-    [Rpc(RpcMode.AnyPeer)] void Server_UpdateStatus(bool ready) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_UpdateStatus(bool ready) {}
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
         if (Multiplayer.GetUniqueId() != id) {

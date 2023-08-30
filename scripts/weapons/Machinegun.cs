@@ -5,7 +5,7 @@ public class Machinegun : Weapon {
     public Machinegun() {
         Name = "Machinegun";
         
-        Knockback = 100f;
+        Knockback = 200f;
         Refire = 0.04f;
 
         Damage = 2;

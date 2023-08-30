@@ -3,9 +3,10 @@ using System.Linq;
 using Godot;
 using static Godot.GD;
 
-public partial class Player : RigidBody2D {
+public partial class Player : RigidBody2D, IPlayer {
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
+    PlayerManager PlayerManager;
     PlayerUI UI;
     Timer ActionTimer;
     RayCast2D Raycast;
@@ -18,9 +19,10 @@ public partial class Player : RigidBody2D {
     public override void _Ready() {
         // set shader color
         var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         // node references
+        PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
         Raycast = GetNode<RayCast2D>("Raycast");
@@ -81,19 +83,23 @@ public partial class Player : RigidBody2D {
     #region | main funcs
 
     public async void UpdateHP(int change) {
+        if (HP <= 0) return;
+        
         HP += change;
-        Label hpLabel = UI.GetNode<Label>("Control/HP");
+        var hpLabel = UI.GetNode<Label>("Control/HP");
         hpLabel.Text = HP.ToString();
 
         if (HP <= 0) {
             hpLabel.Text = "ur dead lol";
             await this.Sleep(3f);
             HP = 100;
-            hpLabel.Text = "100";
+            hpLabel.Text = HP.ToString();
+            SpawnInvuln();
         }
     }
 
     async void SpawnInvuln() {
+        SetCollisionMaskValue(2, false);
         await this.Sleep(2f);
         SetCollisionMaskValue(2, true);
     }
@@ -114,9 +120,8 @@ public partial class Player : RigidBody2D {
 
             if (Raycast.IsColliding()) {
                 Node hitPlayer = (Node) Raycast.GetCollider();
-                PlayerManager playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
                 
-                playerManager.Rpc("Server_PlayerHit", long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
+                PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
             }
         }
     }

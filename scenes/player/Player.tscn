@@ -1,27 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=9 format=3 uid="uid://cir4wtbahb0if"]
 
-[ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="1_0dqtv"]
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
 [ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/PlayerUI.tscn" id="2_0rg58"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="4_f6y2i"]
+[ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="4_nwgk2"]
+[ext_resource type="Script" path="res://scripts/player/GunRotation.cs" id="5_tl440"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gayk"]
 size = Vector2(110, 210)
 
-[sub_resource type="Shader" id="Shader_6fsy6"]
-code = "shader_type canvas_item;
-
-uniform vec3 color : source_color;
-
-void fragment() {
-	COLOR = texture(TEXTURE, UV);
-	COLOR.rgb = vec3(1,1,1) - (vec3(1,1,1) - COLOR.rgb) * (vec3(1,1,1) - color);
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwny1"]
-shader = SubResource("Shader_6fsy6")
-shader_parameter/color = Color(0, 0, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4dg2j"]
+shader = ExtResource("5_yasl1")
+shader_parameter/color = null
 
 [node name="Player" type="RigidBody2D"]
 collision_layer = 2
@@ -33,21 +24,25 @@ script = ExtResource("1_gjffp")
 [node name="ActionTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2(1.90735e-06, 0)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_4gayk")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_4dg2j")
+position = Vector2(25, -2.08616e-06)
+scale = Vector2(10, 10)
+sprite_frames = ExtResource("4_nwgk2")
+animation = &"GunRotation"
+script = ExtResource("5_tl440")
+
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_4gayk")
-
-[node name="Sprite" type="Sprite2D" parent="."]
-texture_filter = 1
-material = SubResource("ShaderMaterial_mwny1")
-position = Vector2(25, 0)
-scale = Vector2(10, 10)
-texture = ExtResource("1_0dqtv")
 
 [node name="Username" type="Label" parent="."]
 anchors_preset = 8

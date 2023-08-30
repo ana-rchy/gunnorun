@@ -10,7 +10,7 @@ public partial class MatchManager : Node {
             name = Global.OtherPlayerData[id].Username;
         }
         
-        CanvasLayer extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
+        var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
         time = Math.Round(time, 3);
         extraUI.GetNode<Label>("Label").Text = name + " has won\n" + time.ToString() + "s";

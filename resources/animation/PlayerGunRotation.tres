@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://bxe2vmmarljga"]
+
+[ext_resource type="Texture2D" uid="uid://bf8asj5yat0qw" path="res://sprites/player/character_animation.png" id="1_fg4i3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_668vu"]
+atlas = ExtResource("1_fg4i3")
+region = Rect2(0, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_syc78"]
+atlas = ExtResource("1_fg4i3")
+region = Rect2(16, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1doiv"]
+atlas = ExtResource("1_fg4i3")
+region = Rect2(32, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_43hof"]
+atlas = ExtResource("1_fg4i3")
+region = Rect2(48, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fi6bu"]
+atlas = ExtResource("1_fg4i3")
+region = Rect2(64, 0, 16, 21)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_668vu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_syc78")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1doiv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_43hof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fi6bu")
+}],
+"loop": true,
+"name": &"GunRotation",
+"speed": 5.0
+}]
