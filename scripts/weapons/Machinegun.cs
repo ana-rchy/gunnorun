@@ -9,7 +9,7 @@ public class Machinegun : Weapon {
         Refire = 0.04f;
 
         Damage = 2;
-        Range = 2500f;
+        Range = 1500f;
         
         BaseAmmo = Ammo = 100;
         Reload = 1f;

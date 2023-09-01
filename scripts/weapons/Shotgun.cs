@@ -9,7 +9,7 @@ public class Shotgun : Weapon {
         Refire = 0.3f;
 
         Damage = 25;
-        Range = 500f;
+        Range = 650f;
 
         BaseAmmo = Ammo = null;
         Reload = -1f;

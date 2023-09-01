@@ -6,6 +6,9 @@ public partial class MOTDManager : Label {
 	string[] MotdMessages;
 	
 	public override async void _Ready() {
+		LabelSettings.FontSize = 50;
+		LabelSettings.FontColor = new Color(255, 255, 255, 1);
+
 		MotdMessages = new string[] {
 			"▇▅▆▇▆▅▅█",
 			"pro tip: shoot yourself",

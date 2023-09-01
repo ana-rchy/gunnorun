@@ -13,7 +13,7 @@ shader = ExtResource("2_r2d5f")
 shader_parameter/color = null
 
 [node name="PuppetPlayer" type="CharacterBody2D"]
-collision_layer = 2
+collision_layer = 8
 safe_margin = 0.01
 script = ExtResource("3_s52n3")
 

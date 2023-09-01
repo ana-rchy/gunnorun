@@ -99,30 +99,24 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     async void SpawnInvuln() {
-        SetCollisionMaskValue(2, false);
+        SetCollisionMaskValue(4, false);
         await this.Sleep(2f);
-        SetCollisionMaskValue(2, true);
+        SetCollisionMaskValue(4, true);
     }
 
     void Shoot() {
         var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
-        // get the momentum-affected velocity, and add normal weapon knockback onto it
         LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
+        // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
         CurrentWeapon.Ammo--;
         UI.SetAmmoText(CurrentWeapon.Ammo);
-
         ActionTimer.Start(CurrentWeapon.Refire);
 
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
-            Raycast.TargetPosition = -mousePosToPlayerPos.Normalized() * CurrentWeapon.Range;
-            Raycast.ForceRaycastUpdate();
+        ShootTracer(-mousePosToPlayerPos);
 
-            if (Raycast.IsColliding()) {
-                Node hitPlayer = (Node) Raycast.GetCollider();
-                
-                PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
-            }
+        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+            CheckPlayerHit(-mousePosToPlayerPos);
         }
     }
 
@@ -135,7 +129,7 @@ public partial class Player : RigidBody2D, IPlayer {
     #endregion
 
     //---------------------------------------------------------------------------------//
-    #region | utility funcs
+    #region | organization funcs
 
     float GetMomentumMultiplier(Vector2 currentVelocity, Vector2 mousePosToPlayerPos) {
         float angleDelta = currentVelocity.AngleTo(mousePosToPlayerPos);
@@ -145,6 +139,28 @@ public partial class Player : RigidBody2D, IPlayer {
         angleDelta -= MathF.Round(MathF.PI / 4, 4);
 
         return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
+    }
+
+    void ShootTracer(Vector2 playerPosToMousePos) {
+        var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
+        var tracer = tracerScene.Instantiate<Tracer>();
+
+        tracer.GlobalPosition = GlobalPosition;
+        tracer.Rotation = (new Vector2(0, 0)).AngleToPoint(playerPosToMousePos);
+        tracer.Range = CurrentWeapon.Range;
+
+        AddSibling(tracer);
+    }
+
+    void CheckPlayerHit(Vector2 playerPosToMousePos) {
+        Raycast.TargetPosition = playerPosToMousePos.Normalized() * CurrentWeapon.Range;
+        Raycast.ForceRaycastUpdate();
+
+        if (Raycast.IsColliding()) {
+            Node hitPlayer = (Node) Raycast.GetCollider();
+            
+            PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
+        }
     }
 
     #endregion
