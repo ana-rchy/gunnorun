@@ -1,10 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://c3gkoljph4epq"]
+[gd_scene load_steps=15 format=3 uid="uid://c3gkoljph4epq"]
 
 [ext_resource type="Texture2D" uid="uid://d3f7uyp3r0re5" path="res://sprites/placeholder tilesheets/kenney/tiles_packed.png" id="1"]
-[ext_resource type="Texture2D" uid="uid://dja0muolbdh5h" path="res://sprites/old/placeholder player.png" id="1_vctb1"]
 [ext_resource type="Texture2D" uid="uid://dynvi6gep8qve" path="res://sprites/placeholder tilesheets/kenney/empty-tiles.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://82selfdamypb" path="res://sprites/placeholder tilesheets/kenney/penis!.png" id="5"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="5_tpfhh"]
+
+[sub_resource type="Gradient" id="Gradient_v47n7"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7u2xk"]
+gradient = SubResource("Gradient_v47n7")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fhcrc"]
 texture = ExtResource("4")
@@ -4483,7 +4489,7 @@ sources/1 = SubResource("TileSetAtlasSource_yxcfs")
 self_modulate = Color(0.372549, 0.666667, 0.858824, 1)
 z_index = -10
 scale = Vector2(-108399, 42470.3)
-texture = ExtResource("1_vctb1")
+texture = SubResource("GradientTexture2D_7u2xk")
 
 [node name="Collision" type="TileMap" parent="."]
 scale = Vector2(10, 10)

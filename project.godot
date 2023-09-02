@@ -18,8 +18,7 @@ boot_splash/image="res://sprites/ui/icon.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://sprites/ui/icon.png"
-config/macos_native_icon="res://sprites/ui/icon.png"
-config/windows_native_icon="res://sprites/ui/icon.png"
+config/windows_native_icon="res://sprites/ui/windows_icon.ico"
 
 [autoload]
 
