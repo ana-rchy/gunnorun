@@ -12,6 +12,7 @@ public partial class FinishMarker : Node {
             extraUI.Show();
             var time = Math.Round(levelTimer.Time, 3);
             extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
+            Global.LastTime = time;
 
             await this.Sleep(3f);
             GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");

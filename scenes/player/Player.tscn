@@ -7,8 +7,9 @@
 [ext_resource type="Script" path="res://scripts/player/GunRotation.cs" id="5_tl440"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gayk"]
-size = Vector2(110, 210)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvp6s"]
+radius = 55.0
+height = 210.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4dg2j"]
 shader = ExtResource("5_yasl1")
@@ -31,7 +32,7 @@ one_shot = true
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.90735e-06, 0)
-shape = SubResource("RectangleShape2D_4gayk")
+shape = SubResource("CapsuleShape2D_hvp6s")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

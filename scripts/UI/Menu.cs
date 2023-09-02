@@ -10,6 +10,7 @@ public partial class Menu : Panel {
     LineEdit UsernameField;
     ColorPickerButton ColorField;
     OptionButton MapSelect;
+    Label LastTime;
 
     public override void _Ready() {
         Tree = GetTree();
@@ -18,9 +19,11 @@ public partial class Menu : Panel {
         UsernameField = GetNode<LineEdit>("Username");
         ColorField = GetNode<ColorPickerButton>("PlayerColor");
         MapSelect = GetNode<OptionButton>("MapSelect");
+        LastTime = GetNode<Label>("LastTime");
         UsernameField.Text = Global.PlayerData.Username;
         ColorField.Color = Global.PlayerData.Color;
         MapSelect.Selected = Global.SelectedWorldIndex;
+        if (Global.LastTime != 0) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
     } 
 
     //---------------------------------------------------------------------------------//
