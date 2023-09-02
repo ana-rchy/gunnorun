@@ -9,6 +9,7 @@ public partial class Menu : Panel {
 
     LineEdit UsernameField;
     ColorPickerButton ColorField;
+    OptionButton MapSelect;
 
     public override void _Ready() {
         Tree = GetTree();
@@ -16,17 +17,21 @@ public partial class Menu : Panel {
 
         UsernameField = GetNode<LineEdit>("Username");
         ColorField = GetNode<ColorPickerButton>("PlayerColor");
+        MapSelect = GetNode<OptionButton>("MapSelect");
         UsernameField.Text = Global.PlayerData.Username;
         ColorField.Color = Global.PlayerData.Color;
+        MapSelect.Selected = Global.SelectedWorldIndex;
     } 
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
     private void _OnSingleplayerPressed() {
-        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
         Global.PlayerData.Username = UsernameField.Text;
         Global.PlayerData.Color = ColorField.Color;
+        Global.SelectedWorldIndex = MapSelect.Selected;
+
+        Tree.ChangeSceneToFile("res://scenes/worlds/" + MapSelect.GetItemText(Global.SelectedWorldIndex) + ".tscn");
     }
 
     private void _OnJoinPressed() {

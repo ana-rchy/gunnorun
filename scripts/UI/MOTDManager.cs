@@ -64,6 +64,15 @@ public partial class MOTDManager : Label {
 			"が",
 			"you know what? fuck you. *crashes your game*",
 			"Home of CHALLENGE PISSING",
+			"transing your kids gender since 2013",
+			"help my piss is on fire",
+			"Also play Terraria!",
+			"hey so hows your day",
+			"Bruno Powroznik approved",
+			"im not gonna sugarcoat it. 5A 5B 2B 2C 3C j.ABC dj.ABC AT",
+			"you should return the slab... NOW!!",
+			" ",
+			"Whose side are you on?"
 		};
 
 		var rnd = new RandomNumberGenerator();
@@ -85,6 +94,8 @@ public partial class MOTDManager : Label {
 		} else if (Text == "you know what? fuck you. *crashes your game*") {
 			await this.Sleep(2f);
 			GetTree().Quit();
+		} else if (Text == " ") {
+			GetNode<TextureRect>("LiveLeak").Show();
 		}
 	}
 }

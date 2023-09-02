@@ -1,15 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://dm4ukwmfejyre"]
+[gd_scene load_steps=17 format=3 uid="uid://dm4ukwmfejyre"]
 
 [ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/LobbyTheme.tres" id="1_me1wg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
 [ext_resource type="Script" path="res://scripts/UI/MOTDManager.cs" id="3_vrprp"]
 [ext_resource type="Script" path="res://scripts/UI/Menu.cs" id="4_dav64"]
 [ext_resource type="Texture2D" uid="uid://58bi1d0bigp6" path="res://sprites/motd/knight.png" id="4_rdpvk"]
+[ext_resource type="Texture2D" uid="uid://de7bwfsgn6i3q" path="res://sprites/motd/liveleak.png" id="5_4d1w2"]
 [ext_resource type="AudioStream" uid="uid://c4n3k8f16hdnn" path="res://audio/realistic knocking.mp3" id="5_amtii"]
 [ext_resource type="AudioStream" uid="uid://bpn8qsohuwqd0" path="res://audio/vine boom.mp3" id="6_7y4o0"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="6_j2a7j"]
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ethqi"]
 font_size = 50
@@ -74,6 +76,15 @@ offset_right = 1355.0
 offset_bottom = 1086.0
 scale = Vector2(0.04, 0.04)
 texture = ExtResource("4_rdpvk")
+
+[node name="LiveLeak" type="TextureRect" parent="Subtitle"]
+visible = false
+layout_mode = 0
+offset_left = 505.0
+offset_top = -341.0
+offset_right = 969.0
+offset_bottom = -166.0
+texture = ExtResource("5_4d1w2")
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
@@ -156,6 +167,18 @@ grow_horizontal = 2
 grow_vertical = 0
 edit_alpha = false
 
+[node name="PlayerPreview" type="TextureRect" parent="Panel"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xmjfw")
+layout_mode = 0
+offset_left = 601.2
+offset_top = 202.2
+offset_right = 658.8
+offset_bottom = 277.8
+texture = ExtResource("7_8sbie")
+expand_mode = 5
+script = ExtResource("8_2wb56")
+
 [node name="Singleplayer" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = 7
@@ -171,17 +194,28 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "singleplayer"
 
-[node name="PlayerPreview" type="TextureRect" parent="Panel"]
-texture_filter = 1
-material = SubResource("ShaderMaterial_xmjfw")
-layout_mode = 0
-offset_left = 601.2
-offset_top = 202.2
-offset_right = 658.8
-offset_bottom = 277.8
-texture = ExtResource("7_8sbie")
-expand_mode = 5
-script = ExtResource("8_2wb56")
+[node name="MapSelect" type="OptionButton" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -101.0
+offset_top = 75.0
+offset_right = 102.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("10_udk7o")
+item_count = 3
+selected = 0
+popup/item_0/text = "Cave"
+popup/item_0/id = 0
+popup/item_1/text = "CaveShort"
+popup/item_1/id = 1
+popup/item_2/text = "AlphaArena"
+popup/item_2/id = 2
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_amtii")

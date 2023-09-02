@@ -49,3 +49,13 @@ offset_top = -201.0
 offset_right = 106.0
 offset_bottom = -125.5
 grow_vertical = 0
+
+[node name="ReloadingWarning" type="Label" parent="Control"]
+visible = false
+layout_mode = 0
+offset_left = 150.0
+offset_top = 1020.0
+offset_right = 535.0
+offset_bottom = 1059.0
+theme_override_font_sizes/font_size = 35
+text = "weapon still reloading"

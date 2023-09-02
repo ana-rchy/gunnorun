@@ -12,6 +12,7 @@ public partial class PlayerManager : Node {
 
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_PlayerHit(long id, int damage) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_TracerShot(float rotation, float range) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(sbyte direction, byte frame) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
@@ -31,6 +32,21 @@ public partial class PlayerManager : Node {
     [Rpc] void Client_PlayerHit(long id, int damage) {     
         var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
         player.UpdateHP(-damage);
+    }
+
+    [Rpc] void Client_TracerShot(long id, float rotation, float range) {
+        var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
+        var tracer = tracerScene.Instantiate<Tracer>();
+
+        tracer.GlobalPosition = GetNode<Node2D>(Global.WORLD_PATH + id.ToString()).GlobalPosition;
+        tracer.Rotation = rotation;
+        tracer.Range = range;
+
+        var tracerArea = tracer.GetNode<Area2D>("Area2D");
+        tracerArea.SetCollisionMaskValue(4, false);
+        tracerArea.SetCollisionMaskValue(2, true);
+
+        GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, sbyte direction, byte frame) {

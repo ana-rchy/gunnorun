@@ -21,4 +21,5 @@ public static class Global {
     public const string SERVER_PATH = "/root/Server/";
 
     public const string CurrentWorld = "Cave";
+    public static int SelectedWorldIndex = 0;
 }

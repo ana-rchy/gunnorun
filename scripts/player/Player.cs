@@ -9,6 +9,7 @@ public partial class Player : RigidBody2D, IPlayer {
     PlayerManager PlayerManager;
     PlayerUI UI;
     Timer ActionTimer;
+    Timer ReloadTimer;
     RayCast2D Raycast;
 
     public Weapon[] Weapons;
@@ -25,6 +26,7 @@ public partial class Player : RigidBody2D, IPlayer {
         PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("ActionTimer");
+        ReloadTimer = GetNode<Timer>("ReloadTimer");
         Raycast = GetNode<RayCast2D>("Raycast");
 
         // etc
@@ -32,7 +34,7 @@ public partial class Player : RigidBody2D, IPlayer {
         CurrentWeapon = Weapons[0];
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
         UI.SetAmmoText(CurrentWeapon.Ammo);
-        UI.CurrentWeapon.Text = CurrentWeapon.Name;
+        UI.SelectedWeapon.Text = CurrentWeapon.Name;
 
 
         if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
@@ -52,7 +54,7 @@ public partial class Player : RigidBody2D, IPlayer {
             if (e.IsActionPressed("Num" + i.ToString())) {
                 CurrentWeapon = Weapons[i-1];
 
-                UI.CurrentWeapon.Text = CurrentWeapon.Name;
+                UI.SelectedWeapon.Text = CurrentWeapon.Name;
                 UI.SetAmmoText(CurrentWeapon.Ammo);
             }
         }
@@ -62,7 +64,12 @@ public partial class Player : RigidBody2D, IPlayer {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
         if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
-            Reload();
+            if (!ReloadTimer.IsStopped()) {
+                UI.ReloadingWarning.Show();
+            } else {
+                UI.ReloadingWarning.Hide();
+                Reload(CurrentWeapon);
+            }
 
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
             Shoot();
@@ -120,10 +127,13 @@ public partial class Player : RigidBody2D, IPlayer {
         }
     }
 
-    void Reload() {
-        CurrentWeapon.Ammo = CurrentWeapon.BaseAmmo;
-        ActionTimer.Start(CurrentWeapon.Reload);
-        UI.SetReloadText(CurrentWeapon);
+    async void Reload(Weapon reloadingWeapon) {
+        reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
+        UI.SetReloadText(reloadingWeapon);
+        ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
+        await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
+        reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
+        UI.ReloadingWarning.Hide();
     }
 
     #endregion
@@ -150,6 +160,10 @@ public partial class Player : RigidBody2D, IPlayer {
         tracer.Range = CurrentWeapon.Range;
 
         AddSibling(tracer);
+
+        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+            PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
+        }
     }
 
     void CheckPlayerHit(Vector2 playerPosToMousePos) {

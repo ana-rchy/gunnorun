@@ -26,6 +26,9 @@ script = ExtResource("1_gjffp")
 [node name="ActionTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="ReloadTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.90735e-06, 0)
 shape = SubResource("RectangleShape2D_4gayk")
