@@ -5,6 +5,7 @@ public partial class PlayerUI : Node {
 	public Label HP;
 	public Label SelectedWeapon;
 	public Label ReloadingWarning;
+	public Label LevelTime;
 	Label Ammo;
 
 	public override void _Ready() {
@@ -14,6 +15,7 @@ public partial class PlayerUI : Node {
 		SelectedWeapon = control.GetNode<Label>("CurrentWeapon");
 		ReloadingWarning = control.GetNode<Label>("ReloadingWarning");
 		Ammo = control.GetNode<Label>("Ammo");
+		LevelTime = control.GetNode<Label>("LevelTime");
 	}
 
 	//---------------------------------------------------------------------------------//

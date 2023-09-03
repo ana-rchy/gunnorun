@@ -1,11 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=11 format=3 uid="uid://cir4wtbahb0if"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
 [ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/PlayerUI.tscn" id="2_0rg58"]
+[ext_resource type="Script" path="res://scripts/player/LevelTimer.cs" id="3_80esj"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="4_f6y2i"]
 [ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="4_nwgk2"]
 [ext_resource type="Script" path="res://scripts/player/GunRotation.cs" id="5_tl440"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3j7k5"]
+friction = 0.1
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvp6s"]
 radius = 55.0
@@ -19,6 +23,7 @@ shader_parameter/color = null
 z_index = 1
 z_as_relative = false
 collision_layer = 2
+physics_material_override = SubResource("PhysicsMaterial_3j7k5")
 lock_rotation = true
 script = ExtResource("1_gjffp")
 
@@ -29,6 +34,9 @@ one_shot = true
 
 [node name="ReloadTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="LevelTimer" type="Node" parent="."]
+script = ExtResource("3_80esj")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.90735e-06, 0)

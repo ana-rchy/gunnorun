@@ -1,0 +1,14 @@
+alpha:
+- replay viewer (+ ghosts)
+- ui/graphics improvements (shaders/particles/etc)
+- easier server hosting
+- lapped maps
+- mario kart style checkpoints
+
+beta:
+- custom skins
+- custom maps
+- ingame chat
+
+release:
+- modding/scripting support

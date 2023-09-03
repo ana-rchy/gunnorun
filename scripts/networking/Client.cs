@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using MsgPack.Serialization;
 
 public partial class Client : Node {
-	public override void _Input(InputEvent e) {
+	public override void _UnhandledInput(InputEvent e) {
 		if (e.IsActionPressed("Leave")) {
 			LeaveServer();
 		}
