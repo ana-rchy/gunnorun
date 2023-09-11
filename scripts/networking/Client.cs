@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using Godot;
 using static Godot.GD;
 using static Godot.MultiplayerApi;
-using System;
-using System.Collections.Generic;
-using MsgPack.Serialization;
 
 public partial class Client : Node {
 	public override void _UnhandledInput(InputEvent e) {
@@ -17,29 +17,20 @@ public partial class Client : Node {
 
 	[Rpc(RpcMode.AnyPeer)] void Server_NewPlayerData(string username, Color color) {}
 
-	[Rpc] void Client_Setup(byte[] serializedPlayerData, string gameState) {
-		var playerDataSerializer = MessagePackSerializer.Get<Dictionary<long, Global.PlayerDataStruct>>();
-		Dictionary<long, Global.PlayerDataStruct> playerData = playerDataSerializer.UnpackSingleObject(serializedPlayerData);
+	[Rpc] void Client_Setup(string serializedPlayerData) {
+		var playerData = JsonSerializer.Deserialize<Dictionary<long, Global.PlayerDataStruct>>(serializedPlayerData);
 		Global.OtherPlayerData = playerData;
 
-		switch (gameState) {
-			case "Lobby":
-				GetTree().ChangeSceneToFile("res://scenes/UI/Lobby.tscn"); break;
-			case "Ingame":
-				GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn"); break;
-		}
-		
+		GetTree().ChangeSceneToFile("res://scenes/UI/Lobby.tscn");
 
 		Rpc(nameof(Server_NewPlayerData), Global.PlayerData.Username, Global.PlayerData.Color);
 	}
 
-	[Rpc] void Client_NewPlayer(long id, string username, Color color, bool inLobby) {
+	[Rpc] void Client_NewPlayer(long id, string username, Color color) {
 		if (Multiplayer.GetUniqueId() != id) {
 			Global.OtherPlayerData.TryAdd(id, new Global.PlayerDataStruct(username, color));
-			
-			if (inLobby) {
-				GetNode<Lobby>("/root/Lobby").RefreshList();
-			}
+
+			GetNode<Lobby>("/root/Lobby").RefreshList();
 		}
 	}
 
@@ -66,6 +57,7 @@ public partial class Client : Node {
 
 	public void LeaveServer() {
 		Multiplayer.MultiplayerPeer.Close();
+		Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();
 		GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
 	}
 

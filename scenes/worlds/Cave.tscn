@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bd12xd7fnj35o"]
+[gd_scene load_steps=14 format=3 uid="uid://bd12xd7fnj35o"]
 
 [ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_286pq"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
 [ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="4_gbq3f"]
-[ext_resource type="Script" path="res://scripts/player/LevelTimer.cs" id="5_ion7w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lkv5u"]
 texture = ExtResource("2_sclao")
@@ -134,6 +133,18 @@ width = 320
 height = 160
 fill_from = Vector2(1, 1)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g88rr"]
+size = Vector2(160, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lfwwl"]
+size = Vector2(160, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_prdhb"]
+size = Vector2(160, 1280)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xcvuo"]
+size = Vector2(160, 160)
+
 [node name="World" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_i51n6")]
@@ -170,7 +181,43 @@ shape = SubResource("RectangleShape2D_poehd")
 [node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
 texture = SubResource("GradientTexture2D_s4a0g")
 
-[node name="LevelTimer" type="Node" parent="."]
-script = ExtResource("5_ion7w")
+[node name="Timer" type="Timer" parent="Markers/Finish"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Checkpoints" type="Node2D" parent="Markers"]
+
+[node name="1" type="Area2D" parent="Markers/Checkpoints"]
+position = Vector2(880, -1040)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/1"]
+shape = SubResource("RectangleShape2D_g88rr")
+
+[node name="2" type="Area2D" parent="Markers/Checkpoints"]
+position = Vector2(-2320, 2000)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/2"]
+shape = SubResource("RectangleShape2D_lfwwl")
+
+[node name="3" type="Area2D" parent="Markers/Checkpoints"]
+position = Vector2(-2162, 3520)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/3"]
+shape = SubResource("RectangleShape2D_prdhb")
+
+[node name="4" type="Area2D" parent="Markers/Checkpoints"]
+position = Vector2(5038, 880)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/4"]
+shape = SubResource("RectangleShape2D_xcvuo")
 
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
+[connection signal="timeout" from="Markers/Finish/Timer" to="Markers/Finish" method="_OnTimeout"]

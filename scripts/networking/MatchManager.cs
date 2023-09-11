@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public partial class MatchManager : Node {
-    [Rpc] async void Client_PlayerWon(long id, double time) {
+    [Rpc] void Client_PlayerWon(long id, double time) {
         string name;
         if (id == Multiplayer.GetUniqueId()) {
             name = Global.PlayerData.Username;
@@ -16,7 +16,6 @@ public partial class MatchManager : Node {
         extraUI.GetNode<Label>("Label").Text = name + " has won\n" + time.ToString() + "s";
         extraUI.Show();
 
-        await this.Sleep(3f);
-        GetNode<Client>(Global.SERVER_PATH).LeaveServer();
+        GetNode<Timer>(Global.WORLD_PATH + "Markers/Finish/Timer").Start(); // needed so that timer doesnt continue after scene change
     }
 }

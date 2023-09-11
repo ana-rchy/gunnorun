@@ -97,7 +97,7 @@ offset_top = -74.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.0"
+text = "Alpha - a2.2"
 
 [node name="Controls" type="Label" parent="."]
 layout_mode = 1

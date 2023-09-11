@@ -1,9 +1,9 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class FinishMarker : Node {
-    private async void _OnPlayerEntered(Node2D player) {
-        if (Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer) {
+    void _OnPlayerEntered(Node2D player) {
+        if (Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer && Global.PlayerData.UnpassedCheckpoints.Count == 0) {
             var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
             var levelTimer = player.GetNode<LevelTimer>("LevelTimer");
 
@@ -12,8 +12,11 @@ public partial class FinishMarker : Node {
             extraUI.Show();
             extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
 
-            await this.Sleep(3f);
-            GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
+            GetNode<Timer>("Timer").Start();
         }
+    }
+
+    void _OnTimeout() { // needed instead of this.Sleep(), so that the timer doesnt continue on after scene changes, and change scene again
+        GetNode<Client>(Global.SERVER_PATH).LeaveServer(); // function also used by MatchManager, so LeaveServer is used
     }
 }

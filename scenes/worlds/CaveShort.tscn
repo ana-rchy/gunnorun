@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6nqsqem0ax55"]
+[gd_scene load_steps=13 format=3 uid="uid://b6nqsqem0ax55"]
 
 [ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_286pq"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
@@ -133,7 +133,10 @@ gradient = SubResource("Gradient_e8rkh")
 width = 160
 height = 800
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ovgrk"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqnpb"]
+size = Vector2(160, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8n8ai"]
 size = Vector2(160, 800)
 
 [node name="World" type="Node2D"]
@@ -171,6 +174,10 @@ shape = SubResource("RectangleShape2D_poehd")
 [node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
 texture = SubResource("GradientTexture2D_r52tf")
 
+[node name="Timer" type="Timer" parent="Markers/Finish"]
+wait_time = 3.0
+one_shot = true
+
 [node name="Checkpoints" type="Node2D" parent="Markers"]
 script = ExtResource("5_kr08e")
 
@@ -180,6 +187,15 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/1"]
-shape = SubResource("RectangleShape2D_ovgrk")
+shape = SubResource("RectangleShape2D_bqnpb")
+
+[node name="2" type="Area2D" parent="Markers/Checkpoints"]
+position = Vector2(-2320, 2000)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/2"]
+shape = SubResource("RectangleShape2D_8n8ai")
 
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
+[connection signal="timeout" from="Markers/Finish/Timer" to="Markers/Finish" method="_OnTimeout"]

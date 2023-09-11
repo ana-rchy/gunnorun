@@ -3,7 +3,9 @@ alpha:
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
 - lapped maps
-- mario kart style checkpoints
+- weapon selecting
+- parallax
+- queuing up reloads
 
 beta:
 - custom skins
@@ -12,3 +14,8 @@ beta:
 
 release:
 - modding/scripting support
+
+
+
+done:
+- mario kart style checkpoints

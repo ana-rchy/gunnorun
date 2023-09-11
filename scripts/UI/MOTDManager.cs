@@ -1,6 +1,6 @@
+using System;
 using Godot;
 using static Godot.GD;
-using System;
 
 public partial class MOTDManager : Label {
 	string[] MotdMessages;
