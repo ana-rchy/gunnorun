@@ -1,7 +1,40 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bas54ebjufk4r"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bas54ebjufk4r"]
 
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_mfb8n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qq6f3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkvvp"]
+content_margin_left = 50.0
+content_margin_top = 0.0
+content_margin_right = 50.0
+content_margin_bottom = 0.0
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+draw_center = false
+shadow_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o1bci"]
+content_margin_left = 50.0
+content_margin_top = 0.0
+content_margin_right = 50.0
+content_margin_bottom = 0.0
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+draw_center = false
+shadow_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isgpd"]
+content_margin_left = 50.0
+content_margin_top = 0.0
+content_margin_right = 50.0
+content_margin_bottom = 0.0
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+draw_center = false
+shadow_color = Color(0, 0, 0, 0)
 
 [resource]
 default_font = ExtResource("1_mfb8n")
 default_font_size = 32
+TabContainer/styles/panel = SubResource("StyleBoxEmpty_qq6f3")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_fkvvp")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_o1bci")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_isgpd")

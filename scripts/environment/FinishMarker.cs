@@ -12,7 +12,7 @@ public partial class FinishMarker : Node {
             extraUI.Show();
             extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
 
-            player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording();
+            player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
 
             GetNode<Timer>("Timer").Start();
         }

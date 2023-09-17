@@ -16,20 +16,25 @@ public partial class Menu : Panel {
         Tree = GetTree();
         Client = GetNode<Client>(Global.SERVER_PATH);
 
+        // shared
         UsernameField = GetNode<LineEdit>("Username");
         ColorField = GetNode<ColorPickerButton>("PlayerColor");
-        MapSelect = GetNode<OptionButton>("MapSelect");
-        LastTime = GetNode<Label>("LastTime");
         UsernameField.Text = Global.PlayerData.Username;
         ColorField.Color = Global.PlayerData.Color;
-        MapSelect.Selected = Global.SelectedWorldIndex;
-        if (Global.LastTime != 0) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
+
+        // singleplayer
+        MapSelect = GetNodeOrNull<OptionButton>("MapSelect");
+        LastTime = GetNodeOrNull<Label>("LastTime");
+        if (MapSelect != null) MapSelect.Selected = Global.SelectedWorldIndex;
+        if (Global.LastTime != 0 && LastTime != null) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
     } 
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
     private void _OnSingleplayerPressed() {
+        Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();
+
         Global.PlayerData.Username = UsernameField.Text;
         Global.PlayerData.Color = ColorField.Color;
         Global.SelectedWorldIndex = MapSelect.Selected;

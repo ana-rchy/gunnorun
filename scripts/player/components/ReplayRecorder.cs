@@ -23,12 +23,25 @@ public partial class ReplayRecorder : Node2D {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    public void StopRecording() {
+    public void StopRecording(double finalTime) {
         SetPhysicsProcess(false);
-        SaveReplay();
+
+        if (FileAccess.FileExists("user://time.gsd")) {
+            using var timeFile = FileAccess.Open("user://time.gsd", FileAccess.ModeFlags.Read);
+            var lastBestTime = timeFile.GetDouble();
+            
+            if (finalTime < lastBestTime) {
+                SaveReplay(finalTime);
+            }
+        } else {
+            SaveReplay(finalTime);
+        }
     }
 
-    void SaveReplay() {
+    void SaveReplay(double finalTime) {
+        using var timeFile = FileAccess.Open("user://time.gsd", FileAccess.ModeFlags.Write);
+        timeFile.StoreDouble(finalTime);
+
         using var replayFile = FileAccess.Open("user://replays/replay.grp", FileAccess.ModeFlags.Write);
         replayFile.StoreVar(new Godot.Collections.Array<Vector2>(PositionsList));
     }

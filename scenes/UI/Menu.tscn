@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dm4ukwmfejyre"]
+[gd_scene load_steps=17 format=3 uid="uid://cyjasptaqt1b5"]
 
 [ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/LobbyTheme.tres" id="1_me1wg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
@@ -13,32 +13,30 @@
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_ethqi"]
+[sub_resource type="LabelSettings" id="LabelSettings_g0ww5"]
 font_size = 50
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wtx0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr5s2"]
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gd36"]
-bg_color = Color(0.160784, 0.160784, 0.160784, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmjfw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcqtv"]
 shader = ExtResource("6_j2a7j")
 shader_parameter/color = null
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgbo8"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+
 [node name="Menu" type="Control"]
-custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-focus_mode = 1
 theme = ExtResource("1_me1wg")
 
 [node name="Title" type="TextureRect" parent="."]
@@ -47,9 +45,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -674.0
-offset_top = 50.0
+offset_top = 30.0
 offset_right = 2025.0
-offset_bottom = 574.0
+offset_bottom = 554.0
 grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
@@ -59,13 +57,13 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_top = 350.0
-offset_right = 20.0
-offset_bottom = 401.0
+offset_left = -112.5
+offset_top = 300.0
+offset_right = 112.5
+offset_bottom = 354.0
 grow_horizontal = 2
 theme = ExtResource("1_me1wg")
-label_settings = SubResource("LabelSettings_ethqi")
+label_settings = SubResource("LabelSettings_g0ww5")
 script = ExtResource("3_vrprp")
 
 [node name="Knight" type="TextureRect" parent="Subtitle"]
@@ -81,10 +79,10 @@ texture = ExtResource("4_rdpvk")
 [node name="LiveLeak" type="TextureRect" parent="Subtitle"]
 visible = false
 layout_mode = 0
-offset_left = 505.0
-offset_top = -341.0
-offset_right = 969.0
-offset_bottom = -166.0
+offset_left = 608.5
+offset_top = -300.0
+offset_right = 1072.5
+offset_bottom = -125.0
 texture = ExtResource("5_4d1w2")
 
 [node name="Version" type="Label" parent="."]
@@ -93,11 +91,11 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -74.0
+offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.2"
+text = "Alpha - a2.3"
 
 [node name="Controls" type="Label" parent="."]
 layout_mode = 1
@@ -116,17 +114,134 @@ text = "1-3 - switch weapons
 L - return to menu"
 horizontal_alignment = 2
 
-[node name="Panel" type="Panel" parent="."]
+[node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
 offset_left = 610.0
-offset_top = 420.0
+offset_top = 409.0
 offset_right = 1310.0
-offset_bottom = 720.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8wtx0")
+offset_bottom = 750.0
+tab_alignment = 1
+
+[node name="Singleplayer" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="TabContainer/Singleplayer"]
+offset_right = 700.0
+offset_bottom = 300.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wr5s2")
 script = ExtResource("4_dav64")
 
-[node name="IP" type="LineEdit" parent="Panel"]
+[node name="MapSelect" type="OptionButton" parent="TabContainer/Singleplayer/Panel"]
 layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 42.0
+offset_right = 110.0
+offset_bottom = 92.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("10_udk7o")
+alignment = 1
+item_count = 3
+selected = 0
+popup/item_0/text = "Cave"
+popup/item_0/id = 0
+popup/item_1/text = "CaveShort"
+popup/item_1/id = 1
+popup/item_2/text = "AlphaArena"
+popup/item_2/id = 2
+
+[node name="Username" type="LineEdit" parent="TabContainer/Singleplayer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.522
+anchor_right = 1.0
+anchor_bottom = 0.522
+offset_left = 75.0
+offset_top = -26.6
+offset_right = -75.0
+offset_bottom = 26.4
+grow_vertical = 2
+placeholder_text = "username"
+alignment = 1
+
+[node name="Play" type="Button" parent="TabContainer/Singleplayer/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -85.0
+offset_top = -90.0
+offset_right = 85.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "play"
+
+[node name="PlayerColor" type="ColorPickerButton" parent="TabContainer/Singleplayer/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -85.0
+offset_right = -140.0
+offset_bottom = -45.0
+grow_horizontal = 0
+grow_vertical = 0
+edit_alpha = false
+
+[node name="PlayerPreview" type="TextureRect" parent="TabContainer/Singleplayer/Panel"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_tcqtv")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -99.0
+offset_top = -98.0
+offset_right = -41.4
+offset_bottom = -22.4
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("7_8sbie")
+expand_mode = 5
+script = ExtResource("8_2wb56")
+
+[node name="LastTime" type="Label" parent="TabContainer/Singleplayer/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -165.5
+offset_top = 5.0
+offset_right = 165.5
+offset_bottom = 41.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+
+[node name="Multiplayer" type="Control" parent="TabContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="TabContainer/Multiplayer"]
+offset_right = 700.0
+offset_bottom = 300.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wr5s2")
+script = ExtResource("4_dav64")
+
+[node name="IP" type="LineEdit" parent="TabContainer/Multiplayer/Panel"]
+layout_mode = 0
 offset_left = 40.0
 offset_top = 40.0
 offset_right = 440.0
@@ -134,7 +249,7 @@ offset_bottom = 110.0
 placeholder_text = "IP (Blank for localhost)"
 alignment = 1
 
-[node name="Port" type="SpinBox" parent="Panel"]
+[node name="Port" type="SpinBox" parent="TabContainer/Multiplayer/Panel"]
 layout_mode = 0
 offset_left = 472.0
 offset_top = 40.0
@@ -145,24 +260,29 @@ max_value = 65535.0
 value = 29999.0
 alignment = 1
 
-[node name="ArrowCover" type="Panel" parent="Panel/Port"]
+[node name="ArrowCover" type="Panel" parent="TabContainer/Multiplayer/Panel/Port"]
 layout_mode = 0
 offset_left = 206.0
 offset_top = 2.0
 offset_right = 227.0
 offset_bottom = 68.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_1gd36")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bgbo8")
 
-[node name="Username" type="LineEdit" parent="Panel"]
-layout_mode = 0
+[node name="Username" type="LineEdit" parent="TabContainer/Multiplayer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.522
+anchor_right = 1.0
+anchor_bottom = 0.522
 offset_left = 75.0
-offset_top = 130.0
-offset_right = 625.0
-offset_bottom = 183.0
+offset_top = -26.6
+offset_right = -75.0
+offset_bottom = 26.4
+grow_vertical = 2
 placeholder_text = "username"
 alignment = 1
 
-[node name="Join" type="Button" parent="Panel"]
+[node name="Join" type="Button" parent="TabContainer/Multiplayer/Panel"]
 layout_mode = 0
 offset_left = 265.0
 offset_top = 210.0
@@ -170,85 +290,39 @@ offset_right = 435.0
 offset_bottom = 260.0
 text = "join"
 
-[node name="PlayerColor" type="ColorPickerButton" parent="Panel"]
+[node name="PlayerColor" type="ColorPickerButton" parent="TabContainer/Multiplayer/Panel"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 130.0
+offset_left = -220.0
 offset_top = -85.0
-offset_right = 210.0
+offset_right = -140.0
 offset_bottom = -45.0
-grow_horizontal = 2
+grow_horizontal = 0
 grow_vertical = 0
 edit_alpha = false
 
-[node name="PlayerPreview" type="TextureRect" parent="Panel"]
+[node name="PlayerPreview" type="TextureRect" parent="TabContainer/Multiplayer/Panel"]
 texture_filter = 1
-material = SubResource("ShaderMaterial_xmjfw")
-layout_mode = 0
-offset_left = 601.2
-offset_top = 202.2
-offset_right = 658.8
-offset_bottom = 277.8
+material = SubResource("ShaderMaterial_tcqtv")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -99.0
+offset_top = -98.0
+offset_right = -41.4
+offset_bottom = -22.4
+grow_horizontal = 0
+grow_vertical = 0
 texture = ExtResource("7_8sbie")
 expand_mode = 5
 script = ExtResource("8_2wb56")
-
-[node name="Singleplayer" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = 19.0
-offset_right = 100.0
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "singleplayer"
-
-[node name="MapSelect" type="OptionButton" parent="Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -101.0
-offset_top = 75.0
-offset_right = 102.0
-offset_bottom = 116.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_fonts/font = ExtResource("10_udk7o")
-item_count = 3
-selected = 0
-popup/item_0/text = "Cave"
-popup/item_0/id = 0
-popup/item_1/text = "CaveShort"
-popup/item_1/id = 1
-popup/item_2/text = "AlphaArena"
-popup/item_2/id = 2
-
-[node name="LastTime" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = 130.0
-offset_right = 250.0
-offset_bottom = 166.0
-grow_horizontal = 2
-grow_vertical = 0
-horizontal_alignment = 1
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_amtii")
@@ -256,6 +330,7 @@ stream = ExtResource("5_amtii")
 [node name="VineBoom" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_7y4o0")
 
-[connection signal="pressed" from="Panel/Join" to="Panel" method="_OnJoinPressed"]
-[connection signal="color_changed" from="Panel/PlayerColor" to="Panel/PlayerPreview" method="_OnColorChanged"]
-[connection signal="pressed" from="Panel/Singleplayer" to="Panel" method="_OnSingleplayerPressed"]
+[connection signal="pressed" from="TabContainer/Singleplayer/Panel/Play" to="TabContainer/Singleplayer/Panel" method="_OnSingleplayerPressed"]
+[connection signal="color_changed" from="TabContainer/Singleplayer/Panel/PlayerColor" to="TabContainer/Singleplayer/Panel/PlayerPreview" method="_OnColorChanged"]
+[connection signal="pressed" from="TabContainer/Multiplayer/Panel/Join" to="TabContainer/Multiplayer/Panel" method="_OnJoinPressed"]
+[connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel/PlayerPreview" method="_OnColorChanged"]

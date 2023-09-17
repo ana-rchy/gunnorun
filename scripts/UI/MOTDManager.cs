@@ -73,7 +73,8 @@ public partial class MOTDManager : Label {
 			"you should return the slab... NOW!!",
 			" ",
 			"Which side are you on?",
-			"One must imagine robot happy"
+			"One must imagine robot happy",
+			"quila was here"
 		};
 
 		var rnd = new RandomNumberGenerator();
@@ -97,6 +98,8 @@ public partial class MOTDManager : Label {
 			GetTree().Quit();
 		} else if (Text == " ") {
 			GetNode<TextureRect>("LiveLeak").Show();
+		} else if (Text == "quila was here") {
+			LabelSettings.FontColor = new Color("1c1c1c");
 		}
 	}
 }
