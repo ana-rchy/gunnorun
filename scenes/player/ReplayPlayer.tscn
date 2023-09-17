@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://bl82ay0qwbbd8"]
+
+[ext_resource type="Texture2D" uid="uid://bf8asj5yat0qw" path="res://sprites/player/character_animation.png" id="1_e1lji"]
+[ext_resource type="Script" path="res://scripts/player/ReplayPlayer.cs" id="1_g6tyb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2csm"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(0, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_neh68"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(16, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnxfb"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(32, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfj33"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(48, 0, 16, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onfgo"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(64, 0, 16, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ikdgr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2csm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_neh68")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnxfb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfj33")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onfgo")
+}],
+"loop": true,
+"name": &"GunRotation",
+"speed": 5.0
+}]
+
+[node name="ReplayPlayer" type="Node2D"]
+script = ExtResource("1_g6tyb")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.392157)
+texture_filter = 1
+position = Vector2(25, 0)
+scale = Vector2(10, 10)
+sprite_frames = SubResource("SpriteFrames_ikdgr")
+animation = &"GunRotation"

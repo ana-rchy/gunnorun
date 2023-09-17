@@ -93,14 +93,13 @@ public partial class Player : RigidBody2D, IPlayer {
         if (HP <= 0) return;
         
         HP += change;
-        var hpLabel = UI.GetNode<Label>("Control/HP");
-        hpLabel.Text = HP.ToString();
+        UI.HP.Text = HP.ToString();
 
         if (HP <= 0) {
-            hpLabel.Text = "ur dead lol";
+            UI.HP.Text = "ur dead lol";
             await this.Sleep(3f);
             HP = 100;
-            hpLabel.Text = HP.ToString();
+            UI.HP.Text = HP.ToString();
             SpawnInvuln();
         }
     }

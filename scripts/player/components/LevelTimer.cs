@@ -12,7 +12,7 @@ public partial class LevelTimer : Node {
         }
 
         SetProcess(false);
-        UI = GetParent().GetNode<PlayerUI>("PlayerUI");
+        UI = GetNode<PlayerUI>("../PlayerUI");
     }
 
     public override void _Process(double delta) {
@@ -21,7 +21,7 @@ public partial class LevelTimer : Node {
     }
 
     public override void _Input(InputEvent e) {
-        if (e.IsActionPressed("Shoot")) {
+        if (Input.IsActionPressed("Shoot")) {
             SetProcess(true);
             SetProcessInput(false);
         }

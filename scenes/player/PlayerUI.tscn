@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3kncxrrmiqob"]
 
 [ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="1_m6o6h"]
-[ext_resource type="Script" path="res://scripts/player/PlayerUI.cs" id="2_5xriv"]
+[ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
 
 [node name="PlayerUI" type="CanvasLayer"]
 script = ExtResource("2_5xriv")

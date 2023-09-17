@@ -72,7 +72,7 @@ public partial class MOTDManager : Label {
 			"im not gonna sugarcoat it. 5A 5B 2B 2C 3C j.ABC dj.ABC AT",
 			"you should return the slab... NOW!!",
 			" ",
-			"Whose side are you on?",
+			"Which side are you on?",
 			"One must imagine robot happy"
 		};
 
