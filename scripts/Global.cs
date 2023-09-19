@@ -22,6 +22,9 @@ public static class Global {
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;
 
-    public static double LastTime;
     public static int SelectedWorldIndex = 0;
+    public static string CurrentWorld = "Cave";
+
+    public static double LastTime;
+    public static List<Vector2> LastReplayPositionsList;
 }

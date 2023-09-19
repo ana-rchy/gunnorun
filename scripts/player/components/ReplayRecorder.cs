@@ -25,9 +25,10 @@ public partial class ReplayRecorder : Node2D {
 
     public void StopRecording(double finalTime) {
         SetPhysicsProcess(false);
+        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
 
-        if (FileAccess.FileExists("user://time.gsd")) {
-            using var timeFile = FileAccess.Open("user://time.gsd", FileAccess.ModeFlags.Read);
+        if (FileAccess.FileExists(timePath)) {
+            using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
             var lastBestTime = timeFile.GetDouble();
             
             if (finalTime < lastBestTime) {
@@ -36,14 +37,19 @@ public partial class ReplayRecorder : Node2D {
         } else {
             SaveReplay(finalTime);
         }
+
+        Global.LastReplayPositionsList = PositionsList;
     }
 
     void SaveReplay(double finalTime) {
-        using var timeFile = FileAccess.Open("user://time.gsd", FileAccess.ModeFlags.Write);
+        var dir = DirAccess.Open("user://");
+        dir.MakeDir("replays");
+
+        using var timeFile = FileAccess.Open("user://" + Global.CurrentWorld + "_time.gsd", FileAccess.ModeFlags.Write);
         timeFile.StoreDouble(finalTime);
 
-        using var replayFile = FileAccess.Open("user://replays/replay.grp", FileAccess.ModeFlags.Write);
-        replayFile.StoreVar(new Godot.Collections.Array<Vector2>(PositionsList));
+        using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld+ "_best_replay.grp", FileAccess.ModeFlags.Write);
+        replayFile.CallDeferred("store_var", new Godot.Collections.Array<Vector2>(PositionsList));
     }
 
     #endregion

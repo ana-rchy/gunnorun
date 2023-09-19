@@ -11,6 +11,7 @@ public partial class Menu : Panel {
     ColorPickerButton ColorField;
     OptionButton MapSelect;
     Label LastTime;
+    Label BestTime;
 
     public override void _Ready() {
         Tree = GetTree();
@@ -25,24 +26,26 @@ public partial class Menu : Panel {
         // singleplayer
         MapSelect = GetNodeOrNull<OptionButton>("MapSelect");
         LastTime = GetNodeOrNull<Label>("LastTime");
+        BestTime = GetNodeOrNull<Label>("BestTime");
         if (MapSelect != null) MapSelect.Selected = Global.SelectedWorldIndex;
         if (Global.LastTime != 0 && LastTime != null) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
+        UpdateBestTime();
     } 
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    private void _OnSingleplayerPressed() {
+    void _OnSingleplayerPressed() {
         Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();
 
         Global.PlayerData.Username = UsernameField.Text;
         Global.PlayerData.Color = ColorField.Color;
         Global.SelectedWorldIndex = MapSelect.Selected;
 
-        Tree.ChangeSceneToFile("res://scenes/worlds/" + MapSelect.GetItemText(Global.SelectedWorldIndex) + ".tscn");
+        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
     }
 
-    private void _OnJoinPressed() {
+    void _OnJoinPressed() {
         Global.PlayerData.Username = UsernameField.Text;
         Global.PlayerData.Color = ColorField.Color;
 
@@ -51,6 +54,26 @@ public partial class Menu : Panel {
         var port = (int) GetNode<SpinBox>("Port").Value;
 
         Client.JoinServer(ip, port);
+    }
+    
+    void _OnMapSelected(int index) {
+        Global.CurrentWorld = MapSelect.GetItemText(index);
+        UpdateBestTime();
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    void UpdateBestTime() {
+        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
+        if (FileAccess.FileExists(timePath) && BestTime != null) {
+            using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
+            BestTime.Text = "best time: " + timeFile.GetDouble().ToString() + "s";
+        } else {
+            if (BestTime != null) BestTime.Text = "";
+        }
     }
 
     #endregion
