@@ -13,7 +13,7 @@ public partial class PlayerManager : Node {
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_PlayerHit(long id, int damage) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_TracerShot(float rotation, float range) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(sbyte direction, byte frame) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(byte frame) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
