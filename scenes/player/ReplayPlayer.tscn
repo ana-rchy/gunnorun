@@ -1,45 +1,80 @@
-[gd_scene load_steps=9 format=3 uid="uid://bl82ay0qwbbd8"]
+[gd_scene load_steps=14 format=3 uid="uid://bl82ay0qwbbd8"]
 
 [ext_resource type="Texture2D" uid="uid://bf8asj5yat0qw" path="res://sprites/player/character_animation.png" id="1_e1lji"]
 [ext_resource type="Script" path="res://scripts/player/ReplayPlayer.cs" id="1_g6tyb"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_f2csm"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh540"]
 atlas = ExtResource("1_e1lji")
-region = Rect2(0, 0, 16, 21)
+region = Rect2(0, 0, 21, 21)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_neh68"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5i547"]
 atlas = ExtResource("1_e1lji")
-region = Rect2(16, 0, 16, 21)
+region = Rect2(21, 0, 21, 21)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fnxfb"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yw5c"]
 atlas = ExtResource("1_e1lji")
-region = Rect2(32, 0, 16, 21)
+region = Rect2(42, 0, 21, 21)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tfj33"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5kmn"]
 atlas = ExtResource("1_e1lji")
-region = Rect2(48, 0, 16, 21)
+region = Rect2(63, 0, 21, 21)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_onfgo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7u35"]
 atlas = ExtResource("1_e1lji")
-region = Rect2(64, 0, 16, 21)
+region = Rect2(84, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl1cj"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(0, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmvyd"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(21, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lsyr8"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(42, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfpd1"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(63, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0r1fj"]
+atlas = ExtResource("1_e1lji")
+region = Rect2(84, 21, 21, 21)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ikdgr"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_f2csm")
+"texture": SubResource("AtlasTexture_eh540")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_neh68")
+"texture": SubResource("AtlasTexture_5i547")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_fnxfb")
+"texture": SubResource("AtlasTexture_7yw5c")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_tfj33")
+"texture": SubResource("AtlasTexture_u5kmn")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_onfgo")
+"texture": SubResource("AtlasTexture_r7u35")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl1cj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmvyd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lsyr8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfpd1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0r1fj")
 }],
 "loop": true,
 "name": &"GunRotation",
@@ -52,7 +87,6 @@ script = ExtResource("1_g6tyb")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.392157)
 texture_filter = 1
-position = Vector2(25, 0)
 scale = Vector2(10, 10)
 sprite_frames = SubResource("SpriteFrames_ikdgr")
 animation = &"GunRotation"

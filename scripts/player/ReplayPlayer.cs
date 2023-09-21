@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class ReplayPlayer : Node2D {
-    List<Vector2> PositionsList;
+    AnimatedSprite2D Sprite;
+
+    Godot.Collections.Array<Vector2> PositionsList;
+    Godot.Collections.Array<int> FramesList;
 
     public override void _Ready() {
-        var replayPath = "user://" + Global.CurrentWorld + "_best_replay.grp";
+        var replayPath = "user://replays/" + Global.CurrentWorld + "_best_replay.grp";
 
         if (!FileAccess.FileExists(replayPath)) {
             QueueFree();
             return;
         }
 
+        Sprite = GetNode<AnimatedSprite2D>("Sprite");
+
         using var replayFile = FileAccess.Open(replayPath, FileAccess.ModeFlags.Read);
-        PositionsList = new List<Vector2>((Godot.Collections.Array<Vector2>) replayFile.GetVar());
+        var dictionary = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
+        PositionsList = (Godot.Collections.Array<Vector2>) dictionary["Positions"];
+        FramesList = (Godot.Collections.Array<int>) dictionary["Frames"];
 
         SetPhysicsProcess(false);
     }
@@ -27,6 +34,8 @@ public partial class ReplayPlayer : Node2D {
         }
 
         Position = PositionsList[_replayFileIndex];
+        Sprite.Frame = FramesList[_replayFileIndex];
+        
         _replayFileIndex++;
     }
 

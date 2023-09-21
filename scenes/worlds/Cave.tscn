@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://bd12xd7fnj35o"]
+[gd_scene load_steps=15 format=3 uid="uid://bd12xd7fnj35o"]
 
+[ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_7rigj"]
 [ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_286pq"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
@@ -148,7 +149,10 @@ size = Vector2(160, 160)
 [node name="World" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_i51n6")]
-position = Vector2(222, 554)
+position = Vector2(191, 535)
+
+[node name="ReplayPlayer" parent="." instance=ExtResource("2_7rigj")]
+position = Vector2(191, 535)
 
 [node name="ExtraUI" parent="." instance=ExtResource("2_286pq")]
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Godot;
 
 public static class Global {
+    //---------------------------------------------------------------------------------//
+    #region | constants/structs
+
     public const float TICK_RATE = 1 / 60f;
     public const string WORLD_PATH = "/root/World/";
     public const string SERVER_PATH = "/root/Server/";
@@ -19,6 +22,12 @@ public static class Global {
 
         public List<Node> UnpassedCheckpoints = new List<Node>();
     }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | everything else
+
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;
 
@@ -26,5 +35,8 @@ public static class Global {
     public static string CurrentWorld = "Cave";
 
     public static double LastTime;
-    public static List<Vector2> LastReplayPositionsList;
+    public static Godot.Collections.Array<Vector2> LastReplayPositionsList = null;
+    public static Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>> LastDebugData = null;
+
+    #endregion
 }

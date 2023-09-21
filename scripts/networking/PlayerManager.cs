@@ -49,12 +49,10 @@ public partial class PlayerManager : Node {
         GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
-    [Rpc] void Client_PlayerFrameChanged(long id, sbyte direction, byte frame) {
+    [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
         if (id != Multiplayer.GetUniqueId()) {
             var playerSprite = GetNode<AnimatedSprite2D>(Global.WORLD_PATH + id.ToString() + "/Sprite");
 
-            playerSprite.Position = new Vector2(Math.Abs(playerSprite.Position.X) * direction, playerSprite.Position.Y);
-            playerSprite.Scale = new Vector2(Math.Abs(playerSprite.Scale.X) * direction, playerSprite.Scale.Y);
             playerSprite.Frame = frame;
         }
     }

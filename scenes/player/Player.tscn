@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=13 format=3 uid="uid://cir4wtbahb0if"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
 [ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/PlayerUI.tscn" id="2_0rg58"]
@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="4_f6y2i"]
 [ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="4_nwgk2"]
 [ext_resource type="Script" path="res://scripts/player/components/GunRotation.cs" id="5_tl440"]
+[ext_resource type="Script" path="res://scripts/player/components/DebugRecorder.cs" id="5_voyw7"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3j7k5"]
@@ -42,6 +43,9 @@ script = ExtResource("3_80esj")
 [node name="ReplayRecorder" type="Node2D" parent="."]
 script = ExtResource("4_ardvv")
 
+[node name="DebugRecorder" type="Node" parent="."]
+script = ExtResource("5_voyw7")
+
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.90735e-06, 0)
 shape = SubResource("CapsuleShape2D_hvp6s")
@@ -49,7 +53,6 @@ shape = SubResource("CapsuleShape2D_hvp6s")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_4dg2j")
-position = Vector2(25, -2.08616e-06)
 scale = Vector2(10, 10)
 sprite_frames = ExtResource("4_nwgk2")
 animation = &"GunRotation"
@@ -80,3 +83,5 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_f6y2i")
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
+
+[connection signal="tree_exiting" from="DebugRecorder" to="DebugRecorder" method="_OnTreeExiting"]

@@ -19,3 +19,4 @@ release:
 
 done:
 - mario kart style checkpoints
+- menu improvement

@@ -4,14 +4,20 @@ using Godot;
 using MsgPack.Serialization;
 
 public partial class ReplayRecorder : Node2D {
-    List<Vector2> PositionsList = new List<Vector2>();
+    AnimatedSprite2D Sprite;
+    
+    Godot.Collections.Array<Vector2> PositionsList = new Godot.Collections.Array<Vector2>();
+    Godot.Collections.Array<sbyte> FramesList = new Godot.Collections.Array<sbyte>();
 
     public override void _Ready() {
         SetPhysicsProcess(false);
+
+        Sprite = GetNode<AnimatedSprite2D>("../Sprite");
     }
 
     public override void _PhysicsProcess(double delta) {
         PositionsList.Add(GlobalPosition);
+        FramesList.Add((sbyte) Sprite.Frame);
     }
 
     public override void _Input(InputEvent e) {
@@ -49,7 +55,10 @@ public partial class ReplayRecorder : Node2D {
         timeFile.StoreDouble(finalTime);
 
         using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld+ "_best_replay.grp", FileAccess.ModeFlags.Write);
-        replayFile.CallDeferred("store_var", new Godot.Collections.Array<Vector2>(PositionsList));
+        replayFile.StoreVar(new Godot.Collections.Dictionary<string, Variant>() {
+            { "Positions", PositionsList },
+            { "Frames", FramesList }
+        });
     }
 
     #endregion
