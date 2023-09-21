@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Godot;
 using MsgPack.Serialization;
 
@@ -44,7 +43,11 @@ public partial class ReplayRecorder : Node2D {
             SaveReplay(finalTime);
         }
 
-        Global.LastReplayPositionsList = PositionsList;
+        Global.LastReplayData = new Godot.Collections.Dictionary<string, Variant>() {
+            { "World", Global.CurrentWorld },
+            { "Positions", PositionsList },
+            { "Frames", FramesList }
+        };
     }
 
     void SaveReplay(double finalTime) {
@@ -56,6 +59,7 @@ public partial class ReplayRecorder : Node2D {
 
         using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld+ "_best_replay.grp", FileAccess.ModeFlags.Write);
         replayFile.StoreVar(new Godot.Collections.Dictionary<string, Variant>() {
+            { "World", Global.CurrentWorld },
             { "Positions", PositionsList },
             { "Frames", FramesList }
         });

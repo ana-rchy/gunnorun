@@ -115,14 +115,17 @@ script = ExtResource("6_ak1ek")
 
 [node name="MapSelect" type="OptionButton" parent="TabContainer/Singleplayer/Panel"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -110.0
-offset_top = 42.0
-offset_right = 110.0
-offset_bottom = 92.0
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -108.0
+offset_right = -20.0
+offset_bottom = -58.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("10_udk7o")
 alignment = 1
 item_count = 3
@@ -133,6 +136,27 @@ popup/item_1/text = "CaveShort"
 popup/item_1/id = 1
 popup/item_2/text = "AlphaArena"
 popup/item_2/id = 2
+
+[node name="ReplaySelect" type="OptionButton" parent="TabContainer/Singleplayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -108.0
+offset_right = 280.0
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_udk7o")
+alignment = 1
+text_overrun_behavior = 1
+item_count = 1
+selected = 0
+popup/item_0/text = "best time"
+popup/item_0/id = 0
 
 [node name="Username" type="LineEdit" parent="TabContainer/Singleplayer/Panel"]
 layout_mode = 1
@@ -389,6 +413,7 @@ stream = ExtResource("5_amtii")
 stream = ExtResource("6_7y4o0")
 
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/MapSelect" to="TabContainer/Singleplayer/Panel" method="_OnMapSelected"]
+[connection signal="item_selected" from="TabContainer/Singleplayer/Panel/ReplaySelect" to="TabContainer/Singleplayer/Panel" method="_OnReplaySelected"]
 [connection signal="pressed" from="TabContainer/Singleplayer/Panel/Play" to="TabContainer/Singleplayer/Panel" method="_OnSingleplayerPressed"]
 [connection signal="color_changed" from="TabContainer/Singleplayer/Panel/PlayerColor" to="TabContainer/Singleplayer/Panel/PlayerPreview" method="_OnColorChanged"]
 [connection signal="pressed" from="TabContainer/Multiplayer/Panel/Join" to="TabContainer/Multiplayer/Panel" method="_OnJoinPressed"]

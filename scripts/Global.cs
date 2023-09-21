@@ -35,8 +35,10 @@ public static class Global {
     public static string CurrentWorld = "Cave";
 
     public static double LastTime;
-    public static Godot.Collections.Array<Vector2> LastReplayPositionsList = null;
+    public static Godot.Collections.Dictionary<string, Variant> LastReplayData = null;
     public static Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>> LastDebugData = null;
+
+    public static string ReplayName = null;
 
     #endregion
 }

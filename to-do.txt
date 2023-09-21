@@ -1,5 +1,5 @@
 alpha:
-- replay viewer (+ ghosts)
+- standalone replay viewer
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
 - lapped maps
@@ -20,3 +20,4 @@ release:
 done:
 - mario kart style checkpoints
 - menu improvement
+- replays (+ selecting replays)

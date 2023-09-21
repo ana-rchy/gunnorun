@@ -9,7 +9,12 @@ public partial class ReplayPlayer : Node2D {
     Godot.Collections.Array<int> FramesList;
 
     public override void _Ready() {
-        var replayPath = "user://replays/" + Global.CurrentWorld + "_best_replay.grp";
+        string replayPath;
+        if (Global.ReplayName == null) {
+            replayPath = "user://replays/" + Global.CurrentWorld + "_best_replay.grp";
+        } else {
+            replayPath = "user://imported_replays/" + Global.ReplayName;
+        }
 
         if (!FileAccess.FileExists(replayPath)) {
             QueueFree();
