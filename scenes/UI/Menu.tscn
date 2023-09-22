@@ -1,6 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=20 format=3 uid="uid://cyjasptaqt1b5"]
 
-[ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/LobbyTheme.tres" id="1_me1wg"]
+[ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/MenuTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
 [ext_resource type="Script" path="res://scripts/UI/MOTDManager.cs" id="3_vrprp"]
 [ext_resource type="Script" path="res://scripts/UI/Menu.cs" id="4_dav64"]
@@ -13,16 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
+[ext_resource type="Theme" uid="uid://bvpwpgtxai5sl" path="res://resources/themes/MenuPanelTheme.tres" id="14_gwevq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g0ww5"]
 font_size = 50
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr5s2"]
-bg_color = Color(0.160784, 0.160784, 0.160784, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tcqtv"]
 shader = ExtResource("6_j2a7j")
@@ -38,6 +32,9 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujdx7"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+
 [node name="Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -45,7 +42,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_me1wg")
+theme = ExtResource("1_kgwbg")
 script = ExtResource("4_dav64")
 
 [node name="Title" type="TextureRect" parent="."]
@@ -71,7 +68,7 @@ offset_top = 300.0
 offset_right = 112.5
 offset_bottom = 354.0
 grow_horizontal = 2
-theme = ExtResource("1_me1wg")
+theme = ExtResource("1_kgwbg")
 label_settings = SubResource("LabelSettings_g0ww5")
 horizontal_alignment = 1
 script = ExtResource("3_vrprp")
@@ -95,6 +92,12 @@ offset_right = 1072.5
 offset_bottom = -125.0
 texture = ExtResource("5_4d1w2")
 
+[node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
+stream = ExtResource("5_amtii")
+
+[node name="VineBoom" type="AudioStreamPlayer" parent="Subtitle"]
+stream = ExtResource("6_7y4o0")
+
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
 offset_left = 610.0
@@ -110,7 +113,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_wr5s2")
+theme = ExtResource("14_gwevq")
 script = ExtResource("6_ak1ek")
 
 [node name="MapSelect" type="OptionButton" parent="TabContainer/Singleplayer/Panel"]
@@ -274,7 +277,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_wr5s2")
+theme = ExtResource("14_gwevq")
 script = ExtResource("6_ak1ek")
 
 [node name="IP" type="LineEdit" parent="TabContainer/Multiplayer/Panel"]
@@ -361,38 +364,6 @@ texture = ExtResource("7_8sbie")
 expand_mode = 5
 script = ExtResource("8_2wb56")
 
-[node name="SaveLastReplay" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -305.0
-offset_top = -170.0
-offset_right = -20.0
-offset_bottom = -120.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
-text = "save last replay"
-
-[node name="SaveLastRunDebugData" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -450.0
-offset_top = -230.0
-offset_right = -20.0
-offset_bottom = -180.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
-text = "save last runs debug data"
-
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 2
@@ -405,28 +376,111 @@ offset_bottom = -20.0
 grow_vertical = 0
 text = "Alpha - a2.31"
 
-[node name="Controls" type="Label" parent="."]
+[node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -340.0
-offset_top = -102.0
+offset_left = -305.0
+offset_top = -130.0
 offset_right = -20.0
-offset_bottom = -30.0
+offset_bottom = -80.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
+text = "save last replay"
+
+[node name="Help" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -65.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ujdx7")
+text = "Help"
+
+[node name="ColorRect" type="ColorRect" parent="Help"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -18.0
+anchor_top = -22.556
+anchor_right = 1.2
+anchor_bottom = 1.444
+offset_top = 0.0200806
+offset_bottom = 0.0200577
+color = Color(0, 0, 0, 0.470588)
+
+[node name="Panel" type="Panel" parent="Help/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.344
+anchor_top = 0.338
+anchor_right = 0.656
+anchor_bottom = 0.662
+offset_left = -0.480042
+offset_top = -0.0400391
+offset_right = 0.47998
+offset_bottom = 0.039917
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_gwevq")
+
+[node name="SaveLastRunDebugData" type="Button" parent="Help/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -215.0
+offset_top = 20.0
+offset_right = 215.0
+offset_bottom = 70.0
+grow_horizontal = 2
+text = "save last runs debug data"
+
+[node name="ViewDebug" type="Button" parent="Help/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 80.0
+offset_right = 150.0
+offset_bottom = 130.0
+grow_horizontal = 2
+text = "view debug replay"
+
+[node name="Label" type="Label" parent="Help/ColorRect/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 32.5
+text = "user data path: "
+
+[node name="Controls" type="Label" parent="Help/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 160.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "1-3 - switch weapons
+R - reload
 L - return to menu"
-horizontal_alignment = 2
-
-[node name="DoorKnock" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_amtii")
-
-[node name="VineBoom" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_7y4o0")
+horizontal_alignment = 1
 
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/MapSelect" to="TabContainer/Singleplayer/Panel" method="_OnMapSelected"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/ReplaySelect" to="TabContainer/Singleplayer/Panel" method="_OnReplaySelected"]
@@ -436,4 +490,3 @@ stream = ExtResource("6_7y4o0")
 [connection signal="pressed" from="TabContainer/Multiplayer/Panel/Join" to="TabContainer/Multiplayer/Panel" method="_OnJoinPressed"]
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel/PlayerPreview" method="_OnColorChanged"]
 [connection signal="pressed" from="SaveLastReplay" to="." method="_OnSaveLastReplayPressed"]
-[connection signal="pressed" from="SaveLastRunDebugData" to="." method="_OnSaveDebugData"]

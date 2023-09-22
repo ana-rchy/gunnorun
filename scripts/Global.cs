@@ -4,8 +4,6 @@ using Godot;
 
 public partial class Global : Node {
     public override void _Ready() {
-        // var dir = DirAccess.Open("user://");
-        // dir.MakeDir("imported_replays");
         DirAccess.MakeDirAbsolute("user://imported_replays");
     }
 

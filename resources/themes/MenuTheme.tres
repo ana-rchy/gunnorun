@@ -1,6 +1,20 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bas54ebjufk4r"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bas54ebjufk4r"]
 
-[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_mfb8n"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_rmc7c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtcjj"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbq17"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qq6f3"]
 
@@ -32,8 +46,10 @@ draw_center = false
 shadow_color = Color(0, 0, 0, 0)
 
 [resource]
-default_font = ExtResource("1_mfb8n")
+default_font = ExtResource("1_rmc7c")
 default_font_size = 32
+Button/styles/normal = SubResource("StyleBoxFlat_jtcjj")
+Panel/styles/panel = SubResource("StyleBoxFlat_tbq17")
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_qq6f3")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_fkvvp")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_o1bci")
