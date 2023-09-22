@@ -2,7 +2,13 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-public static class Global {
+public partial class Global : Node {
+    public override void _Ready() {
+        // var dir = DirAccess.Open("user://");
+        // dir.MakeDir("imported_replays");
+        DirAccess.MakeDirAbsolute("user://imported_replays");
+    }
+
     //---------------------------------------------------------------------------------//
     #region | constants/structs
 
@@ -39,6 +45,7 @@ public static class Global {
     public static Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>> LastDebugData = null;
 
     public static string ReplayName = null;
+    public static bool ReplayOnly = false;
 
     #endregion
 }

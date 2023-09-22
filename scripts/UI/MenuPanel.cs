@@ -36,6 +36,9 @@ public partial class MenuPanel : Panel {
         if (ReplaySelect != null) CheckImportedReplays();
         if (Global.LastTime != 0 && LastTime != null) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
         if (BestTime != null) UpdateBestTime();
+
+        // etc
+        Global.ReplayOnly = false;
     } 
 
     //---------------------------------------------------------------------------------//
@@ -75,6 +78,12 @@ public partial class MenuPanel : Panel {
         }
 
         Global.ReplayName = ReplaySelect.GetItemText(index);
+    }
+
+    void _OnViewReplayPressed() {
+        Global.ReplayOnly = true;
+
+        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
     }
 
     #endregion

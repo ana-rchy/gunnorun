@@ -1,5 +1,6 @@
 alpha:
-- standalone replay viewer
+- standalone replay/debug viewer
+- store mouse positions in replays
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
 - lapped maps

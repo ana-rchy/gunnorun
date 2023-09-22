@@ -23,6 +23,7 @@ config/windows_native_icon="res://sprites/ui/windows_icon.ico"
 [autoload]
 
 Server="*res://scenes/Server.tscn"
+Global="*res://scripts/Global.cs"
 
 [display]
 
