@@ -39,5 +39,32 @@ public partial class HelpPanel : Panel {
         GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
     }
 
+    void _OnClearData() {
+        GetTree().Root.GuiEmbedSubwindows = false;
+
+        var dialog = new ConfirmationDialog();
+        dialog.DialogText = "are you sure?";
+        GetTree().Root.AddChild(dialog);
+
+        dialog.PopupCentered();
+
+        dialog.Confirmed += () => {
+            DirAccess.RemoveAbsolute("user://replays/debug/debug_replay.gdr");
+            foreach (var file in DirAccess.GetFilesAt("user://replays")) {
+                DirAccess.RemoveAbsolute("user://replays/" + file);
+            }
+            foreach (var file in DirAccess.GetFilesAt("user://imported_replays")) {
+                DirAccess.RemoveAbsolute("user://imported_replays/" + file);
+            }
+            foreach (var file in DirAccess.GetFilesAt("user://")) {
+                DirAccess.RemoveAbsolute("user://" + file);
+            }
+        };
+
+        dialog.Confirmed += () => dialog.QueueFree();
+        dialog.Canceled += () => dialog.QueueFree();
+        dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true;
+    }
+
     #endregion
 }

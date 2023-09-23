@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using GC = Godot.Collections;
 
 public partial class ReplayPlayer : Node2D {
     AnimatedSprite2D Sprite;
+    Node2D Crosshair;
 
-    Godot.Collections.Array<Vector2> PositionsList;
-    Godot.Collections.Array<int> FramesList;
+    GC.Array<Vector2> PositionsList;
+    GC.Array<int> FramesList;
+    GC.Array<Vector2> MousePositionsList;
 
     public override void _Ready() {
         if (Global.DebugReplay && Global.ReplayOnly && FileAccess.FileExists("user://replays/debug/debug_replay.gdr")) {
@@ -31,17 +34,19 @@ public partial class ReplayPlayer : Node2D {
         }
 
 
+        Sprite = GetNode<AnimatedSprite2D>("Sprite");
+        Crosshair = GetNode<Node2D>("Crosshair");
+
+        ReadFromReplayFile(replayPath);
         SetPhysicsProcess(false);
 
         if (Global.ReplayOnly == true) {
             GetNode(Global.WORLD_PATH + "Player").QueueFree();
+            Crosshair.Show();
 
             AddReplayOnlyCamera();
             SetPhysicsProcess(true);
         }
-
-        Sprite = GetNode<AnimatedSprite2D>("Sprite");
-        ReadFromReplayFile(replayPath);
     }
 
     public override void _Input(InputEvent e) {
@@ -64,6 +69,7 @@ public partial class ReplayPlayer : Node2D {
 
         Position = PositionsList[_replayFileIndex];
         Sprite.Frame = FramesList[_replayFileIndex];
+        Crosshair.GlobalPosition = MousePositionsList[_replayFileIndex];
 
         _replayFileIndex++;
     }
@@ -82,10 +88,11 @@ public partial class ReplayPlayer : Node2D {
 
     void ReadFromReplayFile(string replayPath) {
         using var replayFile = FileAccess.Open(replayPath, FileAccess.ModeFlags.Read);
-        var dictionary = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
+        var dictionary = (GC.Dictionary<string, Variant>) replayFile.GetVar();
 
-        PositionsList = (Godot.Collections.Array<Vector2>) dictionary["Positions"];
-        FramesList = (Godot.Collections.Array<int>) dictionary["Frames"]; 
+        PositionsList = (GC.Array<Vector2>) dictionary["Positions"];
+        FramesList = (GC.Array<int>) dictionary["Frames"];
+        MousePositionsList = (GC.Array<Vector2>) dictionary["MousePositions"];
     }
 
     #endregion

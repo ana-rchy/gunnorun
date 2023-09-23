@@ -99,8 +99,18 @@ public partial class MOTDManager : Label {
 		} else if (Text == "hello spez") {
 			GetNode<TextureRect>("Knight").Show();
 		} else if (Text == "you know what? fuck you. *crashes your game*") {
-			await this.Sleep(3f);
-			GetTree().Quit();
+			await this.Sleep(2f);
+			GetTree().Root.GuiEmbedSubwindows = false;
+			
+			var dialog = new AcceptDialog();
+			dialog.DialogText = "nah lol";
+			GetTree().Root.AddChild(dialog);
+			dialog.PopupCentered();
+
+			dialog.Confirmed += () => dialog.QueueFree();
+			dialog.Canceled += () => dialog.QueueFree();
+			dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true;
+
 		} else if (Text == " ") {
 			GetNode<TextureRect>("LiveLeak").Show();
 		} else if (Text == "quila was here") {

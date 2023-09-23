@@ -17,8 +17,10 @@ public partial class Player : RigidBody2D, IPlayer {
     float MomentumMultiplier;
     int HP = 100;
 
+    public static Vector2 LastMousePos = new Vector2(0, 0);
+
     public override void _Ready() {
-        // set shader color
+        // set player color
         var playerColor = Global.PlayerData.Color;
         ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
@@ -111,7 +113,8 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     void Shoot() {
-        var mousePosToPlayerPos = GetGlobalMousePosition().DirectionTo(GlobalPosition);
+        LastMousePos = GetGlobalMousePosition();
+        var mousePosToPlayerPos = LastMousePos.DirectionTo(GlobalPosition);
         LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
@@ -147,7 +150,7 @@ public partial class Player : RigidBody2D, IPlayer {
         
         angleDelta -= MathF.Round(MathF.PI / 4, 4);
 
-        return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
+        return Math.Clamp(MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4), 0, 1); // scale the momentum over a range of 135*
     }
 
     void ShootTracer(Vector2 playerPosToMousePos) {

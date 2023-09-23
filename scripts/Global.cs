@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Global : Node {
-    public override void _Ready() {
+    public override void _Ready() {        
         DirAccess.MakeDirAbsolute("user://replays");
         DirAccess.MakeDirAbsolute("user://replays/debug");
         DirAccess.MakeDirAbsolute("user://imported_replays");
     }
+
+    public override void _UnhandledInput(InputEvent e) {
+		if (e.IsActionPressed("Leave")) {
+			GetNode<Client>("/root/Server").LeaveServer();
+		}
+
+        if (e.IsActionPressed("Respawn")) {
+            GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+        }
+	}
 
     //---------------------------------------------------------------------------------//
     #region | constants/structs
@@ -37,7 +47,6 @@ public partial class Global : Node {
 
     public static List<Node> UnpassedCheckpoints = new List<Node>();
 
-    public static int SelectedWorldIndex = 0;
     public static string CurrentWorld = "Cave";
 
     public static double LastTime;

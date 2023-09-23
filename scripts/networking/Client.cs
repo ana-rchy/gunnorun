@@ -6,12 +6,6 @@ using static Godot.MultiplayerApi;
 using MsgPack.Serialization;
 
 public partial class Client : Node {
-	public override void _UnhandledInput(InputEvent e) {
-		if (e.IsActionPressed("Leave")) {
-			LeaveServer();
-		}
-	}
-
 	//---------------------------------------------------------------------------------//
 	#region | rpc
 

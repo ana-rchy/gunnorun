@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://6viapyixbqi0"]
+[gd_scene load_steps=19 format=3 uid="uid://6viapyixbqi0"]
 
 [ext_resource type="Texture2D" uid="uid://bf8asj5yat0qw" path="res://sprites/player/character_animation.png" id="1_7rbv5"]
 [ext_resource type="Script" path="res://scripts/player/DebugReplayPlayer.cs" id="1_c5xn0"]
@@ -82,6 +82,24 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_7dvyh"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d0r5e"]
+gradient = SubResource("Gradient_7dvyh")
+width = 50
+height = 2
+
+[sub_resource type="Gradient" id="Gradient_mhvxa"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4l8t3"]
+gradient = SubResource("Gradient_mhvxa")
+width = 2
+height = 50
+
 [node name="DebugReplayPlayer" type="Node2D"]
 script = ExtResource("1_c5xn0")
 
@@ -91,6 +109,16 @@ texture_filter = 1
 scale = Vector2(10, 10)
 sprite_frames = SubResource("SpriteFrames_wsyow")
 animation = &"GunRotation"
+
+[node name="Crosshair" type="Node2D" parent="."]
+z_index = 1
+z_as_relative = false
+
+[node name="Sprite" type="Sprite2D" parent="Crosshair"]
+texture = SubResource("GradientTexture2D_d0r5e")
+
+[node name="Sprite2" type="Sprite2D" parent="Crosshair"]
+texture = SubResource("GradientTexture2D_4l8t3")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)

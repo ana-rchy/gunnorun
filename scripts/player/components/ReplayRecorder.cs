@@ -1,12 +1,14 @@
 using System;
 using Godot;
+using GC = Godot.Collections;
 using MsgPack.Serialization;
 
 public partial class ReplayRecorder : Node2D {
     AnimatedSprite2D Sprite;
     
-    Godot.Collections.Array<Vector2> PositionsList = new Godot.Collections.Array<Vector2>();
-    Godot.Collections.Array<sbyte> FramesList = new Godot.Collections.Array<sbyte>();
+    GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
+    GC.Array<sbyte> FramesList = new GC.Array<sbyte>();
+    GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
 
     public override void _Ready() {
         SetPhysicsProcess(false);
@@ -17,6 +19,7 @@ public partial class ReplayRecorder : Node2D {
     public override void _PhysicsProcess(double delta) {
         PositionsList.Add(GlobalPosition);
         FramesList.Add((sbyte) Sprite.Frame);
+        MousePositionsList.Add(Player.LastMousePos);
     }
 
     public override void _Input(InputEvent e) {
@@ -49,10 +52,11 @@ public partial class ReplayRecorder : Node2D {
         timeFile.StoreDouble(finalTime);
 
         using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld + "_best_replay.grp", FileAccess.ModeFlags.Write);
-        Global.LastReplayData = new Godot.Collections.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
+        Global.LastReplayData = new GC.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
             { "World", Global.CurrentWorld },                                         // not when the scene is exited
             { "Positions", PositionsList },                                           // ...only works sometimes
-            { "Frames", FramesList }
+            { "Frames", FramesList },
+            { "MousePositions", MousePositionsList }
         };
         replayFile.StoreVar(Global.LastReplayData);
     }

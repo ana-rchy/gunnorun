@@ -3,9 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Godot;
 
-public partial class MenuPanel : Panel {
-    const string WORLD_PATH = "res://scenes/worlds/";
-
+public partial class OldMenuPanel : Panel {
     SceneTree Tree;
     Client Client;
 
@@ -32,8 +30,8 @@ public partial class MenuPanel : Panel {
         LastTime = GetNodeOrNull<Label>("LastTime");
         BestTime = GetNodeOrNull<Label>("BestTime");
 
-        if (MapSelect != null) MapSelect.Selected = Global.SelectedWorldIndex;
-        if (ReplaySelect != null) CheckImportedReplays();
+        if (MapSelect != null) MapSelect.Selected = MenuChoicePersistence.SelectedWorldIndex;
+        if (ReplaySelect != null) { CheckImportedReplays(); ReplaySelect.Selected = MenuChoicePersistence.SelectedReplayIndex; }
         if (Global.LastTime != 0 && LastTime != null) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
         if (BestTime != null) UpdateBestTime();
 
@@ -46,12 +44,7 @@ public partial class MenuPanel : Panel {
     #region | signals
 
     void _OnSingleplayerPressed() {
-        Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();
-
-        Global.PlayerData.Username = UsernameField.Text;
-        Global.PlayerData.Color = ColorField.Color;
-        Global.SelectedWorldIndex = MapSelect.Selected;
-
+        Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();        
         Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
     }
 
@@ -67,12 +60,16 @@ public partial class MenuPanel : Panel {
     }
     
     void _OnMapSelected(int index) {
+        MenuChoicePersistence.SelectedWorldIndex = MapSelect.Selected;
         Global.CurrentWorld = MapSelect.GetItemText(index);
+
         UpdateBestTime();
         CheckImportedReplays();
     }
 
     void _OnReplaySelected(int index) {
+        MenuChoicePersistence.SelectedReplayIndex = index;
+        
         if (index == 0) {
             Global.ReplayName = null;
             return;
@@ -81,10 +78,24 @@ public partial class MenuPanel : Panel {
         Global.ReplayName = ReplaySelect.GetItemText(index);
     }
 
+    void _OnUsernameChanged(string text) {
+        Global.PlayerData.Username = text;
+
+        GetNode<LineEdit>("/root/Menu/TabContainer/Singleplayer/Panel/Username").Text = text;
+        GetNode<LineEdit>("/root/Menu/TabContainer/Multiplayer/Panel/Username").Text = text;
+    }
+
     void _OnViewReplayPressed() {
         Global.ReplayOnly = true;
 
         Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+    }
+
+    void _OnColorChanged(Color color) {
+        Global.PlayerData.Color = color;
+
+        GetNode<ColorPickerButton>("/root/Menu/TabContainer/Singleplayer/Panel/PlayerColor").Color = color;
+        GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor").Color = color;
     }
 
     #endregion

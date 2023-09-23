@@ -1,6 +1,4 @@
 alpha:
-- standalone replay/debug viewer
-- store mouse positions in replays
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
 - lapped maps
@@ -22,3 +20,5 @@ done:
 - mario kart style checkpoints
 - menu improvement
 - replays (+ selecting replays)
+- standalone replay/debug viewer
+- store mouse positions in replays
