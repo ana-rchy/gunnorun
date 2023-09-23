@@ -99,7 +99,7 @@ public partial class MOTDManager : Label {
 		} else if (Text == "hello spez") {
 			GetNode<TextureRect>("Knight").Show();
 		} else if (Text == "you know what? fuck you. *crashes your game*") {
-			await this.Sleep(2.5f);
+			await this.Sleep(3f);
 			GetTree().Quit();
 		} else if (Text == " ") {
 			GetNode<TextureRect>("LiveLeak").Show();

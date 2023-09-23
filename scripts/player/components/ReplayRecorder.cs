@@ -42,27 +42,19 @@ public partial class ReplayRecorder : Node2D {
         } else {
             SaveReplay(finalTime);
         }
-
-        Global.LastReplayData = new Godot.Collections.Dictionary<string, Variant>() {
-            { "World", Global.CurrentWorld },
-            { "Positions", PositionsList },
-            { "Frames", FramesList }
-        };
     }
 
     void SaveReplay(double finalTime) {
-        var dir = DirAccess.Open("user://");
-        dir.MakeDir("replays");
-
         using var timeFile = FileAccess.Open("user://" + Global.CurrentWorld + "_time.gsd", FileAccess.ModeFlags.Write);
         timeFile.StoreDouble(finalTime);
 
-        using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld+ "_best_replay.grp", FileAccess.ModeFlags.Write);
-        replayFile.StoreVar(new Godot.Collections.Dictionary<string, Variant>() {
-            { "World", Global.CurrentWorld },
-            { "Positions", PositionsList },
+        using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld + "_best_replay.grp", FileAccess.ModeFlags.Write);
+        Global.LastReplayData = new Godot.Collections.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
+            { "World", Global.CurrentWorld },                                         // not when the scene is exited
+            { "Positions", PositionsList },                                           // ...only works sometimes
             { "Frames", FramesList }
-        });
+        };
+        replayFile.StoreVar(Global.LastReplayData);
     }
 
     #endregion

@@ -10,10 +10,7 @@ public partial class Menu : Node {
 		}
 	}
 	
-	void _OnSaveDebugData() {
-		if (Global.LastDebugData != null) {
-			using var debugFile = FileAccess.Open("user://replays/debug_replay.gdr", FileAccess.ModeFlags.Write);
-			debugFile.StoreVar(Global.LastDebugData);
-		}
+	void _OnHelpPressed() {
+		GetNode<ColorRect>("Help/ColorRect").Show();
 	}
 }

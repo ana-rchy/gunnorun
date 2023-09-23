@@ -1,0 +1,116 @@
+[gd_scene load_steps=15 format=3 uid="uid://6viapyixbqi0"]
+
+[ext_resource type="Texture2D" uid="uid://bf8asj5yat0qw" path="res://sprites/player/character_animation.png" id="1_7rbv5"]
+[ext_resource type="Script" path="res://scripts/player/DebugReplayPlayer.cs" id="1_c5xn0"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="2_4e08e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh540"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(0, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5i547"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(21, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yw5c"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5kmn"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(63, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7u35"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(84, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl1cj"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(0, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmvyd"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(21, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lsyr8"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(42, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfpd1"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(63, 21, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0r1fj"]
+atlas = ExtResource("1_7rbv5")
+region = Rect2(84, 21, 21, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wsyow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eh540")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5i547")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7yw5c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5kmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7u35")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl1cj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmvyd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lsyr8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfpd1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0r1fj")
+}],
+"loop": true,
+"name": &"GunRotation",
+"speed": 5.0
+}]
+
+[node name="DebugReplayPlayer" type="Node2D"]
+script = ExtResource("1_c5xn0")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.392157)
+texture_filter = 1
+scale = Vector2(10, 10)
+sprite_frames = SubResource("SpriteFrames_wsyow")
+animation = &"GunRotation"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="DebugUI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="DebugUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Label" type="Label" parent="DebugUI/Control"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 30.0
+offset_right = 731.0
+offset_bottom = 222.0
+theme_override_fonts/font = ExtResource("2_4e08e")
+theme_override_font_sizes/font_size = 60
+text = "position: 
+velocity: 
+weapon: "

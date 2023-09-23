@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://jurmo2aphk0r"]
 
-[ext_resource type="Script" path="res://scripts/player/Tracer.cs" id="1_sqalo"]
+[ext_resource type="Script" path="res://scripts/player/common/Tracer.cs" id="1_sqalo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wajo1"]
 size = Vector2(100, 10)

@@ -4,21 +4,26 @@ using Godot;
 
 public partial class DebugRecorder : Node {
     Player Player;
-    Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>> DebugData = new Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>>();
+
+    Godot.Collections.Array<Vector2> PositionsList = new Godot.Collections.Array<Vector2>();
+    Godot.Collections.Array<Vector2> VelocityList = new Godot.Collections.Array<Vector2>();
+    Godot.Collections.Array<string> WeaponList = new Godot.Collections.Array<string>();
 
     public override void _Ready() {
         Player = GetParent<Player>();
     }
 
     public override void _PhysicsProcess(double delta) {
-        DebugData.Add(new Godot.Collections.Dictionary<string, Variant>() {
-            { "Position", Player.Position },
-            { "Velocity", Player.LinearVelocity },
-            { "Weapon", nameof(Player.CurrentWeapon) } 
-        });
+        PositionsList.Add(Player.Position);
+        VelocityList.Add(Player.LinearVelocity);
+        WeaponList.Add(Player.CurrentWeapon.Name);
     }
 
     void _OnTreeExiting() {
-        Global.LastDebugData = DebugData;
+        Global.LastDebugData = new Godot.Collections.Dictionary<string, Variant>() {
+            { "Positions", PositionsList },
+            { "Velocities", VelocityList },
+            { "Weapons", WeaponList }
+        };
     }
 }

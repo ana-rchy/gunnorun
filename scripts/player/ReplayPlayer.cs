@@ -9,6 +9,15 @@ public partial class ReplayPlayer : Node2D {
     Godot.Collections.Array<int> FramesList;
 
     public override void _Ready() {
+        if (Global.DebugReplay && Global.ReplayOnly && FileAccess.FileExists("user://replays/debug/debug_replay.gdr")) {
+            var scene = GD.Load<PackedScene>("res://scenes/player/DebugReplayPlayer.tscn");
+            var instance = scene.Instantiate();
+            
+            GetNode(Global.WORLD_PATH).CallDeferred("add_child", instance);
+            QueueFree();
+        }
+
+
         string replayPath;
         if (Global.ReplayName == null) {
             replayPath = "user://replays/" + Global.CurrentWorld + "_best_replay.grp";
@@ -20,6 +29,7 @@ public partial class ReplayPlayer : Node2D {
             QueueFree();
             return;
         }
+
 
         SetPhysicsProcess(false);
 
@@ -34,6 +44,12 @@ public partial class ReplayPlayer : Node2D {
         ReadFromReplayFile(replayPath);
     }
 
+    public override void _Input(InputEvent e) {
+        if (Input.IsActionPressed("Shoot")) {
+            SetPhysicsProcess(true);
+        }
+    }
+
     //---------------------------------------------------------------------------------//
     #region | loop
 
@@ -42,20 +58,14 @@ public partial class ReplayPlayer : Node2D {
         if (_replayFileIndex >= PositionsList.Count && Global.ReplayOnly == false) {
             SetPhysicsProcess(false);
             return;
-        } else if (_replayFileIndex >= PositionsList.Count && Global.ReplayOnly == true) {
+        } else if (_replayFileIndex >= PositionsList.Count) {
             _replayFileIndex = 0;
         }
 
         Position = PositionsList[_replayFileIndex];
         Sprite.Frame = FramesList[_replayFileIndex];
-        
-        _replayFileIndex++;
-    }
 
-    public override void _Input(InputEvent e) {
-        if (Input.IsActionPressed("Shoot")) {
-            SetPhysicsProcess(true);
-        }
+        _replayFileIndex++;
     }
 
     #endregion
@@ -73,8 +83,9 @@ public partial class ReplayPlayer : Node2D {
     void ReadFromReplayFile(string replayPath) {
         using var replayFile = FileAccess.Open(replayPath, FileAccess.ModeFlags.Read);
         var dictionary = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
+
         PositionsList = (Godot.Collections.Array<Vector2>) dictionary["Positions"];
-        FramesList = (Godot.Collections.Array<int>) dictionary["Frames"];
+        FramesList = (Godot.Collections.Array<int>) dictionary["Frames"]; 
     }
 
     #endregion

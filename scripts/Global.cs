@@ -4,6 +4,8 @@ using Godot;
 
 public partial class Global : Node {
     public override void _Ready() {
+        DirAccess.MakeDirAbsolute("user://replays");
+        DirAccess.MakeDirAbsolute("user://replays/debug");
         DirAccess.MakeDirAbsolute("user://imported_replays");
     }
 
@@ -23,8 +25,6 @@ public partial class Global : Node {
         public string Username;
         public Color Color;
         public bool ReadyStatus = false;
-
-        public List<Node> UnpassedCheckpoints = new List<Node>();
     }
 
     #endregion
@@ -35,15 +35,18 @@ public partial class Global : Node {
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;
 
+    public static List<Node> UnpassedCheckpoints = new List<Node>();
+
     public static int SelectedWorldIndex = 0;
     public static string CurrentWorld = "Cave";
 
     public static double LastTime;
     public static Godot.Collections.Dictionary<string, Variant> LastReplayData = null;
-    public static Godot.Collections.Array<Godot.Collections.Dictionary<string, Variant>> LastDebugData = null;
+    public static Godot.Collections.Dictionary<string, Variant> LastDebugData = null;
 
     public static string ReplayName = null;
     public static bool ReplayOnly = false;
+    public static bool DebugReplay = false;
 
     #endregion
 }

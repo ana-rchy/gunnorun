@@ -39,6 +39,7 @@ public partial class MenuPanel : Panel {
 
         // etc
         Global.ReplayOnly = false;
+        Global.DebugReplay = false;
     } 
 
     //---------------------------------------------------------------------------------//

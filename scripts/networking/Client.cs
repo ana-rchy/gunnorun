@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using Godot;
 using static Godot.GD;
 using static Godot.MultiplayerApi;
+using MsgPack.Serialization;
 
 public partial class Client : Node {
 	public override void _UnhandledInput(InputEvent e) {
@@ -17,12 +17,13 @@ public partial class Client : Node {
 
 	[Rpc(RpcMode.AnyPeer)] void Server_NewPlayerData(string username, Color color) {}
 
-	[Rpc] void Client_Setup(string serializedPlayerData) {
-		var playerData = JsonSerializer.Deserialize<Dictionary<long, Global.PlayerDataStruct>>(serializedPlayerData);
+	[Rpc] void Client_Setup(byte[] serializedPlayerData) {
+		var serializer = MessagePackSerializer.Get<Dictionary<long, Global.PlayerDataStruct>>();
+		var playerData = serializer.UnpackSingleObject(serializedPlayerData);
+
 		Global.OtherPlayerData = playerData;
 
 		GetTree().ChangeSceneToFile("res://scenes/UI/Lobby.tscn");
-
 		Rpc(nameof(Server_NewPlayerData), Global.PlayerData.Username, Global.PlayerData.Color);
 	}
 

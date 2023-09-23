@@ -1,6 +1,6 @@
-[gd_scene load_steps=20 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=21 format=3 uid="uid://cyjasptaqt1b5"]
 
-[ext_resource type="Theme" uid="uid://bas54ebjufk4r" path="res://resources/themes/MenuTheme.tres" id="1_kgwbg"]
+[ext_resource type="Theme" uid="uid://vln2mlgupyio" path="res://resources/themes/LobbyTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
 [ext_resource type="Script" path="res://scripts/UI/MOTDManager.cs" id="3_vrprp"]
 [ext_resource type="Script" path="res://scripts/UI/Menu.cs" id="4_dav64"]
@@ -13,7 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
-[ext_resource type="Theme" uid="uid://bvpwpgtxai5sl" path="res://resources/themes/MenuPanelTheme.tres" id="14_gwevq"]
+[ext_resource type="Theme" uid="uid://cu1fup0a6sol7" path="res://resources/themes/MenuPanelTheme.tres" id="14_gwevq"]
+[ext_resource type="Script" path="res://scripts/UI/HelpPanel.cs" id="15_2mce1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g0ww5"]
 font_size = 50
@@ -409,6 +410,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ujdx7")
 text = "Help"
 
 [node name="ColorRect" type="ColorRect" parent="Help"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -18.0
@@ -433,6 +435,7 @@ offset_bottom = 0.039917
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
+script = ExtResource("15_2mce1")
 
 [node name="SaveLastRunDebugData" type="Button" parent="Help/ColorRect/Panel"]
 layout_mode = 1
@@ -458,11 +461,24 @@ offset_bottom = 130.0
 grow_horizontal = 2
 text = "view debug replay"
 
-[node name="Label" type="Label" parent="Help/ColorRect/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 32.5
-text = "user data path: "
+[node name="UserDataPath" type="Label" parent="Help/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -277.0
+offset_top = -210.0
+offset_right = 278.0
+offset_bottom = -134.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 25
+text = "user data path: ~/.local/share/godot/app_userdata/gunnorun/"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Controls" type="Label" parent="Help/ColorRect/Panel"]
 layout_mode = 1
@@ -490,3 +506,6 @@ horizontal_alignment = 1
 [connection signal="pressed" from="TabContainer/Multiplayer/Panel/Join" to="TabContainer/Multiplayer/Panel" method="_OnJoinPressed"]
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel/PlayerPreview" method="_OnColorChanged"]
 [connection signal="pressed" from="SaveLastReplay" to="." method="_OnSaveLastReplayPressed"]
+[connection signal="pressed" from="Help" to="." method="_OnHelpPressed"]
+[connection signal="pressed" from="Help/ColorRect/Panel/SaveLastRunDebugData" to="Help/ColorRect/Panel" method="_OnSaveDebug"]
+[connection signal="pressed" from="Help/ColorRect/Panel/ViewDebug" to="Help/ColorRect/Panel" method="_OnViewDebug"]

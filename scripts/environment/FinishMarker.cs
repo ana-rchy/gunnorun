@@ -3,7 +3,7 @@ using Godot;
 
 public partial class FinishMarker : Node {
     void _OnPlayerEntered(Node2D player) {
-        if (Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer && Global.PlayerData.UnpassedCheckpoints.Count == 0) {
+        if (Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer && Global.UnpassedCheckpoints.Count == 0) {
             var levelTimer = player.GetNode<LevelTimer>("LevelTimer");
             var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
