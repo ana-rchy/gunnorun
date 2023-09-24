@@ -5,6 +5,7 @@ alpha:
 - weapon selecting
 - parallax
 - queuing up reloads
+- keybind settings
 
 beta:
 - custom skins

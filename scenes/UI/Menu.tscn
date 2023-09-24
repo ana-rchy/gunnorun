@@ -511,6 +511,7 @@ R - reload
 L - return to menu"
 horizontal_alignment = 1
 
+[connection signal="tab_changed" from="TabContainer" to="." method="_OnTabChanged"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/MapSelect" to="TabContainer/Singleplayer/Panel" method="_OnMapSelected"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/ReplaySelect" to="TabContainer/Singleplayer/Panel" method="_OnReplaySelected"]
 [connection signal="text_changed" from="TabContainer/Singleplayer/Panel/Username" to="TabContainer/Singleplayer/Panel" method="_OnUsernameChanged"]

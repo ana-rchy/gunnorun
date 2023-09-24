@@ -11,6 +11,10 @@ public partial class DebugRecorder : Node {
     GC.Array<Vector2> VelocityList = new GC.Array<Vector2>();
     GC.Array<string> WeaponList = new GC.Array<string>();
 
+    GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
+    GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
+    GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
+
     public override void _Ready() {
         Player = GetParent<Player>();
     }
@@ -20,6 +24,10 @@ public partial class DebugRecorder : Node {
         MousePositionsList.Add(Player.LastMousePos);
         VelocityList.Add(Player.LinearVelocity);
         WeaponList.Add(Player.CurrentWeapon.Name);
+
+        VelocityCapList.Add(Player.Debug_VelocitySoftCap);
+        ReelbackStrengthList.Add(Player.Debug_ReelbackStrength);
+        StateVelocityList.Add(Player.Debug_StateVelocity);
     }
 
     void _OnTreeExiting() {
@@ -27,7 +35,11 @@ public partial class DebugRecorder : Node {
             { "Positions", PositionsList },
             { "MousePositions", MousePositionsList },
             { "Velocities", VelocityList },
-            { "Weapons", WeaponList }
+            { "Weapons", WeaponList },
+
+            { "VelocityCaps", VelocityCapList },
+            { "ReelbackStrengths", ReelbackStrengthList },
+            { "StateVelocities", StateVelocityList }
         };
     }
 }

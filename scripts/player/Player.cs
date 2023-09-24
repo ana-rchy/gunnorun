@@ -18,6 +18,9 @@ public partial class Player : RigidBody2D, IPlayer {
     int HP = 100;
 
     public static Vector2 LastMousePos = new Vector2(0, 0);
+    public static Vector2 Debug_VelocitySoftCap = new Vector2(0, 0);
+    public static Single Debug_ReelbackStrength = 0f;
+    public static Vector2 Debug_StateVelocity = new Vector2(0, 0);
 
     public override void _Ready() {
         // set player color
@@ -83,7 +86,12 @@ public partial class Player : RigidBody2D, IPlayer {
             var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
             var reelbackStrength = ( 1 - 1/((state.LinearVelocity.DistanceTo(new Vector2(0, 0)) - MAXIMUM_VELOCITY) / 2) ) * CurrentWeapon.ReelbackStrength;
             state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, reelbackStrength);
+
+            Debug_VelocitySoftCap = velocitySoftCap;
+            Debug_ReelbackStrength = reelbackStrength;
         }
+
+        Debug_StateVelocity = state.LinearVelocity;
     }
 
     #endregion
@@ -150,7 +158,7 @@ public partial class Player : RigidBody2D, IPlayer {
         
         angleDelta -= MathF.Round(MathF.PI / 4, 4);
 
-        return Math.Clamp(MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4), 0, 1); // scale the momentum over a range of 135*
+        return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
     }
 
     void ShootTracer(Vector2 playerPosToMousePos) {
