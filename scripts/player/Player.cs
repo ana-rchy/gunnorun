@@ -79,13 +79,16 @@ public partial class Player : RigidBody2D, IPlayer {
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
             Shoot();
         }
+
+        Print(LinearVelocity.DistanceTo(new Vector2(0, 0)));
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
         if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
             var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
-            var reelbackStrength = ( 1 - 1/((state.LinearVelocity.DistanceTo(new Vector2(0, 0)) - MAXIMUM_VELOCITY) / 2) ) * CurrentWeapon.ReelbackStrength;
-            state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, reelbackStrength);
+            var reelbackStrength = 1 - ( 1 / (0.0000001f * state.LinearVelocity.DistanceTo(velocitySoftCap) + 1) ); // just plug this shit into desmos man
+            // var reelbackStrength = ( 1 - 1/( (state.LinearVelocity.DistanceTo(velocitySoftCap) + 100) / 100) ) * CurrentWeapon.ReelbackStrength;
+            state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, state.LinearVelocity.DistanceTo(velocitySoftCap) * reelbackStrength);
 
             Debug_VelocitySoftCap = velocitySoftCap;
             Debug_ReelbackStrength = reelbackStrength;
