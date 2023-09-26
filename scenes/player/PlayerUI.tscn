@@ -1,7 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3kncxrrmiqob"]
+[gd_scene load_steps=10 format=3 uid="uid://d3kncxrrmiqob"]
 
 [ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="1_m6o6h"]
 [ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6afp1"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_jbo04"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_dpbqp"]
+font_size = 60
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w28l7"]
+bg_color = Color(1, 1, 1, 0.294118)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puq3g"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_18t6x"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_7r8a0"]
+font_size = 60
 
 [node name="PlayerUI" type="CanvasLayer"]
 script = ExtResource("2_5xriv")
@@ -14,6 +35,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_m6o6h")
+
+[node name="LevelTime" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 380.0
+offset_bottom = 109.0
 
 [node name="HP" type="Label" parent="Control"]
 layout_mode = 1
@@ -28,7 +56,101 @@ grow_horizontal = 0
 text = "100"
 horizontal_alignment = 2
 
+[node name="Weapons" type="Control" parent="Control"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Shotgun" type="Label" parent="Control/Weapons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 806.0
+offset_right = 330.0
+offset_bottom = 870.0
+grow_vertical = 0
+text = "Shotgun"
+label_settings = SubResource("LabelSettings_6afp1")
+vertical_alignment = 1
+
+[node name="Machinegun" type="Label" parent="Control/Weapons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 876.0
+offset_right = 330.0
+offset_bottom = 940.0
+grow_vertical = 0
+text = "Machinegun"
+label_settings = SubResource("LabelSettings_jbo04")
+vertical_alignment = 1
+
+[node name="Ammo" type="Label" parent="Control/Weapons/Machinegun"]
+layout_mode = 0
+offset_left = 330.0
+offset_right = 420.0
+offset_bottom = 64.0
+text = "100"
+label_settings = SubResource("LabelSettings_dpbqp")
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/Machinegun"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 460.0
+offset_top = -17.0
+offset_right = 710.0
+offset_bottom = 13.0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_w28l7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_puq3g")
+max_value = 1.0
+show_percentage = false
+
+[node name="RPG" type="Label" parent="Control/Weapons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 946.0
+offset_right = 330.0
+offset_bottom = 1010.0
+grow_vertical = 0
+text = "RPG"
+label_settings = SubResource("LabelSettings_18t6x")
+vertical_alignment = 1
+
+[node name="Ammo" type="Label" parent="Control/Weapons/RPG"]
+layout_mode = 0
+offset_left = 330.0
+offset_right = 420.0
+offset_bottom = 64.0
+text = "1"
+label_settings = SubResource("LabelSettings_7r8a0")
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/RPG"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 460.0
+offset_top = -17.0
+offset_right = 710.0
+offset_bottom = 13.0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_w28l7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_puq3g")
+max_value = 1.0
+show_percentage = false
+
 [node name="Ammo" type="Label" parent="Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -40,6 +162,7 @@ offset_bottom = -30.0
 grow_vertical = 0
 
 [node name="CurrentWeapon" type="Label" parent="Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -59,10 +182,3 @@ offset_right = 535.0
 offset_bottom = 1059.0
 theme_override_font_sizes/font_size = 35
 text = "weapon still reloading"
-
-[node name="LevelTime" type="Label" parent="Control"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = 380.0
-offset_bottom = 109.0

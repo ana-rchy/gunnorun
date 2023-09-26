@@ -3,23 +3,31 @@ using System;
 
 public partial class PlayerUI : Node {
 	public Label HP;
-	public Label SelectedWeapon;
-	public Label ReloadingWarning;
 	public Label LevelTime;
-	Label Ammo;
+	Label CurrentWeapon = null;
 
 	public override void _Ready() {
 		var control = GetNode("Control");
 
 		HP = control.GetNode<Label>("HP");
-		SelectedWeapon = control.GetNode<Label>("CurrentWeapon");
-		ReloadingWarning = control.GetNode<Label>("ReloadingWarning");
-		Ammo = control.GetNode<Label>("Ammo");
 		LevelTime = control.GetNode<Label>("LevelTime");
+
+		ChangeWeapon("Shotgun");
 	}
 
 	//---------------------------------------------------------------------------------//
 	#region | funcs
+
+	public void ChangeWeapon(string weaponName) {
+		if (CurrentWeapon != null) {
+			CurrentWeapon.LabelSettings.FontColor = new Color("#ffffff");
+		}
+		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
+
+		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
+	}
+
+
 
 	public void SetAmmoText(int? ammoCount) {
 		if (ammoCount == null) {

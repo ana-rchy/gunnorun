@@ -79,7 +79,8 @@ public partial class MOTDManager : Label {
 			"This will be gaming in 2015",
 			"gerg",
 			"greg",
-			"greg heffley huffling helium whole"
+			"greg heffley huffling helium whole",
+			"goon"
 		};
 
 		var rnd = new RandomNumberGenerator();
