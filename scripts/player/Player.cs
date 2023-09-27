@@ -14,6 +14,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     public Weapon[] Weapons;
     public Weapon CurrentWeapon;
+    public static int CurrentWeaponIndex = 0; // needed to perserve weapon choice, but not weapon data
     float MomentumMultiplier;
     int HP = 100;
 
@@ -36,10 +37,9 @@ public partial class Player : RigidBody2D, IPlayer {
 
         // etc
         Weapons = new Weapon[] {new Shotgun(), new Machinegun(), new RPG()};
-        CurrentWeapon = Weapons[0];
+        CurrentWeapon = Weapons[CurrentWeaponIndex];
+        UI.ChangeWeapon(CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
-        UI.SetAmmoText(CurrentWeapon.Ammo);
-        UI.SelectedWeapon.Text = CurrentWeapon.Name;
 
 
         if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
@@ -58,9 +58,9 @@ public partial class Player : RigidBody2D, IPlayer {
         for (int i = 1; i <= 3; i++) {
             if (e.IsActionPressed("Num" + i.ToString())) {
                 CurrentWeapon = Weapons[i-1];
+                CurrentWeaponIndex = i-1;
 
-                UI.SelectedWeapon.Text = CurrentWeapon.Name;
-                UI.SetAmmoText(CurrentWeapon.Ammo);
+                UI.ChangeWeapon(CurrentWeapon.Name);
             }
         }
     }
@@ -68,19 +68,12 @@ public partial class Player : RigidBody2D, IPlayer {
     public override void _PhysicsProcess(double delta) {
         var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
         
-        if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo) {
-            if (!ReloadTimer.IsStopped()) {
-                UI.ReloadingWarning.Show();
-            } else {
-                UI.ReloadingWarning.Hide();
-                Reload(CurrentWeapon);
-            }
+        if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo && ReloadTimer.IsStopped()) {
+            Reload(CurrentWeapon);
 
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
             Shoot();
         }
-
-        Print(LinearVelocity.DistanceTo(new Vector2(0, 0)));
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
@@ -130,9 +123,9 @@ public partial class Player : RigidBody2D, IPlayer {
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
         CurrentWeapon.Ammo--;
-        UI.SetAmmoText(CurrentWeapon.Ammo);
         ActionTimer.Start(CurrentWeapon.Refire);
 
+        UI.UpdateAmmo(CurrentWeapon.Name, CurrentWeapon.Ammo);
         ShootTracer(-mousePosToPlayerPos);
 
         if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
@@ -142,11 +135,13 @@ public partial class Player : RigidBody2D, IPlayer {
 
     async void Reload(Weapon reloadingWeapon) {
         reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
-        UI.SetReloadText(reloadingWeapon);
+
         ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
+        UI.Reload(reloadingWeapon.Name, ReloadTimer, reloadingWeapon.Reload);
         await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
+        
         reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
-        UI.ReloadingWarning.Hide();
+        UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
     }
 
     #endregion

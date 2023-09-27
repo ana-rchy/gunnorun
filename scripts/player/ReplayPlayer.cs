@@ -62,6 +62,7 @@ public partial class ReplayPlayer : Node2D {
     public override void _PhysicsProcess(double delta) {
         if (_replayFileIndex >= PositionsList.Count && Global.ReplayOnly == false) {
             SetPhysicsProcess(false);
+            GetNode<Sprite2D>("FinishMarker").Show();
             return;
         } else if (_replayFileIndex >= PositionsList.Count) {
             _replayFileIndex = 0;

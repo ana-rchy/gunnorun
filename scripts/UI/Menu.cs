@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Menu : Node {
+	public static int SelectedTab = 0;
+
 	public override void _Ready() {
-		GetNode<TabContainer>("TabContainer").CurrentTab = MenuChoicePersistence.SelectedTab;
+		GetNode<TabContainer>("TabContainer").CurrentTab = SelectedTab;
 	}
 
 	//---------------------------------------------------------------------------------//
     #region | signals
 
 	void _OnTabChanged(int index) {
-		MenuChoicePersistence.SelectedTab = index;
+		SelectedTab = index;
 	}
 
 	void _OnSaveLastReplayPressed() {

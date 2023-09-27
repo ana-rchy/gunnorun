@@ -376,7 +376,7 @@ offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.31"
+text = "Alpha - a2.33"
 
 [node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1

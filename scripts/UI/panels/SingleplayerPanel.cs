@@ -3,6 +3,9 @@ using System.Linq;
 using Godot;
 
 public partial class SingleplayerPanel : MainPanel {
+    public static int SelectedWorldIndex = 0;
+    public static int SelectedReplayIndex = 0;
+
     OptionButton MapSelect;
     OptionButton ReplaySelect;
     Label LastTime;
@@ -18,8 +21,8 @@ public partial class SingleplayerPanel : MainPanel {
 
         UpdateBestTime();
         CheckImportedReplays();
-        MapSelect.Selected = MenuChoicePersistence.SelectedWorldIndex;
-        ReplaySelect.Selected = MenuChoicePersistence.SelectedReplayIndex;
+        MapSelect.Selected = SelectedWorldIndex;
+        ReplaySelect.Selected = SelectedReplayIndex;
         if (Global.LastTime != 0) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
     }
 
@@ -32,7 +35,7 @@ public partial class SingleplayerPanel : MainPanel {
     }
 
     void _OnMapSelected(int index) {
-        MenuChoicePersistence.SelectedWorldIndex = MapSelect.Selected;
+        SelectedWorldIndex = MapSelect.Selected;
         Global.CurrentWorld = MapSelect.GetItemText(index);
 
         UpdateBestTime();
@@ -40,7 +43,7 @@ public partial class SingleplayerPanel : MainPanel {
     }
 
     void _OnReplaySelected(int index) {
-        MenuChoicePersistence.SelectedReplayIndex = index;
+        SelectedReplayIndex = index;
         
         if (index == 0) {
             Global.ReplayName = null;

@@ -4,9 +4,11 @@
 [ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6afp1"]
+resource_local_to_scene = true
 font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_jbo04"]
+resource_local_to_scene = true
 font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_dpbqp"]
@@ -19,6 +21,7 @@ bg_color = Color(1, 1, 1, 0.294118)
 bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_18t6x"]
+resource_local_to_scene = true
 font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_7r8a0"]
@@ -98,6 +101,7 @@ text = "100"
 label_settings = SubResource("LabelSettings_dpbqp")
 
 [node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/Machinegun"]
+visible = false
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -135,6 +139,7 @@ text = "1"
 label_settings = SubResource("LabelSettings_7r8a0")
 
 [node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/RPG"]
+visible = false
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5

@@ -1,5 +1,6 @@
-using Godot;
 using System;
+using System.Threading.Tasks;
+using Godot;
 
 public partial class PlayerUI : Node {
 	public Label HP;
@@ -11,8 +12,6 @@ public partial class PlayerUI : Node {
 
 		HP = control.GetNode<Label>("HP");
 		LevelTime = control.GetNode<Label>("LevelTime");
-
-		ChangeWeapon("Shotgun");
 	}
 
 	//---------------------------------------------------------------------------------//
@@ -27,24 +26,23 @@ public partial class PlayerUI : Node {
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 	}
 
+	public void UpdateAmmo(string weaponName, int? ammoCount) {
+		if (ammoCount == null) return;
 
-
-	public void SetAmmoText(int? ammoCount) {
-		if (ammoCount == null) {
-			Ammo.Text = "infinite";
-			return;
-		}
-
-		Ammo.Text = ammoCount.ToString();
+		GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = ammoCount.ToString();
 	}
 
-	public async void SetReloadText(Weapon reloadingWeapon) {
-		Ammo.Text = "reloading";
-		await this.Sleep(reloadingWeapon.Reload);
+	public async void Reload(string weaponName, Timer timer, float reloadTime) {
+		var progressBar = GetNode<ProgressBar>("Control/Weapons/" + weaponName + "/ProgressBar");
+		progressBar.Show();
 
-		var currentWeapon = GetParent<Player>().CurrentWeapon;
+		await Task.Run( () => {
+			while (!timer.IsStopped()) {
+				progressBar.SetDeferred("value", 1 - (timer.TimeLeft / reloadTime));
+			}
+		});
 
-		if (reloadingWeapon == currentWeapon) Ammo.Text = reloadingWeapon.BaseAmmo.ToString();
+		progressBar.Hide();
 	}
 
 	#endregion
