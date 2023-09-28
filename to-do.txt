@@ -23,3 +23,5 @@ done:
 - replays (+ selecting replays)
 - standalone replay/debug viewer
 - store mouse positions in replays
+- physics bug fixed
+- ui showing all weapons
