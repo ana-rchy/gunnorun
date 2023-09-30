@@ -57,6 +57,11 @@ public partial class PlayerManager : Node {
         }
     }
 
+    [Rpc] void Client_LapChanged(int lap, int maxLaps) {
+        var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + Multiplayer.GetUniqueId() + "/PlayerUI").LapCounter;
+        lapCounter.Text = "lap " + lap.ToString() + "/" + maxLaps.ToString();
+    }
+
     #endregion
 
     //---------------------------------------------------------------------------------//

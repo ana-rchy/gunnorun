@@ -4,7 +4,7 @@ using System;
 public partial class MatchManager : Node {
     [Rpc] void Client_PlayerWon(long id, double time) {
         string name;
-        if (id == Multiplayer.GetUniqueId()) {
+        if (Multiplayer.GetUniqueId() == id) {
             name = Global.PlayerData.Username;
         } else {
             name = Global.OtherPlayerData[id].Username;
@@ -16,6 +16,6 @@ public partial class MatchManager : Node {
         extraUI.GetNode<Label>("Label").Text = name + " has won\n" + time.ToString() + "s";
         extraUI.Show();
 
-        GetNode<Timer>(Global.WORLD_PATH + "Markers/Finish/Timer").Start(); // needed so that timer doesnt continue after scene change
+        GetNode<Timer>(Global.WORLD_PATH + "Markers/FinishTimer").Start(); // needed so that timer doesnt continue after scene change
     }
 }

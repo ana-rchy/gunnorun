@@ -7,7 +7,7 @@ public partial class LevelTimer : Node {
     public double Time;
 
     public override void _Ready() {
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+        if (Multiplayer.GetPeers().Length != 0) {
             QueueFree();
         }
 

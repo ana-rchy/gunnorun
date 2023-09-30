@@ -42,7 +42,7 @@ public partial class Player : RigidBody2D, IPlayer {
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
 
 
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+        if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
         }
 
@@ -128,7 +128,7 @@ public partial class Player : RigidBody2D, IPlayer {
         UI.UpdateAmmo(CurrentWeapon.Name, CurrentWeapon.Ammo);
         ShootTracer(-mousePosToPlayerPos);
 
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+        if (Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(-mousePosToPlayerPos);
         }
     }
@@ -169,7 +169,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         AddSibling(tracer);
 
-        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+        if (Multiplayer.GetPeers().Length != 0) {
             PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
         }
     }

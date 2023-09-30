@@ -45,8 +45,6 @@ public partial class Global : Node {
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;
 
-    public static List<Node> UnpassedCheckpoints = new List<Node>();
-
     public static string CurrentWorld = "Cave";
 
     public static double LastTime;

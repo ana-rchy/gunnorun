@@ -46,6 +46,14 @@ offset_top = 30.0
 offset_right = 380.0
 offset_bottom = 109.0
 
+[node name="LapCounter" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 110.0
+offset_right = 255.0
+offset_bottom = 189.0
+text = "lap 1/3"
+
 [node name="HP" type="Label" parent="Control"]
 layout_mode = 1
 anchors_preset = 1

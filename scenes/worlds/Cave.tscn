@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://bd12xd7fnj35o"]
+[gd_scene load_steps=16 format=3 uid="uid://bd12xd7fnj35o"]
 
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_7rigj"]
 [ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_286pq"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
 [ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="4_gbq3f"]
+[ext_resource type="Script" path="res://scripts/environment/Checkpoints.cs" id="6_4tksq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lkv5u"]
 texture = ExtResource("2_sclao")
@@ -172,6 +173,10 @@ polygon = PackedVector2Array(318, 160, 319, 0, 478, 0, 478, -160, 638, -320, 808
 
 [node name="Markers" type="Node2D" parent="."]
 
+[node name="FinishTimer" type="Timer" parent="Markers"]
+wait_time = 3.0
+one_shot = true
+
 [node name="Finish" type="Area2D" parent="Markers"]
 position = Vector2(5118, -3760)
 collision_layer = 0
@@ -185,11 +190,8 @@ shape = SubResource("RectangleShape2D_poehd")
 [node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
 texture = SubResource("GradientTexture2D_s4a0g")
 
-[node name="Timer" type="Timer" parent="Markers/Finish"]
-wait_time = 3.0
-one_shot = true
-
 [node name="Checkpoints" type="Node2D" parent="Markers"]
+script = ExtResource("6_4tksq")
 
 [node name="1" type="Area2D" parent="Markers/Checkpoints"]
 position = Vector2(880, -1040)
@@ -223,5 +225,5 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/4"]
 shape = SubResource("RectangleShape2D_xcvuo")
 
+[connection signal="timeout" from="Markers/FinishTimer" to="Markers/Finish" method="_OnTimeout"]
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
-[connection signal="timeout" from="Markers/Finish/Timer" to="Markers/Finish" method="_OnTimeout"]

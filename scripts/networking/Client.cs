@@ -52,7 +52,6 @@ public partial class Client : Node {
 
 	public void LeaveServer() {
 		Multiplayer.MultiplayerPeer.Close();
-		Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();
 		GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
 	}
 

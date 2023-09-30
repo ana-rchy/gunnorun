@@ -2,8 +2,15 @@ using System;
 using Godot;
 
 public partial class FinishMarker : Node {
+    public override void _Ready() {
+        if (Multiplayer.GetPeers().Length != 0) {
+            QueueFree();
+            return;
+        }
+    }
+    
     void _OnPlayerEntered(Node2D player) {
-        if (Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer && Global.UnpassedCheckpoints.Count == 0) {
+        if (Checkpoints.UnpassedCheckpoints.Count == 0) {
             var levelTimer = player.GetNode<LevelTimer>("LevelTimer");
             var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 

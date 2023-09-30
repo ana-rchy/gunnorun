@@ -4,14 +4,25 @@ using Godot;
 
 public partial class PlayerUI : Node {
 	public Label HP;
+	public Label LapCounter;
 	public Label LevelTime;
+
 	Label CurrentWeapon = null;
 
 	public override void _Ready() {
-		var control = GetNode("Control");
+		LevelTime = GetNode<Label>("Control/LevelTime");
+		LapCounter = GetNode<Label>("Control/LapCounter");
+		HP = GetNode<Label>("Control/HP");
+		
+		var lapManager = GetNodeOrNull<Lap>(Global.WORLD_PATH + "Markers/Lap");
+		if (lapManager == null) {
+			LapCounter.QueueFree();
+		} else {
+			LapCounter.Text = "lap 1/" + lapManager.MaxLaps.ToString();
+		}
 
-		HP = control.GetNode<Label>("HP");
-		LevelTime = control.GetNode<Label>("LevelTime");
+		if (Multiplayer.GetPeers().Length == 0)
+			HP.QueueFree();
 	}
 
 	//---------------------------------------------------------------------------------//
