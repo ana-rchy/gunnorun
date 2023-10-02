@@ -10,10 +10,9 @@ public partial class Lap : Node {
 
     public override void _Ready() {
         if (Multiplayer.GetPeers().Length != 0) {
-            QueueFree();
-            return;
+            ProcessMode = ProcessModeEnum.Disabled;
         }
-        
+
         CheckpointManager = GetNode<Checkpoints>("../Checkpoints");
     }
 

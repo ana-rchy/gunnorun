@@ -17,3 +17,4 @@ corner_radius_bottom_left = 5
 [resource]
 Button/styles/normal = SubResource("StyleBoxFlat_2u53n")
 Panel/styles/panel = SubResource("StyleBoxFlat_v2cqe")
+VBoxContainer/constants/separation = 10

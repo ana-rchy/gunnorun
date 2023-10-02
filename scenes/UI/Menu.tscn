@@ -388,13 +388,104 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -305.0
+offset_top = -195.0
+offset_right = -20.0
+offset_bottom = -145.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
+text = "save last replay"
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -305.0
 offset_top = -130.0
 offset_right = -20.0
 offset_bottom = -80.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
-text = "save last replay"
+text = "settings"
+
+[node name="ColorRect" type="ColorRect" parent="Settings"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -18.0
+anchor_top = -17.24
+anchor_right = 1.338
+anchor_bottom = 1.444
+offset_left = 3515.0
+offset_top = -87.9999
+offset_right = -76.33
+offset_bottom = 57.8
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.470588)
+
+[node name="Panel" type="Panel" parent="Settings/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.396
+anchor_top = 0.315
+anchor_right = 0.604
+anchor_bottom = 0.685
+offset_left = -0.320068
+offset_top = -0.200043
+offset_right = 0.319946
+offset_bottom = 0.199951
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_gwevq")
+
+[node name="BindNames" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 15.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shoot" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Shoot"
+horizontal_alignment = 1
+
+[node name="Binds" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.037
+anchor_right = 1.0
+anchor_bottom = 0.962
+offset_top = 0.2
+offset_bottom = -44.8
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Settings/ColorRect/Panel/Binds"]
+layout_mode = 2
+
+[node name="Default" type="Button" parent="Settings/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -145.0
+offset_top = -50.0
+offset_right = 145.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "reset to defaults"
 
 [node name="Help" type="Button" parent="."]
 layout_mode = 1
