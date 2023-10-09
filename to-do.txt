@@ -4,7 +4,6 @@ alpha:
 - weapon selecting
 - parallax
 - queuing up reloads
-- keybind settings
 
 beta:
 - custom skins
@@ -25,3 +24,4 @@ done:
 - physics bug fixed
 - ui showing all weapons
 - lapped maps
+- keybind settings

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class MOTDManager : Label {
@@ -7,6 +8,7 @@ public partial class MOTDManager : Label {
 	public override async void _Ready() {
 		LabelSettings.FontSize = 50;
 		LabelSettings.FontColor = new Color(255, 255, 255, 1);
+		RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
 
 		MotdMessages = new string[] {
 			"▇▅▆▇▆▅▅█",
@@ -85,7 +87,19 @@ public partial class MOTDManager : Label {
 			"KILL CONSUME MULTIPLY CONQUER",
 			"Haiiii :3",
 			"dev bias",
-			"movie coming in 2057.63"
+			"movie coming in 2057.63",
+			"ruheheheheh",
+			"drink water or death",
+			"HYDRATE MOTHERFUCKER",
+			"when you at the when you you when the",
+			"WHEN HE, WHEN HE AT THE",
+			"CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS",
+			"hhhhgffjffgjgjhgfhgfhgfdgdfggffffhhhffffhfhhhhhh",
+			"You should drink water... NOW!!",
+			"10",
+			"QRF the baths",
+			"jack, youre gonna get offline raided on rustafied EU small tomorrow",
+			"no state solution"
 		};
 
 		var rnd = new RandomNumberGenerator();
@@ -121,6 +135,22 @@ public partial class MOTDManager : Label {
 			GetNode<TextureRect>("LiveLeak").Show();
 		} else if (Text == "quila was here") {
 			LabelSettings.FontColor = new Color("1c1c1c");
+		} else if (Text == "CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS") {
+			LabelSettings.FontColor = new Color("0cff04");
+			RenderingServer.SetDefaultClearColor(new Color("000000"));
+		} else if (Text == "10") {
+			Task.Run(Countdown);
+		}
+	}
+
+    public override void _ExitTree() {
+        RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
+    }
+
+	async void Countdown() {
+		while (true) {
+			await this.Sleep(1f);
+			SetDeferred("text", (int.Parse(Text) - 1).ToString());
 		}
 	}
 }
