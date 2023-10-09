@@ -1,12 +1,38 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using static Godot.GD;
 
 public partial class Global : Node {
     public override void _Ready() {        
         DirAccess.MakeDirAbsolute("user://replays");
         DirAccess.MakeDirAbsolute("user://replays/debug");
         DirAccess.MakeDirAbsolute("user://imported_replays");
+
+        // keybinds config loading
+        if (!FileAccess.FileExists("user://config.cfg")) {
+            return;
+        }
+        
+        var config = new ConfigFile();
+        var err = config.Load("user://config.cfg");
+        if (err != Error.Ok) Print("cant open config file");
+
+        foreach (var action in config.GetSectionKeys("Keybinds")) {
+            string value = (string) config.GetValue("Keybinds", action);
+            var bind = value[1];
+            InputMap.ActionEraseEvents(action);
+
+            if (value.StartsWith('m')) {
+                var mouseEvent = new InputEventMouseButton();
+                mouseEvent.ButtonIndex = (Godot.MouseButton) bind;
+                InputMap.ActionAddEvent(action, mouseEvent);
+            } else if (value.StartsWith('k')) {
+                var keyEvent = new InputEventKey();
+                keyEvent.Keycode = (Godot.Key) bind;
+                InputMap.ActionAddEvent(action, keyEvent);
+            }
+        }
     }
 
     public override void _UnhandledInput(InputEvent e) {

@@ -80,9 +80,12 @@ public partial class MOTDManager : Label {
 			"gerg",
 			"greg",
 			"greg heffley huffling helium whole",
+			"gerg heffley huffling helium whole",
 			"goon",
 			"KILL CONSUME MULTIPLY CONQUER",
-			"Haiiii :3"
+			"Haiiii :3",
+			"dev bias",
+			"movie coming in 2057.63"
 		};
 
 		var rnd = new RandomNumberGenerator();

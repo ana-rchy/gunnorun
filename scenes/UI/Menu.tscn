@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=24 format=3 uid="uid://cyjasptaqt1b5"]
 
 [ext_resource type="Theme" uid="uid://vln2mlgupyio" path="res://resources/themes/LobbyTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
@@ -14,8 +14,10 @@
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
 [ext_resource type="Script" path="res://scripts/UI/panels/SingleplayerPanel.cs" id="10_ws80g"]
 [ext_resource type="Theme" uid="uid://cu1fup0a6sol7" path="res://resources/themes/MenuPanelTheme.tres" id="14_gwevq"]
-[ext_resource type="Script" path="res://scripts/UI/HelpPanel.cs" id="15_2mce1"]
 [ext_resource type="Script" path="res://scripts/UI/panels/MultiplayerPanel.cs" id="15_xnftg"]
+[ext_resource type="Script" path="res://scripts/UI/panels/SettingsPanel.cs" id="16_pom1n"]
+[ext_resource type="PackedScene" uid="uid://dxoaa5m0fde5w" path="res://scenes/UI/UI components/KeybindButton.tscn" id="16_r84rk"]
+[ext_resource type="Script" path="res://scripts/UI/panels/HelpPanel.cs" id="18_jgm5r"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g0ww5"]
 font_size = 50
@@ -36,6 +38,10 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujdx7"]
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -378,7 +384,7 @@ offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.33"
+text = "Alpha - a2.4"
 
 [node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1
@@ -403,7 +409,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -305.0
+offset_left = -190.0
 offset_top = -130.0
 offset_right = -20.0
 offset_bottom = -80.0
@@ -413,15 +419,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_47p8y")
 text = "settings"
 
 [node name="ColorRect" type="ColorRect" parent="Settings"]
+visible = false
+z_index = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -18.0
 anchor_top = -17.24
 anchor_right = 1.338
 anchor_bottom = 1.444
-offset_left = 3515.0
-offset_top = -87.9999
-offset_right = -76.33
+offset_left = 1330.0
+offset_top = -88.0
+offset_right = -37.46
 offset_bottom = 57.8
 grow_horizontal = 2
 grow_vertical = 2
@@ -434,13 +442,14 @@ anchor_left = 0.396
 anchor_top = 0.315
 anchor_right = 0.604
 anchor_bottom = 0.685
-offset_left = -0.320068
-offset_top = -0.200043
-offset_right = 0.319946
-offset_bottom = 0.199951
+offset_left = -100.32
+offset_top = -0.199951
+offset_right = 100.32
+offset_bottom = 0.200073
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
+script = ExtResource("16_pom1n")
 
 [node name="BindNames" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
@@ -448,6 +457,7 @@ anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_top = 15.0
+offset_right = -100.0
 offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -457,6 +467,36 @@ layout_mode = 2
 text = "Shoot"
 horizontal_alignment = 1
 
+[node name="Reload" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Reload"
+horizontal_alignment = 1
+
+[node name="Num1" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Num1"
+horizontal_alignment = 1
+
+[node name="Num2" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Num2"
+horizontal_alignment = 1
+
+[node name="Num3" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Num3"
+horizontal_alignment = 1
+
+[node name="Leave" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Leave"
+horizontal_alignment = 1
+
+[node name="Respawn" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
+layout_mode = 2
+text = "Respawn"
+horizontal_alignment = 1
+
 [node name="Binds" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
 anchors_preset = -1
@@ -464,13 +504,48 @@ anchor_left = 0.5
 anchor_top = 0.037
 anchor_right = 1.0
 anchor_bottom = 0.962
-offset_top = 0.2
+offset_left = -100.0
+offset_top = 0.200001
+offset_right = -6.10352e-05
 offset_bottom = -44.8
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 13
 
-[node name="Button" type="Button" parent="Settings/ColorRect/Panel/Binds"]
+[node name="Shoot" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
 layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Reload" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Num1" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Num2" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Num3" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Leave" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
+
+[node name="Respawn" parent="Settings/ColorRect/Panel/Binds" instance=ExtResource("16_r84rk")]
+layout_mode = 2
+text = "a"
+text_overrun_behavior = 1
 
 [node name="Default" type="Button" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
@@ -529,7 +604,7 @@ offset_bottom = 50.04
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
-script = ExtResource("15_2mce1")
+script = ExtResource("18_jgm5r")
 
 [node name="SaveLastRunDebugData" type="Button" parent="Help/ColorRect/Panel"]
 layout_mode = 1
@@ -617,6 +692,8 @@ horizontal_alignment = 1
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel" method="_OnColorChanged"]
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel/PlayerPreview" method="_OnColorChanged"]
 [connection signal="pressed" from="SaveLastReplay" to="." method="_OnSaveLastReplayPressed"]
+[connection signal="pressed" from="Settings" to="." method="_OnSettingsPressed"]
+[connection signal="pressed" from="Settings/ColorRect/Panel/Default" to="Settings/ColorRect/Panel" method="_OnResetToDefaults"]
 [connection signal="pressed" from="Help" to="." method="_OnHelpPressed"]
 [connection signal="pressed" from="Help/ColorRect/Panel/SaveLastRunDebugData" to="Help/ColorRect/Panel" method="_OnSaveDebug"]
 [connection signal="pressed" from="Help/ColorRect/Panel/ViewDebug" to="Help/ColorRect/Panel" method="_OnViewDebug"]

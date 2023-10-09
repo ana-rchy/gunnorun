@@ -1,7 +1,6 @@
 alpha:
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
-- lapped maps
 - weapon selecting
 - parallax
 - queuing up reloads
@@ -25,3 +24,4 @@ done:
 - store mouse positions in replays
 - physics bug fixed
 - ui showing all weapons
+- lapped maps

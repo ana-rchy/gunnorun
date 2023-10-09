@@ -22,6 +22,10 @@ public partial class Menu : Node {
 			replayFile.StoreVar(Global.LastReplayData);
 		}
 	}
+
+	void _OnSettingsPressed() {
+		GetNode<ColorRect>("Settings/ColorRect").Show();
+	}
 	
 	void _OnHelpPressed() {
 		GetNode<ColorRect>("Help/ColorRect").Show();
