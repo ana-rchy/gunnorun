@@ -5,6 +5,11 @@ bug fixes:
 // a2.41 //
 main changes:
 - new weapon: murasama
+- hp now regenerates (5hp/1.5s)
 
 minor changes:
 - HP now displays again during singleplayer
+- godot rendering engine switched
+
+bug fixes:
+- doesnt return to menu automatically after finishing level

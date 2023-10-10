@@ -5,6 +5,7 @@ alpha:
 - parallax
 - queuing up reloads
 - controller support?
+- more settings
 
 beta:
 - custom skins

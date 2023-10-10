@@ -4,7 +4,7 @@ using Godot;
 public partial class FinishMarker : Node {
     void _OnPlayerEntered(Node2D player) {
         if (Checkpoints.UnpassedCheckpoints.Count == 0) {
-            var levelTimer = player.GetNode<LevelTimer>("LevelTimer");
+            var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
             var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
             var time = levelTimer.StopTimer();
@@ -14,7 +14,7 @@ public partial class FinishMarker : Node {
 
             player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
 
-            GetNode<Timer>("Timer").Start();
+            GetNode<Timer>("../FinishTimer").Start();
         }
     }
 

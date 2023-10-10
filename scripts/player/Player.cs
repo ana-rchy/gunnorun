@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Linq;
 using Godot;
 using static Godot.GD;
@@ -31,8 +32,8 @@ public partial class Player : RigidBody2D, IPlayer {
         // node references
         PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
         UI = GetNode<PlayerUI>("PlayerUI");
-        ActionTimer = GetNode<Timer>("ActionTimer");
-        ReloadTimer = GetNode<Timer>("ReloadTimer");
+        ActionTimer = GetNode<Timer>("Timers/ActionTimer");
+        ReloadTimer = GetNode<Timer>("Timers/ReloadTimer");
         Raycast = GetNode<RayCast2D>("Raycast");
 
         // etc
@@ -46,9 +47,10 @@ public partial class Player : RigidBody2D, IPlayer {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
         }
 
-        // no-contact on spawn
-        System.Threading.Thread t = new System.Threading.Thread(SpawnInvuln);
-        t.Start();
+        // no-contact on spawn, healing
+        Task.Run(SpawnInvuln);
+        Task.Run(Regen);
+
     }
 
     //---------------------------------------------------------------------------------//
@@ -99,10 +101,10 @@ public partial class Player : RigidBody2D, IPlayer {
         if (HP <= 0) return;
         
         HP += change;
-        UI.HP.Text = HP.ToString();
+        UI.HP.SetDeferred("text", HP.ToString());
 
         if (HP <= 0) {
-            UI.HP.Text = "ur dead lol";
+            UI.HP.SetDeferred("text", "ur dead lol");
             await this.Sleep(3f);
             HP = 100;
             UI.HP.Text = HP.ToString();
@@ -125,6 +127,15 @@ public partial class Player : RigidBody2D, IPlayer {
         
         reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
         UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
+    }
+
+    async void Regen() {
+        while (true) {
+            if (HP > 0 && HP < 100) {
+                await this.Sleep(1.5f);
+                UpdateHP(5);
+            }
+        }
     }
 
     #endregion
@@ -155,6 +166,10 @@ public partial class Player : RigidBody2D, IPlayer {
             Node hitPlayer = (Node) Raycast.GetCollider();
             
             PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
+
+            if (CurrentWeapon is Murasama) {
+                PlayerManager.Rpc(nameof(PlayerManager.Server_MurasamaIntangibility), long.Parse(hitPlayer.Name));
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 public class Murasama : Weapon {
@@ -7,11 +8,11 @@ public class Murasama : Weapon {
 
         Knockback = 1250f;
         Damage = 50;
-        Range = 500f;
+        Range = 800f;
 
         BaseAmmo = Ammo = null;
         Reload = -1f;
-        Refire = 1f;
+        Refire = 0.5f;
 
         ReelbackStrength = 0f;
     }
@@ -26,8 +27,19 @@ public class Murasama : Weapon {
         player.UpdateHP(-25);
         player.ActionTimer.Start(Refire);
 
+        var particles = player.GetNode<GpuParticles2D>("Particles");
+        Task.Run(async () => {
+            player.SetCollisionMaskValue(4, false);
+            particles.SetDeferred("emitting", true);
+
+            await player.Sleep(0.3f);
+            
+            particles.SetDeferred("emitting", false);
+            player.SetCollisionMaskValue(4, true);
+        });
+
         if (player.Multiplayer.GetPeers().Length != 0) {
-            player.CheckPlayerHit(-playerPosToMousePos);
+            player.CheckPlayerHit(playerPosToMousePos);
         }
     }
 }

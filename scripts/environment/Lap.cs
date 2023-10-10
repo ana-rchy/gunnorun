@@ -22,7 +22,7 @@ public partial class Lap : Node {
                 LapCount++;
                 CheckpointManager.RefreshCheckpoints();
             } else {
-                var levelTimer = player.GetNode<LevelTimer>("LevelTimer");
+                var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
                 var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
                 var time = levelTimer.StopTimer();
@@ -32,7 +32,7 @@ public partial class Lap : Node {
 
                 player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
 
-                GetNode<Timer>("Timer").Start();
+                GetNode<Timer>("../FinishTimer").Start();
             }
         }
 

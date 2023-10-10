@@ -33,7 +33,7 @@ public partial class PlayerUI : Node {
 
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 		if (weaponName == "Murasama")
-			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d003");
+			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d00");
 	}
 
 	public void UpdateAmmo(string weaponName, int? ammoCount) {
@@ -47,7 +47,7 @@ public partial class PlayerUI : Node {
 		progressBar.Show();
 
 		await Task.Run( () => {
-			while (!timer.IsStopped()) {
+			while (timer != null && !timer.IsStopped()) {
 				progressBar.SetDeferred("value", 1 - (timer.TimeLeft / reloadTime));
 			}
 		});

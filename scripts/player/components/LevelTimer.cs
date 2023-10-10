@@ -12,7 +12,7 @@ public partial class LevelTimer : Node {
         }
 
         SetProcess(false);
-        UI = GetNode<PlayerUI>("../PlayerUI");
+        UI = GetNode<PlayerUI>("../../PlayerUI");
     }
 
     public override void _Process(double delta) {
