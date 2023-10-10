@@ -1,0 +1,10 @@
+// a2.401 //
+bug fixes:
+- fixed mouse bind being interpreted incorrectly at startup
+
+// a2.41 //
+main changes:
+- new weapon: murasama
+
+minor changes:
+- HP now displays again during singleplayer

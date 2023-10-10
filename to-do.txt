@@ -4,6 +4,7 @@ alpha:
 - weapon selecting
 - parallax
 - queuing up reloads
+- controller support?
 
 beta:
 - custom skins
@@ -25,3 +26,4 @@ done:
 - ui showing all weapons
 - lapped maps
 - keybind settings
+- murasama

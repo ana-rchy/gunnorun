@@ -20,9 +20,6 @@ public partial class PlayerUI : Node {
 		} else {
 			LapCounter.Text = "lap 1/" + lapManager.MaxLaps.ToString();
 		}
-
-		if (Multiplayer.GetPeers().Length == 0)
-			HP.QueueFree();
 	}
 
 	//---------------------------------------------------------------------------------//
@@ -35,6 +32,8 @@ public partial class PlayerUI : Node {
 		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
 
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
+		if (weaponName == "Murasama")
+			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d003");
 	}
 
 	public void UpdateAmmo(string weaponName, int? ammoCount) {

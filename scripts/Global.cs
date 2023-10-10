@@ -20,16 +20,16 @@ public partial class Global : Node {
 
         foreach (var action in config.GetSectionKeys("Keybinds")) {
             string value = (string) config.GetValue("Keybinds", action);
-            var bind = value[1];
+            var bind = value[1..];
             InputMap.ActionEraseEvents(action);
 
             if (value.StartsWith('m')) {
                 var mouseEvent = new InputEventMouseButton();
-                mouseEvent.ButtonIndex = (Godot.MouseButton) bind;
+                mouseEvent.ButtonIndex = (Godot.MouseButton) Enum.Parse(typeof(Godot.MouseButton), bind);
                 InputMap.ActionAddEvent(action, mouseEvent);
             } else if (value.StartsWith('k')) {
                 var keyEvent = new InputEventKey();
-                keyEvent.Keycode = (Godot.Key) bind;
+                keyEvent.Keycode = (Godot.Key) int.Parse(bind);
                 InputMap.ActionAddEvent(action, keyEvent);
             }
         }

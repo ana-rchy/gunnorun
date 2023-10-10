@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d3kncxrrmiqob"]
+[gd_scene load_steps=11 format=3 uid="uid://d3kncxrrmiqob"]
 
 [ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="1_m6o6h"]
 [ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
@@ -25,6 +25,10 @@ resource_local_to_scene = true
 font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_7r8a0"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_ti3t6"]
+resource_local_to_scene = true
 font_size = 60
 
 [node name="PlayerUI" type="CanvasLayer"]
@@ -78,9 +82,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 30.0
-offset_top = 806.0
+offset_top = 736.0
 offset_right = 330.0
-offset_bottom = 870.0
+offset_bottom = 800.0
 grow_vertical = 0
 text = "Shotgun"
 label_settings = SubResource("LabelSettings_6afp1")
@@ -92,9 +96,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 30.0
-offset_top = 876.0
+offset_top = 806.0
 offset_right = 330.0
-offset_bottom = 940.0
+offset_bottom = 870.0
 grow_vertical = 0
 text = "Machinegun"
 label_settings = SubResource("LabelSettings_jbo04")
@@ -130,9 +134,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 30.0
-offset_top = 946.0
+offset_top = 876.0
 offset_right = 330.0
-offset_bottom = 1010.0
+offset_bottom = 940.0
 grow_vertical = 0
 text = "RPG"
 label_settings = SubResource("LabelSettings_18t6x")
@@ -161,6 +165,20 @@ theme_override_styles/background = SubResource("StyleBoxFlat_w28l7")
 theme_override_styles/fill = SubResource("StyleBoxFlat_puq3g")
 max_value = 1.0
 show_percentage = false
+
+[node name="Murasama" type="Label" parent="Control/Weapons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 946.0
+offset_right = 330.0
+offset_bottom = 1010.0
+grow_vertical = 0
+text = "Murasama"
+label_settings = SubResource("LabelSettings_ti3t6")
+vertical_alignment = 1
 
 [node name="Ammo" type="Label" parent="Control"]
 visible = false

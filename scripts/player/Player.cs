@@ -7,8 +7,8 @@ public partial class Player : RigidBody2D, IPlayer {
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
     PlayerManager PlayerManager;
-    PlayerUI UI;
-    Timer ActionTimer;
+    public PlayerUI UI;
+    public Timer ActionTimer;
     Timer ReloadTimer;
     RayCast2D Raycast;
 
@@ -36,7 +36,7 @@ public partial class Player : RigidBody2D, IPlayer {
         Raycast = GetNode<RayCast2D>("Raycast");
 
         // etc
-        Weapons = new Weapon[] {new Shotgun(), new Machinegun(), new RPG()};
+        Weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = Weapons[CurrentWeaponIndex];
         UI.ChangeWeapon(CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
@@ -55,7 +55,7 @@ public partial class Player : RigidBody2D, IPlayer {
     #region | godot loops
 
     public override void _Input(InputEvent e) {
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 4; i++) {
             if (e.IsActionPressed("Num" + i.ToString())) {
                 CurrentWeapon = Weapons[i-1];
                 CurrentWeaponIndex = i-1;
@@ -72,7 +72,7 @@ public partial class Player : RigidBody2D, IPlayer {
             Reload(CurrentWeapon);
 
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
-            Shoot();
+            CurrentWeapon.Shoot(this);
         }
     }
 
@@ -116,23 +116,6 @@ public partial class Player : RigidBody2D, IPlayer {
         SetCollisionMaskValue(4, true);
     }
 
-    void Shoot() {
-        LastMousePos = GetGlobalMousePosition();
-        var mousePosToPlayerPos = LastMousePos.DirectionTo(GlobalPosition);
-        LinearVelocity = (LinearVelocity * GetMomentumMultiplier(LinearVelocity, mousePosToPlayerPos)) + mousePosToPlayerPos.Normalized() * CurrentWeapon.Knockback;
-        // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
-
-        CurrentWeapon.Ammo--;
-        ActionTimer.Start(CurrentWeapon.Refire);
-
-        UI.UpdateAmmo(CurrentWeapon.Name, CurrentWeapon.Ammo);
-        ShootTracer(-mousePosToPlayerPos);
-
-        if (Multiplayer.GetPeers().Length != 0) {
-            CheckPlayerHit(-mousePosToPlayerPos);
-        }
-    }
-
     async void Reload(Weapon reloadingWeapon) {
         reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
 
@@ -149,17 +132,7 @@ public partial class Player : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | organization funcs
 
-    float GetMomentumMultiplier(Vector2 currentVelocity, Vector2 mousePosToPlayerPos) {
-        float angleDelta = currentVelocity.AngleTo(mousePosToPlayerPos);
-        if (Mathf.RadToDeg(angleDelta) <= 45) // if less than 45 degrees change, keep all momentum
-            return 1f;
-        
-        angleDelta -= MathF.Round(MathF.PI / 4, 4);
-
-        return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
-    }
-
-    void ShootTracer(Vector2 playerPosToMousePos) {
+    public void ShootTracer(Vector2 playerPosToMousePos) {
         var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
         var tracer = tracerScene.Instantiate<Tracer>();
 
@@ -174,7 +147,7 @@ public partial class Player : RigidBody2D, IPlayer {
         }
     }
 
-    void CheckPlayerHit(Vector2 playerPosToMousePos) {
+    public void CheckPlayerHit(Vector2 playerPosToMousePos) {
         Raycast.TargetPosition = playerPosToMousePos.Normalized() * CurrentWeapon.Range;
         Raycast.ForceRaycastUpdate();
 

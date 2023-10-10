@@ -49,7 +49,6 @@ public partial class KeybindButton : Button {
 		var config = new ConfigFile();
 
 		var bind = InputMap.ActionGetEvents(Name)[0];
-		GD.Print(Name + "\t" + bind);
 
 		if (bind is InputEventMouseButton) {
 			var mouseBind = (InputEventMouseButton) bind;
