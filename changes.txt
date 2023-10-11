@@ -13,3 +13,7 @@ minor changes:
 
 bug fixes:
 - doesnt return to menu automatically after finishing level
+
+// a2.411 //
+bug fixes:
+- bandaid fix for "player object disposed" crash, issue persists on multiplayer
