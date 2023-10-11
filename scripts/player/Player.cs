@@ -47,10 +47,11 @@ public partial class Player : RigidBody2D, IPlayer {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
         }
 
-        // no-contact on spawn, healing
-        Task.Run(SpawnInvuln);
+        // async
         Task.Run(Regen);
-
+        if (Multiplayer.GetPeers().Length != 0) {
+            Task.Run(SpawnInvuln);
+        }
     }
 
     //---------------------------------------------------------------------------------//
