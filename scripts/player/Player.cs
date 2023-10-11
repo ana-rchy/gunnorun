@@ -49,7 +49,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         // async
         Task.Run(Regen);
-        if (Multiplayer.GetPeers().Length != 0) {
+        if (Multiplayer.GetPeers().Length != 0) { // BANDAID FIX
             Task.Run(SpawnInvuln);
         }
     }
