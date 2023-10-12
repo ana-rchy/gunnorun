@@ -66,5 +66,13 @@ public partial class HelpPanel : Panel {
         dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true;
     }
 
+    void _OnVisibilityChanged() {
+        GetNode<Label>("Controls").Text =
+            InputMap.ActionGetEvents("Num1")[0].AsText() + "-" + InputMap.ActionGetEvents("Num4")[0].AsText() + " - switch weapons\n" +
+            InputMap.ActionGetEvents("Reload")[0].AsText() + " - reload\n"+ 
+            InputMap.ActionGetEvents("Leave")[0].AsText() + " - return to menu    " +
+            InputMap.ActionGetEvents("Respawn")[0].AsText() +  "- respawn";
+    }
+
     #endregion
 }

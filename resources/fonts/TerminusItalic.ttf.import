@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cyloshjk6itvx"
-path="res://.godot/imported/Terminus.ttf-0ee09d4632bb9f5db1266d58d72e68ce.fontdata"
+uid="uid://b3t3wst5o7ccw"
+path="res://.godot/imported/TerminusItalic.ttf-ac28ea3e8ac602c651bb7c904a986032.fontdata"
 
 [deps]
 
-source_file="res://resources/fonts/Terminus.ttf"
-dest_files=["res://.godot/imported/Terminus.ttf-0ee09d4632bb9f5db1266d58d72e68ce.fontdata"]
+source_file="res://resources/fonts/TerminusItalic.ttf"
+dest_files=["res://.godot/imported/TerminusItalic.ttf-ac28ea3e8ac602c651bb7c904a986032.fontdata"]
 
 [params]
 
@@ -27,13 +27,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "New Configuration",
-"size": Vector2i(16, 0),
-"variation_embolden": 0.0
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

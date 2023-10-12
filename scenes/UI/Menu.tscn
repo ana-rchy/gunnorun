@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=25 format=3 uid="uid://cyjasptaqt1b5"]
 
 [ext_resource type="Theme" uid="uid://vln2mlgupyio" path="res://resources/themes/LobbyTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
 [ext_resource type="Script" path="res://scripts/UI/MOTDManager.cs" id="3_vrprp"]
+[ext_resource type="FontFile" uid="uid://b3t3wst5o7ccw" path="res://resources/fonts/TerminusItalic.ttf" id="4_0w7tn"]
 [ext_resource type="Script" path="res://scripts/UI/Menu.cs" id="4_dav64"]
 [ext_resource type="Texture2D" uid="uid://58bi1d0bigp6" path="res://sprites/motd/knight.png" id="4_rdpvk"]
 [ext_resource type="Texture2D" uid="uid://de7bwfsgn6i3q" path="res://sprites/motd/liveleak.png" id="5_4d1w2"]
@@ -11,6 +12,7 @@
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="6_j2a7j"]
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
+[ext_resource type="AudioStream" uid="uid://d4i18wcpt8s3u" path="res://audio/naval invasion.mp3" id="9_dasvf"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="10_udk7o"]
 [ext_resource type="Script" path="res://scripts/UI/panels/SingleplayerPanel.cs" id="10_ws80g"]
 [ext_resource type="Theme" uid="uid://cu1fup0a6sol7" path="res://resources/themes/MenuPanelTheme.tres" id="14_gwevq"]
@@ -18,9 +20,6 @@
 [ext_resource type="Script" path="res://scripts/UI/panels/SettingsPanel.cs" id="16_pom1n"]
 [ext_resource type="PackedScene" uid="uid://dxoaa5m0fde5w" path="res://scenes/UI/UI components/KeybindButton.tscn" id="16_r84rk"]
 [ext_resource type="Script" path="res://scripts/UI/panels/HelpPanel.cs" id="18_jgm5r"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_g0ww5"]
-font_size = 50
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tcqtv"]
 shader = ExtResource("6_j2a7j")
@@ -66,45 +65,61 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -112.5
+[node name="Subtitle" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 10.0
 offset_top = 300.0
-offset_right = 112.5
+offset_right = 1910.0
 offset_bottom = 354.0
-grow_horizontal = 2
-theme = ExtResource("1_kgwbg")
-label_settings = SubResource("LabelSettings_g0ww5")
-horizontal_alignment = 1
+theme_override_fonts/italics_font = ExtResource("4_0w7tn")
+theme_override_font_sizes/normal_font_size = 50
+theme_override_font_sizes/italics_font_size = 50
+bbcode_enabled = true
+text = "[center]hello spez[/center]"
+fit_content = true
+autowrap_mode = 0
 script = ExtResource("3_vrprp")
-
-[node name="Knight" type="TextureRect" parent="Subtitle"]
-visible = false
-layout_mode = 0
-offset_left = 275.0
-offset_top = 6.0
-offset_right = 1355.0
-offset_bottom = 1086.0
-scale = Vector2(0.04, 0.04)
-texture = ExtResource("4_rdpvk")
-
-[node name="LiveLeak" type="TextureRect" parent="Subtitle"]
-visible = false
-layout_mode = 0
-offset_left = 608.5
-offset_top = -300.0
-offset_right = 1072.5
-offset_bottom = -125.0
-texture = ExtResource("5_4d1w2")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
 
 [node name="VineBoom" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("6_7y4o0")
+
+[node name="NavalInvasion" type="AudioStreamPlayer" parent="Subtitle"]
+stream = ExtResource("9_dasvf")
+volume_db = -3.0
+
+[node name="SubtitleImages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Knight" type="TextureRect" parent="SubtitleImages"]
+visible = false
+layout_mode = 0
+offset_left = 1110.0
+offset_top = 306.0
+offset_right = 2190.0
+offset_bottom = 1386.0
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("4_rdpvk")
+
+[node name="LiveLeak" type="TextureRect" parent="SubtitleImages"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -486.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = 207.6
+grow_horizontal = 0
+texture = ExtResource("5_4d1w2")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 0
@@ -384,7 +399,7 @@ offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.4"
+text = "Alpha - a2.42"
 
 [node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1
@@ -684,9 +699,9 @@ offset_right = 160.0
 offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "1-3 - switch weapons
+text = "1-4 - switch weapons
 R - reload
-L - return to menu"
+L - return to menu    Tab - respawn"
 horizontal_alignment = 1
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_OnTabChanged"]
@@ -708,3 +723,4 @@ horizontal_alignment = 1
 [connection signal="pressed" from="Help/ColorRect/Panel/SaveLastRunDebugData" to="Help/ColorRect/Panel" method="_OnSaveDebug"]
 [connection signal="pressed" from="Help/ColorRect/Panel/ViewDebug" to="Help/ColorRect/Panel" method="_OnViewDebug"]
 [connection signal="pressed" from="Help/ColorRect/Panel/ClearData" to="Help/ColorRect/Panel" method="_OnClearData"]
+[connection signal="visibility_changed" from="Help/ColorRect/Panel/Controls" to="Help/ColorRect/Panel" method="_OnVisibilityChanged"]

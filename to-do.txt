@@ -6,6 +6,7 @@ alpha:
 - queuing up reloads
 - controller support?
 - more settings
+- fix the fucking 10 no countdown issue
 
 beta:
 - custom skins

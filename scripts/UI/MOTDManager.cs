@@ -2,16 +2,16 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 
-public partial class MOTDManager : Label {
+public partial class MOTDManager : RichTextLabel {
 	string[] MotdMessages;
 	
 	public override async void _Ready() {
-		LabelSettings.FontSize = 50;
-		LabelSettings.FontColor = new Color(255, 255, 255, 1);
+		AddThemeFontSizeOverride("normal_font_size", 50);
+		AddThemeFontSizeOverride("italics_font_size", 50);
 		RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
 
 		MotdMessages = new string[] {
-			"▇▅▆▇▆▅▅█",
+			"[color=#aa0000]▇▅▆▇▆▅▅█[/color]",
 			"pro tip: shoot yourself",
 			"you should recoil yourself... NOW!!",
 			"1 in 10 people reportedly are living",
@@ -75,7 +75,7 @@ public partial class MOTDManager : Label {
 			" ",
 			"Which side are you on?",
 			"One must imagine robot happy",
-			"quila was here",
+			"[color=#1c1c1c]quila was here[/color]",
 			"mulch is heeeeeeeere",
 			"webdev is scuffed",
 			"This will be gaming in 2015",
@@ -88,58 +88,69 @@ public partial class MOTDManager : Label {
 			"Haiiii :3",
 			"dev bias",
 			"movie coming in 2057.63",
-			"ruheheheheh",
+			"ruhe[i]heh[/i]eheh",
 			"drink water or death",
 			"HYDRATE MOTHERFUCKER",
 			"when you at the when you you when the",
 			"WHEN HE, WHEN HE AT THE",
-			"CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS",
+			"[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]",
 			"hhhhgffjffgjgjhgfhgfhgfdgdfggffffhhhffffhfhhhhhh",
 			"You should drink water... NOW!!",
 			"10",
 			"QRF the baths",
 			"jack, youre gonna get offline raided on rustafied EU small tomorrow",
-			"no state solution"
+			"no state solution",
+			"There will be blood!",
+			"Inside your guns there are things you can't see... it's something that [i]\"does not exist\"[/i] in this world...",
+			"GUN NO RUN: GO BEYOND",
+			"GUN ACT 4",
+			"[color=#aa0000]Dangerous naval invasion![/color]",
+			"A GUN DOES NOT FEAR DEATH!",
+			"It's not over yet, dik.",
+			"youre next in the flow of calamity",
+			"Are you... [i]pursuing[/i] me?",
+			"Now with more french bread!",
+			"im in spain, but with the s",
+			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA"
 		};
 
 		var rnd = new RandomNumberGenerator();
-		Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
-		//Text = MotdMessages[MotdMessages.Length - 1];
+		Text = "[center]" + MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)] + "[/center]";
+		//Text = "[center]" + MotdMessages[MotdMessages.Length - 1] + "[/center]";
 
-		if (Text == "▇▅▆▇▆▅▅█") {
-			LabelSettings.FontColor = new Color(170, 0, 0, 1);
-		} else if (Text == "i am in your walls.") {
-			await this.Sleep(2.5f);
-			GetNode<AudioStreamPlayer>("DoorKnock").Play();
-		} else if (Text == "naaah no wayyy omg bruuuhhh") {
-			await this.Sleep(0.5f);
-			GetNode<AudioStreamPlayer>("VineBoom").Play();
-		} else if (Text == "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.") {
-			LabelSettings.FontSize = 8;
-		} else if (Text == "hello spez") {
-			GetNode<TextureRect>("Knight").Show();
-		} else if (Text == "you know what? fuck you. *crashes your game*") {
-			await this.Sleep(2f);
-			GetTree().Root.GuiEmbedSubwindows = false;
-			
-			var dialog = new AcceptDialog();
-			dialog.DialogText = "nah lol";
-			GetTree().Root.AddChild(dialog);
-			dialog.PopupCentered();
+		CallDeferred(nameof(ResizeText));
 
-			dialog.Confirmed += () => dialog.QueueFree();
-			dialog.Canceled += () => dialog.QueueFree();
-			dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true;
+		switch ("[center]" + Text + "[/center]") {
+			case "i am in your walls.":
+				await this.Sleep(2.5f);
+				GetNode<AudioStreamPlayer>("DoorKnock").Play(); break;
+			case "naaah no wayyy omg bruuuhhh":
+				await this.Sleep(0.5f);
+				GetNode<AudioStreamPlayer>("VineBoom").Play(); break;
+			case "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.":
+				AddThemeFontSizeOverride("normal_font_size", 8); break;
+			case "hello spez":
+				GetNode<TextureRect>("../SubtitleImages/Knight").Show(); break;
+			case "you know what? fuck you. *crashes your game*":
+				await this.Sleep(2f);
+				GetTree().Root.GuiEmbedSubwindows = false;
+				
+				var dialog = new AcceptDialog();
+				dialog.DialogText = "idiot";
+				GetTree().Root.AddChild(dialog);
+				dialog.PopupCentered();
 
-		} else if (Text == " ") {
-			GetNode<TextureRect>("LiveLeak").Show();
-		} else if (Text == "quila was here") {
-			LabelSettings.FontColor = new Color("1c1c1c");
-		} else if (Text == "CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS") {
-			LabelSettings.FontColor = new Color("0cff04");
-			RenderingServer.SetDefaultClearColor(new Color("000000"));
-		} else if (Text == "10") {
-			Task.Run(Countdown);
+				dialog.Confirmed += () => dialog.QueueFree();
+				dialog.Canceled += () => dialog.QueueFree();
+				dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true; break;
+			case " ":
+				GetNode<TextureRect>("../SubtitleImages/LiveLeak").Show(); break;
+			case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
+				RenderingServer.SetDefaultClearColor(new Color("000000")); break;
+			case "10":
+				Task.Run(Countdown); break;
+			case "[color=#aa0000]Dangerous naval invasion![/color]":
+				GetNode<AudioStreamPlayer>("NavalInvasion").Play(); break;
 		}
 	}
 
@@ -147,10 +158,23 @@ public partial class MOTDManager : Label {
         RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
     }
 
+	//---------------------------------------------------------------------------------//
+    #region | funcs
+
+	void ResizeText() {
+		if (Size.X > 1900) {
+			var fontSize = (int) (-0.021 * (Size.X - 1900)) + 50;
+			AddThemeFontSizeOverride("normal_font_size", fontSize); // desmos that shit
+			AddThemeFontSizeOverride("italics_font_size", fontSize);
+		}
+	}
+
 	async void Countdown() {
 		while (true) {
 			await this.Sleep(1f);
 			SetDeferred("text", (int.Parse(Text) - 1).ToString());
 		}
 	}
+
+	#endregion
 }
