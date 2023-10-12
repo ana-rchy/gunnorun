@@ -115,12 +115,15 @@ public partial class MOTDManager : RichTextLabel {
 		};
 
 		var rnd = new RandomNumberGenerator();
-		Text = "[center]" + MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)] + "[/center]";
+		//Text = "[center]" + MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)] + "[/center]";
 		//Text = "[center]" + MotdMessages[MotdMessages.Length - 1] + "[/center]";
+		Text = "10";
 
+		var uncenteredText = Text;
+		Text = "[center]" + Text + "[/center]";
 		CallDeferred(nameof(ResizeText));
 
-		switch ("[center]" + Text + "[/center]") {
+		switch (uncenteredText) {
 			case "i am in your walls.":
 				await this.Sleep(2.5f);
 				GetNode<AudioStreamPlayer>("DoorKnock").Play(); break;
@@ -134,7 +137,7 @@ public partial class MOTDManager : RichTextLabel {
 			case "you know what? fuck you. *crashes your game*":
 				await this.Sleep(2f);
 				GetTree().Root.GuiEmbedSubwindows = false;
-				
+
 				var dialog = new AcceptDialog();
 				dialog.DialogText = "idiot";
 				GetTree().Root.AddChild(dialog);
@@ -148,7 +151,7 @@ public partial class MOTDManager : RichTextLabel {
 			case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
 				RenderingServer.SetDefaultClearColor(new Color("000000")); break;
 			case "10":
-				Task.Run(Countdown); break;
+				_ = Task.Run(() => { _ = Countdown(uncenteredText); }); break;
 			case "[color=#aa0000]Dangerous naval invasion![/color]":
 				GetNode<AudioStreamPlayer>("NavalInvasion").Play(); break;
 		}
@@ -169,10 +172,11 @@ public partial class MOTDManager : RichTextLabel {
 		}
 	}
 
-	async void Countdown() {
-		while (true) {
+	async Task Countdown(string uncenteredText) {
+		var i = int.Parse(uncenteredText);
+		for (;; i--) {
+			SetDeferred("text", "[center]" + i.ToString() + "[/center]");
 			await this.Sleep(1f);
-			SetDeferred("text", (int.Parse(Text) - 1).ToString());
 		}
 	}
 
