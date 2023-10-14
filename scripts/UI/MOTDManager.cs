@@ -85,11 +85,7 @@ public partial class MOTDManager : RichTextLabel {
 			"gerg heffley huffling helium whole",
 			"goon",
 			"KILL CONSUME MULTIPLY CONQUER",
-			"Haiiii :3",
-			"dev bias",
-			"movie coming in 2057.63",
-			"ruhe[i]heh[/i]eheh",
-			"drink water or death",
+			"Haiiii :3﻿er or death",
 			"HYDRATE MOTHERFUCKER",
 			"when you at the when you you when the",
 			"WHEN HE, WHEN HE AT THE",
@@ -115,9 +111,9 @@ public partial class MOTDManager : RichTextLabel {
 		};
 
 		var rnd = new RandomNumberGenerator();
-		//Text = "[center]" + MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)] + "[/center]";
+		Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
 		//Text = "[center]" + MotdMessages[MotdMessages.Length - 1] + "[/center]";
-		Text = "10";
+		//Text = "10";
 
 		var uncenteredText = Text;
 		Text = "[center]" + Text + "[/center]";
@@ -151,7 +147,7 @@ public partial class MOTDManager : RichTextLabel {
 			case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
 				RenderingServer.SetDefaultClearColor(new Color("000000")); break;
 			case "10":
-				_ = Task.Run(() => { _ = Countdown(uncenteredText); }); break;
+				_ = Countdown(uncenteredText); break;
 			case "[color=#aa0000]Dangerous naval invasion![/color]":
 				GetNode<AudioStreamPlayer>("NavalInvasion").Play(); break;
 		}

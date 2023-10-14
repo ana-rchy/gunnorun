@@ -6,6 +6,11 @@ alpha:
 - queuing up reloads
 - controller support?
 - more settings
+- unbinding
+- pause menu
+- music player
+- continuous multiplayer (dont have to reconnect after each match)
+
 
 beta:
 - custom skins

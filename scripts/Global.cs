@@ -30,8 +30,9 @@ public partial class Global : Node {
             } else if (value.StartsWith('k')) {
                 var keyEvent = new InputEventKey();
                 keyEvent.Keycode = (Godot.Key) Enum.Parse(typeof(Godot.Key), bind);
-                //GD.Print(bind.ToString());
                 InputMap.ActionAddEvent(action, keyEvent);
+            } else if (bind == "None") {
+                InputMap.ActionEraseEvents(action);
             }
         }
     }

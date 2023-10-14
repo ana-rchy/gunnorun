@@ -5,12 +5,23 @@ public partial class KeybindButton : Button {
 	bool ChangingBind;
 
     public override void _Ready() {
-		Text = InputMap.ActionGetEvents(Name)[0].AsText();
+		if (InputMap.ActionGetEvents(Name).Count != 0) {
+			Text = InputMap.ActionGetEvents(Name)[0].AsText();
+		} else {
+			Text = " ";
+		}
     }
 
     public override void _Input(InputEvent e) {
         if (ChangingBind && e.IsPressed()) {
-			ChangeBind(e);
+			if (InputMap.ActionGetEvents(Name).Count == 0 ||
+				InputMap.ActionGetEvents(Name)[0].AsText() != e.AsText()) {
+				ChangeBind(e);
+			} else {
+				Unbind();
+			}
+
+			
 			SaveKeybindConfig();
 			
 			ButtonPressed = false;
@@ -26,7 +37,7 @@ public partial class KeybindButton : Button {
 			Text = "...";
 			ChangingBind = true;
 		} else {
-			Text = InputMap.ActionGetEvents(Name)[0].AsText();
+			Text = InputMap.ActionGetEvents(Name).Count != 0 ? InputMap.ActionGetEvents(Name)[0].AsText() : " ";
 			ChangingBind = false;
 		}
 	}
@@ -45,8 +56,17 @@ public partial class KeybindButton : Button {
 		InputMap.ActionAddEvent(Name, e);
 	}
 
+	void Unbind() {
+		InputMap.ActionEraseEvents(Name);
+	}
+
 	void SaveKeybindConfig() {
 		var config = new ConfigFile();
+		if (InputMap.ActionGetEvents(Name).Count == 0) {
+			config.SetValue("Keybinds", Name, "None");
+			config.Save("user://config.cfg");
+			return;
+		}
 
 		var bind = InputMap.ActionGetEvents(Name)[0];
 

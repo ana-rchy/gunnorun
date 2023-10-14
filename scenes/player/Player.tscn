@@ -71,6 +71,10 @@ one_shot = true
 [node name="ReloadTimer" type="Timer" parent="Timers"]
 one_shot = true
 
+[node name="RegenTimer" type="Timer" parent="Timers"]
+wait_time = 1.5
+one_shot = true
+
 [node name="LevelTimer" type="Node" parent="Timers"]
 script = ExtResource("3_80esj")
 

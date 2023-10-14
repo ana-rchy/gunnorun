@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 using static Godot.GD;
 
@@ -20,7 +21,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    public async void UpdateHP(int change) {
+    public async Task UpdateHP(int change) {
         if (HP <= 0) return;
 
         var greenHP = GetNode<ColorRect>("GreenHP");

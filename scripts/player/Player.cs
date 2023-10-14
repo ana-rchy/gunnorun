@@ -11,6 +11,7 @@ public partial class Player : RigidBody2D, IPlayer {
     public PlayerUI UI;
     public Timer ActionTimer;
     Timer ReloadTimer;
+    Timer RegenTimer;
     RayCast2D Raycast;
 
     public Weapon[] Weapons;
@@ -34,6 +35,7 @@ public partial class Player : RigidBody2D, IPlayer {
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("Timers/ActionTimer");
         ReloadTimer = GetNode<Timer>("Timers/ReloadTimer");
+        RegenTimer = GetNode<Timer>("Timers/RegenTimer");
         Raycast = GetNode<RayCast2D>("Raycast");
 
         // etc
@@ -42,14 +44,8 @@ public partial class Player : RigidBody2D, IPlayer {
         UI.ChangeWeapon(CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
 
-
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
-        }
-
-        // async
-        Task.Run(Regen);
-        if (Multiplayer.GetPeers().Length != 0) { // BANDAID FIX
             Task.Run(SpawnInvuln);
         }
     }
@@ -73,17 +69,17 @@ public partial class Player : RigidBody2D, IPlayer {
         
         if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo && ReloadTimer.IsStopped()) {
             Reload(CurrentWeapon);
-
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
             CurrentWeapon.Shoot(this);
         }
+
+        Regen();
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
         if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
             var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
             var reelbackStrength = 1 - ( 1 / (0.0000001f * state.LinearVelocity.DistanceTo(velocitySoftCap) + 1) ); // just plug this shit into desmos man
-            // var reelbackStrength = ( 1 - 1/( (state.LinearVelocity.DistanceTo(velocitySoftCap) + 100) / 100) ) * CurrentWeapon.ReelbackStrength;
             state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, state.LinearVelocity.DistanceTo(velocitySoftCap) * reelbackStrength);
 
             Debug_VelocitySoftCap = velocitySoftCap;
@@ -98,7 +94,13 @@ public partial class Player : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
-    public async void UpdateHP(int change) {
+    async Task SpawnInvuln() {
+        SetCollisionMaskValue(4, false);
+        await this.Sleep(2f);
+        SetCollisionMaskValue(4, true);
+    }
+
+    public async Task UpdateHP(int change) {
         if (HP <= 0) return;
         
         HP += change;
@@ -113,10 +115,11 @@ public partial class Player : RigidBody2D, IPlayer {
         }
     }
 
-    async void SpawnInvuln() {
-        SetCollisionMaskValue(4, false);
-        await this.Sleep(2f);
-        SetCollisionMaskValue(4, true);
+    void Regen() {
+        if (RegenTimer.IsStopped() && HP > 0 && HP < 100) {
+            UpdateHP(5);
+            RegenTimer.Start();
+        }
     }
 
     async void Reload(Weapon reloadingWeapon) {
@@ -129,20 +132,6 @@ public partial class Player : RigidBody2D, IPlayer {
         reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
         UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
     }
-
-    async void Regen() {
-        while (true) {
-            if (HP > 0 && HP < 100) {
-                await this.Sleep(1.5f);
-                UpdateHP(5);
-            }
-        }
-    }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
-    #region | organization funcs
 
     public void ShootTracer(Vector2 playerPosToMousePos) {
         var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
