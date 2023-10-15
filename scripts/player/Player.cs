@@ -111,13 +111,13 @@ public partial class Player : RigidBody2D, IPlayer {
             await this.Sleep(3f);
             HP = 100;
             UI.HP.Text = HP.ToString();
-            SpawnInvuln();
+            _ = SpawnInvuln();
         }
     }
 
     void Regen() {
         if (RegenTimer.IsStopped() && HP > 0 && HP < 100) {
-            UpdateHP(5);
+            _ = UpdateHP(5);
             RegenTimer.Start();
         }
     }
@@ -125,8 +125,8 @@ public partial class Player : RigidBody2D, IPlayer {
     async void Reload(Weapon reloadingWeapon) {
         reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
 
+        UI.Reload(reloadingWeapon.Name, reloadingWeapon.Reload);
         ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
-        UI.Reload(reloadingWeapon.Name, ReloadTimer, reloadingWeapon.Reload);
         await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
         
         reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;

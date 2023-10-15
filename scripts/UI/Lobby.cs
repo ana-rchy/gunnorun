@@ -24,9 +24,8 @@ public partial class Lobby : Node {
     public void RefreshList() {
         var players = new List<Global.PlayerDataStruct>(Global.OtherPlayerData.Values);
 
-        for (int i = 2; i <= 8; i++) {
+        for (int i = 2; i <= 8; i++)
             GetNode<Panel>("Slot" + i.ToString()).Hide();
-        }
 
         for (int i = 0; i < players.Count; i++) {
             var slot = GetNode<Panel>("Slot" + (i+2).ToString());
@@ -56,13 +55,8 @@ public partial class Lobby : Node {
 
         var panel = (StyleBoxFlat) GetNode<Panel>("Slot1/ReadyIndicator").GetThemeStylebox("panel");
         var readyButton = GetNode<Button>("Ready");
-        if (!buttonPressed) {
-            panel.BgColor = new Color("cc0000");
-            readyButton.Text = "Ready";
-        } else {
-            panel.BgColor = new Color("0ecc00");
-            readyButton.Text = "Unready";
-        }
+        panel.BgColor = buttonPressed ? new Color("0ecc00") : new Color("cc0000");
+        readyButton.Text = !buttonPressed ? "Unready" : "Ready";
 
         LobbyManager.Rpc(nameof(LobbyManager.Server_UpdateStatus), Global.PlayerData.ReadyStatus);
     }

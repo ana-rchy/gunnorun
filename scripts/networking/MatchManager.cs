@@ -3,12 +3,7 @@ using System;
 
 public partial class MatchManager : Node {
     [Rpc] void Client_PlayerWon(long id, double time) {
-        string name;
-        if (Multiplayer.GetUniqueId() == id) {
-            name = Global.PlayerData.Username;
-        } else {
-            name = Global.OtherPlayerData[id].Username;
-        }
+        var name = Multiplayer.GetUniqueId() == id ? Global.PlayerData.Username : Global.OtherPlayerData[id].Username;
         
         var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 

@@ -21,13 +21,8 @@ public partial class ReplayPlayer : Node2D {
         }
 
 
-        string replayPath;
-        if (Global.ReplayName == null) {
-            replayPath = "user://replays/" + Global.CurrentWorld + "_best_replay.grp";
-        } else {
-            replayPath = "user://imported_replays/" + Global.ReplayName;
-        }
-
+        string replayPath = Global.ReplayName == null ? "user://replays/" + Global.CurrentWorld + "_best_replay.grp"
+            : "user://imported_replays/" + Global.ReplayName;
         if (!FileAccess.FileExists(replayPath)) {
             QueueFree();
             return;
@@ -50,9 +45,8 @@ public partial class ReplayPlayer : Node2D {
     }
 
     public override void _Input(InputEvent e) {
-        if (Input.IsActionPressed("Shoot")) {
+        if (Input.IsActionPressed("Shoot"))
             SetPhysicsProcess(true);
-        }
     }
 
     //---------------------------------------------------------------------------------//

@@ -85,7 +85,8 @@ public partial class MOTDManager : RichTextLabel {
 			"gerg heffley huffling helium whole",
 			"goon",
 			"KILL CONSUME MULTIPLY CONQUER",
-			"Haiiii :3﻿er or death",
+			"Haiiii :3",
+			"drink water or death",
 			"HYDRATE MOTHERFUCKER",
 			"when you at the when you you when the",
 			"WHEN HE, WHEN HE AT THE",
@@ -111,11 +112,9 @@ public partial class MOTDManager : RichTextLabel {
 		};
 
 		var rnd = new RandomNumberGenerator();
-		Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
-		//Text = "[center]" + MotdMessages[MotdMessages.Length - 1] + "[/center]";
-		//Text = "10";
+		var uncenteredText = Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
+		//Text = MotdMessages[MotdMessages.Length - 1];
 
-		var uncenteredText = Text;
 		Text = "[center]" + Text + "[/center]";
 		CallDeferred(nameof(ResizeText));
 

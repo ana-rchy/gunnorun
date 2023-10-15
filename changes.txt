@@ -19,9 +19,13 @@ bug fixes:
 - bandaid fix for "player object disposed" crash, issue persists on multiplayer
 
 // a2.42 //
+main changes:
+- keys can be unbound now
+
 minor changes:
 - motd improvement
 - controls section in help panel now updates with custom binds
 
 bug fixes:
 - fixed keyboards binds not being interpreted correctly
+- fixed 'disposal' bug

@@ -56,6 +56,7 @@ turbulence_noise_speed_random = 0.11
 [node name="Player" type="RigidBody2D"]
 z_index = 1
 z_as_relative = false
+position = Vector2(0, -1)
 collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_3j7k5")
 lock_rotation = true

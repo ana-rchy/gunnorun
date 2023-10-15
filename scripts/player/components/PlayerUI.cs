@@ -26,12 +26,12 @@ public partial class PlayerUI : Node {
 	#region | funcs
 
 	public void ChangeWeapon(string weaponName) {
-		if (CurrentWeapon != null) {
+		if (CurrentWeapon != null)
 			CurrentWeapon.LabelSettings.FontColor = new Color("#ffffff");
-		}
-		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
 
+		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
+		
 		if (weaponName == "Murasama")
 			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d00");
 	}
@@ -39,20 +39,36 @@ public partial class PlayerUI : Node {
 	public void UpdateAmmo(string weaponName, int? ammoCount) {
 		if (ammoCount == null) return;
 
-		GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = ammoCount.ToString();
+		try {
+			GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = ammoCount.ToString();
+		} catch (Exception e) {
+			if (e is ObjectDisposedException) {
+				GD.Print("bad object dispose :(");
+			} else {
+				throw e;
+			}
+		}
 	}
 
-	public async void Reload(string weaponName, Timer timer, float reloadTime) {
+	public async void Reload(string weaponName, float reloadTime) {
 		var progressBar = GetNode<ProgressBar>("Control/Weapons/" + weaponName + "/ProgressBar");
 		progressBar.Show();
+		var progressBarRef = new WeakReference(progressBar);
 
-		await Task.Run( () => {
-			while (timer != null && !timer.IsStopped()) {
-				progressBar.SetDeferred("value", 1 - (timer.TimeLeft / reloadTime));
+		var tweener = CreateTween();
+		tweener.TweenProperty(progressBar, "value", 1, reloadTime);
+		await this.Sleep(reloadTime);
+		
+		try {
+			progressBar.Hide();
+			progressBar.Value = 0;
+		} catch (Exception e) {
+			if (e is ObjectDisposedException) {
+				GD.Print("bad object dispose :(");
+			} else {
+				throw e;
 			}
-		});
-
-		progressBar.Hide();
+		}
 	}
 
 	#endregion

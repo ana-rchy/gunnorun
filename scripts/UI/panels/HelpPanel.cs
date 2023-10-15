@@ -19,9 +19,8 @@ public partial class HelpPanel : Panel {
     public override void _Input(InputEvent e) {
         var mousePos = GetGlobalMousePosition();
         if (Input.IsMouseButtonPressed(MouseButton.Left) &&
-        (mousePos.X < Position.X || mousePos.X > Position.X + Size.X || mousePos.Y < Position.Y || mousePos.Y > Position.Y + Size.Y)) { // outside the panel
+            (mousePos.X < Position.X || mousePos.X > Position.X + Size.X || mousePos.Y < Position.Y || mousePos.Y > Position.Y + Size.Y)) // outside the panel
             GetParent<ColorRect>().Hide();
-        }
     }
 
     //---------------------------------------------------------------------------------//

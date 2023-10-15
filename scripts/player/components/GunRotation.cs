@@ -16,15 +16,10 @@ public partial class GunRotation : AnimatedSprite2D {
         var normal = new Vector2(0, -1);
         var angle = normal.AngleTo(Parent.GetLocalMousePosition());
 
-
-        if (angle >= 0) {
-            Frame = 0;
-        } else {
-            Frame = 5;
-        }
-
+        Frame = angle >= 0 ? 0 : 5;
         var absAngle = MathF.Abs(angle);
         var pi8th = MathF.PI / 8; // 22.5*
+        
         if (absAngle >= 0 && absAngle < pi8th) {
             Frame += 0;
         } else if (absAngle > pi8th && absAngle < pi8th * 3) {

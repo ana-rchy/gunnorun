@@ -27,9 +27,8 @@ public abstract class Weapon {
         player.UI.UpdateAmmo(Name, Ammo);
         player.ShootTracer(-mousePosToPlayerPos);
 
-        if (player.Multiplayer.GetPeers().Length != 0) {
+        if (player.Multiplayer.GetPeers().Length != 0)
             player.CheckPlayerHit(-mousePosToPlayerPos);
-        }
     }
 
     float GetMomentumMultiplier(Vector2 currentVelocity, Vector2 mousePosToPlayerPos) {

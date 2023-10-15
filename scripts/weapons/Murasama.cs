@@ -22,9 +22,9 @@ public class Murasama : Weapon {
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player.LastMousePos);
         player.LinearVelocity = (0.5f * player.LinearVelocity.DistanceTo(new Vector2(0, 0)) * playerPosToMousePos.Normalized())
             + playerPosToMousePos.Normalized() * Knockback;
-        // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
+        // ^ transfer 0.5 of previous speed into the new direction, and add on regular knock"back"
 
-        player.UpdateHP(-25);
+        _ = player.UpdateHP(-25);
         player.ActionTimer.Start(Refire);
 
         var particles = player.GetNode<GpuParticles2D>("Particles");
@@ -38,8 +38,7 @@ public class Murasama : Weapon {
             player.SetCollisionMaskValue(4, true);
         });
 
-        if (player.Multiplayer.GetPeers().Length != 0) {
+        if (player.Multiplayer.GetPeers().Length != 0)
             player.CheckPlayerHit(playerPosToMousePos);
-        }
     }
 }
