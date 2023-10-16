@@ -20,7 +20,7 @@ public partial class LevelTimer : Node {
         UI.LevelTime.Text = Math.Round(Time, 3).ToString() + "s";
     }
 
-    public override void _Input(InputEvent e) {
+    public override void _PhysicsProcess(double delta) {
         if (Input.IsActionPressed("Shoot")) {
             SetProcess(true);
             SetProcessInput(false);

@@ -29,3 +29,4 @@ minor changes:
 bug fixes:
 - fixed keyboards binds not being interpreted correctly
 - fixed 'disposal' bug
+- fixed timer bug: holding down respawn and shoot, releasing shoot then respawn, caused timer to not start
