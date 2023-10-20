@@ -8,6 +8,7 @@ public partial class Player : RigidBody2D, IPlayer {
     [Export] float MAXIMUM_VELOCITY = 4000f;
 
     PlayerManager PlayerManager;
+    ParticlesManager ParticlesManager;
     public PlayerUI UI;
     public Timer ActionTimer;
     Timer ReloadTimer;
@@ -32,6 +33,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         // node references
         PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
+        ParticlesManager = GetNode<ParticlesManager>("Particles");
         UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("Timers/ActionTimer");
         ReloadTimer = GetNode<Timer>("Timers/ReloadTimer");
@@ -74,6 +76,7 @@ public partial class Player : RigidBody2D, IPlayer {
         }
 
         Regen();
+        ParticlesManager.EmitGrinding(LinearVelocity.X);
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {

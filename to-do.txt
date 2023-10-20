@@ -9,6 +9,7 @@ alpha:
 - pause menu
 - music player
 - continuous multiplayer (dont have to reconnect after each match)
+- grinding particles when on ground
 
 
 beta:

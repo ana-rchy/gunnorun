@@ -56,6 +56,7 @@ public partial class KeybindButton : Button {
 	}
 
 	void Unbind() {
+		Input.ActionRelease(Name); // otherwise, action isnt released, shoots continuously after unbinding
 		InputMap.ActionEraseEvents(Name);
 	}
 

@@ -27,14 +27,14 @@ public class Murasama : Weapon {
         _ = player.UpdateHP(-25);
         player.ActionTimer.Start(Refire);
 
-        var particles = player.GetNode<GpuParticles2D>("Particles");
+        var particlesManager = player.GetNode<ParticlesManager>("Particles");
         Task.Run(async () => {
             player.SetCollisionMaskValue(4, false);
-            particles.SetDeferred("emitting", true);
+            particlesManager.MurasamaParticles.SetDeferred("emitting", true);
 
             await player.Sleep(0.3f);
             
-            particles.SetDeferred("emitting", false);
+            particlesManager.MurasamaParticles.SetDeferred("emitting", false);
             player.SetCollisionMaskValue(4, true);
         });
 
