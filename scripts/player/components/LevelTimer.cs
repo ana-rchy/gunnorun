@@ -2,9 +2,7 @@ using Godot;
 using System;
 
 public partial class LevelTimer : Node {
-    PlayerUI UI;
-
-    public double Time;
+    public static double Time { get; private set; }
 
     public override void _Ready() {
         if (Multiplayer.GetPeers().Length != 0) {
@@ -12,12 +10,12 @@ public partial class LevelTimer : Node {
         }
 
         SetProcess(false);
-        UI = GetNode<PlayerUI>("../../PlayerUI");
     }
 
     public override void _Process(double delta) {
         Time += delta;
-        UI.LevelTime.Text = Math.Round(Time, 3).ToString() + "s";
+        EmitSignal(SignalName.TimeChanged, Time);
+        // UI.LevelTime.Text = Math.Round(Time, 3).ToString() + "s";
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -32,9 +30,16 @@ public partial class LevelTimer : Node {
 
     public double StopTimer() {
         SetProcess(false);
-        Global.LastTime = Math.Round(Time, 3);
-        return Global.LastTime;
+        // Global.LastTime = Math.Round(Time, 3);
+        return Math.Round(Time, 3);
     }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    [Signal] public delegate void TimeChangedEventHandler(float newTime);
 
     #endregion
 }

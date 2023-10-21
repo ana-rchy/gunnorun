@@ -3,47 +3,51 @@ using System.Threading.Tasks;
 using System.Linq;
 using Godot;
 using static Godot.GD;
+using System.Diagnostics;
 
 public partial class Player : RigidBody2D, IPlayer {
-    [Export] float MAXIMUM_VELOCITY = 4000f;
-
-    PlayerManager PlayerManager;
-    ParticlesManager ParticlesManager;
-    public PlayerUI UI;
-    public Timer ActionTimer;
-    Timer ReloadTimer;
+    public Timer ActionTimer { get; private set; }
+    public Timer ReloadTimer { get; private set; }
     Timer RegenTimer;
-    RayCast2D Raycast;
+    public RayCast2D WeaponRaycast { get; private set; }
+    RayCast2D GroundRaycast;
 
-    public Weapon[] Weapons;
-    public Weapon CurrentWeapon;
-    public static int CurrentWeaponIndex = 0; // needed to perserve weapon choice, but not weapon data
+    const float MAXIMUM_VELOCITY = 4000f;
+    const int HP_REGEN = 5;
+    const float DEATH_TIME = 3f;
+
+    Weapon[] Weapons;
+    public Weapon CurrentWeapon { get; private set; }
+    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to perserve weapon choice, but w/o weapon data
     float MomentumMultiplier;
     int HP = 100;
 
-    public static Vector2 LastMousePos = new Vector2(0, 0);
-    public static Vector2 Debug_VelocitySoftCap = new Vector2(0, 0);
-    public static Single Debug_ReelbackStrength = 0f;
-    public static Vector2 Debug_StateVelocity = new Vector2(0, 0);
+    public static Vector2 LastMousePos { get; private set; } = new Vector2(0, 0);
+    public static (Vector2 StateVel, Vector2 VelSoftCap, Single ReelbackStrength) DebugData { get; private set; }
+        = (new Vector2(0, 0), new Vector2(0, 0), 0f);
+    // public static Vector2 Debug_VelocitySoftCap { get; private set; } = new Vector2(0, 0);
+    // public static Single Debug_ReelbackStrength { get; private set; } = 0f;
+    // public static Vector2 Debug_StateVelocity { get; private set; } = new Vector2(0, 0);
 
     public override void _Ready() {
-        // set player color
-        var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
-
         // node references
-        PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
-        ParticlesManager = GetNode<ParticlesManager>("Particles");
-        UI = GetNode<PlayerUI>("PlayerUI");
         ActionTimer = GetNode<Timer>("Timers/ActionTimer");
         ReloadTimer = GetNode<Timer>("Timers/ReloadTimer");
         RegenTimer = GetNode<Timer>("Timers/RegenTimer");
-        Raycast = GetNode<RayCast2D>("Raycast");
+        WeaponRaycast = GetNode<RayCast2D>("Raycasts/WeaponRaycast");
+        GroundRaycast = GetNode<RayCast2D>("Raycasts/GroundRaycast");
 
+        // signals
+        HPChanged += ChangeHP;
+
+        // set player color
+        var playerColor = Global.PlayerData.Color;
+        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).
+            SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
         // etc
         Weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = Weapons[CurrentWeaponIndex];
-        UI.ChangeWeapon(CurrentWeapon.Name);
+        EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
 
         if (Multiplayer.GetPeers().Length != 0) {
@@ -61,22 +65,25 @@ public partial class Player : RigidBody2D, IPlayer {
                 CurrentWeapon = Weapons[i-1];
                 CurrentWeaponIndex = i-1;
 
-                UI.ChangeWeapon(CurrentWeapon.Name);
+                EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
+                //UI.ChangeWeapon(CurrentWeapon.Name);
             }
         }
     }
 
     public override void _PhysicsProcess(double delta) {
-        var ammoNotEmpty = CurrentWeapon.Ammo > 0 || CurrentWeapon.Ammo == null;
-        
-        if (Input.IsActionJustPressed("Reload") && CurrentWeapon.Ammo != CurrentWeapon.BaseAmmo && ReloadTimer.IsStopped()) {
-            Reload(CurrentWeapon);
-        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && ammoNotEmpty && HP > 0) {
+        if (Input.IsActionJustPressed("Reload") && ReloadTimer.IsStopped()) {
+            CurrentWeapon.ReloadWeapon(this);
+        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && HP > 0) {
+            EmitSignal(SignalName.WeaponShot, this);
+            LastMousePos = GetGlobalMousePosition();
             CurrentWeapon.Shoot(this);
         }
 
         Regen();
-        ParticlesManager.EmitGrinding(LinearVelocity.X);
+        if (GroundRaycast.IsColliding())
+            EmitSignal(SignalName.OnGround);
+        //ParticlesManager.EmitGrinding(LinearVelocity.X);
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
@@ -85,11 +92,10 @@ public partial class Player : RigidBody2D, IPlayer {
             var reelbackStrength = 1 - ( 1 / (0.0000001f * state.LinearVelocity.DistanceTo(velocitySoftCap) + 1) ); // just plug this shit into desmos man
             state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, state.LinearVelocity.DistanceTo(velocitySoftCap) * reelbackStrength);
 
-            Debug_VelocitySoftCap = velocitySoftCap;
-            Debug_ReelbackStrength = reelbackStrength;
+            DebugData = (DebugData.StateVel, velocitySoftCap, reelbackStrength);
         }
 
-        Debug_StateVelocity = state.LinearVelocity;
+        DebugData = (state.LinearVelocity, DebugData.VelSoftCap, DebugData.ReelbackStrength);
     }
 
     #endregion
@@ -97,74 +103,100 @@ public partial class Player : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
-    async Task SpawnInvuln() {
+        async Task SpawnInvuln() {
         SetCollisionMaskValue(4, false);
         await this.Sleep(2f);
         SetCollisionMaskValue(4, true);
     }
 
-    public async Task UpdateHP(int change) {
+    public async void ChangeHP(int newHP) {
         if (HP <= 0) return;
-        
-        HP += change;
-        UI.HP.SetDeferred("text", HP.ToString());
+        HP = newHP;
 
         if (HP <= 0) {
-            UI.HP.SetDeferred("text", "ur dead lol");
-            await this.Sleep(3f);
+            EmitSignal(SignalName.OnDeath);
+            await this.Sleep(DEATH_TIME);
             HP = 100;
-            UI.HP.Text = HP.ToString();
             _ = SpawnInvuln();
         }
     }
 
     void Regen() {
         if (RegenTimer.IsStopped() && HP > 0 && HP < 100) {
-            _ = UpdateHP(5);
+            ChangeHP(HP + HP_REGEN);
             RegenTimer.Start();
         }
     }
 
-    async void Reload(Weapon reloadingWeapon) {
-        reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
+    // async void Reload(Weapon reloadingWeapon) {
+    //     reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
 
-        UI.Reload(reloadingWeapon.Name, reloadingWeapon.Reload);
-        ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
-        await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
+    //     UI.Reload(reloadingWeapon.Name, reloadingWeapon.Reload);
+    //     ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
+    //     await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
         
-        reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
-        UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
-    }
+    //     reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
+    //     UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
+    // }
 
-    public void ShootTracer(Vector2 playerPosToMousePos) {
-        var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
-        var tracer = tracerScene.Instantiate<Tracer>();
+    // public void ShootTracer(Vector2 playerPosToMousePos) {
+    //     var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
+    //     var tracer = tracerScene.Instantiate<Tracer>();
 
-        tracer.GlobalPosition = GlobalPosition;
-        tracer.Rotation = (new Vector2(0, 0)).AngleToPoint(playerPosToMousePos);
-        tracer.Range = CurrentWeapon.Range;
+    //     tracer.GlobalPosition = GlobalPosition;
+    //     tracer.Rotation = (new Vector2(0, 0)).AngleToPoint(playerPosToMousePos);
+    //     tracer.Range = CurrentWeapon.Range;
 
-        AddSibling(tracer);
+    //     AddSibling(tracer);
 
-        if (Multiplayer.GetPeers().Length != 0) {
-            PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
-        }
-    }
+    //     // if (Multiplayer.GetPeers().Length != 0) {
+    //     //     PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
+    //     // }
+    // }
 
-    public void CheckPlayerHit(Vector2 playerPosToMousePos) {
-        Raycast.TargetPosition = playerPosToMousePos.Normalized() * CurrentWeapon.Range;
-        Raycast.ForceRaycastUpdate();
+    // public void CheckPlayerHit(Vector2 playerPosToMousePos) {
+    //     WeaponRaycast.TargetPosition = playerPosToMousePos.Normalized() * CurrentWeapon.Range;
+    //     WeaponRaycast.ForceRaycastUpdate();
 
-        if (Raycast.IsColliding()) {
-            Node hitPlayer = (Node) Raycast.GetCollider();
+    //     if (WeaponRaycast.IsColliding()) {
+    //         Node hitPlayer = (Node) WeaponRaycast.GetCollider();
             
-            PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
+    //         PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
 
-            if (CurrentWeapon is Murasama) {
-                PlayerManager.Rpc(nameof(PlayerManager.Server_MurasamaIntangibility), long.Parse(hitPlayer.Name));
-            }
-        }
-    }
+    //         if (CurrentWeapon is Murasama) {
+    //             PlayerManager.Rpc(nameof(PlayerManager.Server_MurasamaIntangibility), long.Parse(hitPlayer.Name));
+    //         }
+    //     }
+    // }
+
+    // public async Task UpdateHP(int change) {
+    //     if (HP <= 0) return;
+        
+    //     HP += change;
+    //     UI.HP.SetDeferred("text", HP.ToString());
+
+    //     if (HP <= 0) {
+    //         UI.HP.SetDeferred("text", "ur dead lol");
+    //         await this.Sleep(3f);
+    //         HP = 100;
+    //         UI.HP.Text = HP.ToString();
+    //         _ = SpawnInvuln();
+    //     }
+    // }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    [Signal] public delegate void WeaponShotEventHandler(Player player);
+    [Signal] public delegate void WeaponReloadingEventHandler(string weaponName);
+    [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
+    [Signal] public delegate void AmmoChangedEventHandler(int newAmmo);
+    [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage);
+    [Signal] public delegate void HPChangedEventHandler(int newHP);
+    [Signal] public delegate void OnDeathEventHandler();
+    [Signal] public delegate void OnGroundEventHandler(float xVel);
 
     #endregion
 }

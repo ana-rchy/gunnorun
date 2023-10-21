@@ -112,19 +112,26 @@ script = ExtResource("4_ardvv")
 [node name="DebugRecorder" type="Node" parent="."]
 script = ExtResource("5_voyw7")
 
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="WeaponRaycast" type="RayCast2D" parent="Raycasts"]
+target_position = Vector2(0, 0)
+collision_mask = 8
+
+[node name="GroundRaycast" type="RayCast2D" parent="Raycasts"]
+target_position = Vector2(0, 110)
+hit_from_inside = true
+
 [node name="Particles" type="Node2D" parent="."]
 z_index = 1
 script = ExtResource("6_xmwqc")
 
 [node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
 position = Vector2(0, 105)
+emitting = false
 amount = 16
 process_material = SubResource("ParticleProcessMaterial_rclhy")
 fixed_fps = 60
-
-[node name="Raycast" type="RayCast2D" parent="Particles/GrindingParticles"]
-target_position = Vector2(0, 0)
-hit_from_inside = true
 
 [node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]
 emitting = false
@@ -152,10 +159,6 @@ zoom = Vector2(0.5, 0.5)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
-
-[node name="Raycast" type="RayCast2D" parent="."]
-target_position = Vector2(0, 0)
-collision_mask = 8
 
 [node name="Username" type="Label" parent="."]
 anchors_preset = 8

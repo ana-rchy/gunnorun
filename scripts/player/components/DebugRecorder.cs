@@ -11,9 +11,9 @@ public partial class DebugRecorder : Node {
     GC.Array<Vector2> VelocityList = new GC.Array<Vector2>();
     GC.Array<string> WeaponList = new GC.Array<string>();
 
+    GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
     GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
     GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
-    GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
 
     public override void _Ready() {
         Player = GetParent<Player>();
@@ -25,9 +25,9 @@ public partial class DebugRecorder : Node {
         VelocityList.Add(Player.LinearVelocity);
         WeaponList.Add(Player.CurrentWeapon.Name);
 
-        VelocityCapList.Add(Player.Debug_VelocitySoftCap);
-        ReelbackStrengthList.Add(Player.Debug_ReelbackStrength);
-        StateVelocityList.Add(Player.Debug_StateVelocity);
+        StateVelocityList.Add(Player.DebugData.StateVel);
+        VelocityCapList.Add(Player.DebugData.VelSoftCap);
+        ReelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
     }
 
     void _OnTreeExiting() {
@@ -37,9 +37,9 @@ public partial class DebugRecorder : Node {
             { "Velocities", VelocityList },
             { "Weapons", WeaponList },
 
+            { "StateVelocities", StateVelocityList },
             { "VelocityCaps", VelocityCapList },
-            { "ReelbackStrengths", ReelbackStrengthList },
-            { "StateVelocities", StateVelocityList }
+            { "ReelbackStrengths", ReelbackStrengthList }
         };
     }
 }

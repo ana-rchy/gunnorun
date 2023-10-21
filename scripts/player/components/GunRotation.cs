@@ -4,11 +4,9 @@ using static Godot.MultiplayerApi;
 
 public partial class GunRotation : AnimatedSprite2D {
     Node2D Parent;
-    PlayerManager PlayerManager;
 
     public override void _Ready() {
         Parent = GetParent<Node2D>();
-        PlayerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
     }
 
 
@@ -32,6 +30,14 @@ public partial class GunRotation : AnimatedSprite2D {
             Frame += 4;
         }
 
-        PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerFrameChanged), Frame);
+        EmitSignal(SignalName.PlayerFrameChanged, Frame);
+        // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerFrameChanged), Frame);
     }
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    [Signal] public delegate void PlayerFrameChangedEventHandler(int Frame);
+
+    #endregion
 }

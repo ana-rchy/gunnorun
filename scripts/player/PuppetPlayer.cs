@@ -21,7 +21,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    public async Task UpdateHP(int change) {
+    public async void ChangeHP(int change) {
         if (HP <= 0) return;
 
         var greenHP = GetNode<ColorRect>("GreenHP");

@@ -1,3 +1,3 @@
 public interface IPlayer {
-    public System.Threading.Tasks.Task UpdateHP(int change);
+    public void ChangeHP(int change);
 }
