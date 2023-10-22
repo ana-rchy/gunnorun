@@ -20,7 +20,7 @@ public abstract class Weapon {
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
         Ammo--;
-        player.EmitSignal(Player.SignalName.AmmoChanged, Ammo);
+        player.EmitSignal(Player.SignalName.AmmoChanged, Ammo == null ? -1 : (int) Ammo);
         ShootTracer(player, -mousePosToPlayerPos);
         player.ActionTimer.Start(Refire);
         // player.UI.UpdateAmmo(Name, Ammo);
