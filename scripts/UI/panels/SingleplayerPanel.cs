@@ -23,7 +23,7 @@ public partial class SingleplayerPanel : MainPanel {
         CheckImportedReplays();
         MapSelect.Selected = SelectedWorldIndex;
         ReplaySelect.Selected = SelectedReplayIndex;
-        if (LevelTimer.Time != 0) LastTime.Text = "last time: " + LevelTimer.Time.ToString() + "s";
+        if (LevelTimer.Time != 0) LastTime.Text = "last time: " + Math.Round(LevelTimer.Time, 3).ToString() + "s";
     }
 
     //---------------------------------------------------------------------------------//
@@ -102,6 +102,10 @@ public partial class SingleplayerPanel : MainPanel {
         Global.PlayerData.Color = color;
 
         GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor").Color = color;
+    }
+
+    void _OnSaveLastReplayPressed() {
+        CheckImportedReplays();
     }
 
     #endregion

@@ -9,7 +9,7 @@ public partial class ReplayRecorder : Node2D {
     GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
     GC.Array<sbyte> FramesList = new GC.Array<sbyte>();
     GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
-    public static Godot.Collections.Dictionary<string, Variant> LastReplayData { get; private set; } = null;
+    public static Godot.Collections.Dictionary<string, Variant> LastReplayData { get; private set; }
 
     public override void _Ready() {
         SetPhysicsProcess(false);
@@ -31,34 +31,11 @@ public partial class ReplayRecorder : Node2D {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    void StopRecording(double finalTime) {
-        SetPhysicsProcess(false);
-        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
-
-        if (!FileAccess.FileExists(timePath)) {
-            SaveReplay(finalTime);
-            return;
-        }
-
-        using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
-        var lastBestTime = timeFile.GetDouble();
-        
-        if (finalTime < lastBestTime) {
-            SaveReplay(finalTime);
-        }
-    }
-
-    void SaveReplay(double finalTime) {
+    void SaveReplay(double finishTime) {
         using var timeFile = FileAccess.Open("user://" + Global.CurrentWorld + "_time.gsd", FileAccess.ModeFlags.Write);
-        timeFile.StoreDouble(finalTime);
+        timeFile.StoreDouble(finishTime);
 
         using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld + "_best_replay.grp", FileAccess.ModeFlags.Write);
-        LastReplayData = new GC.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
-            { "World", Global.CurrentWorld },                                         // not when the scene is exited
-            { "Positions", PositionsList },                                           // ...only works sometimes
-            { "Frames", FramesList },
-            { "MousePositions", MousePositionsList }
-        };
         replayFile.StoreVar(LastReplayData);
     }
 
@@ -67,8 +44,27 @@ public partial class ReplayRecorder : Node2D {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    void _OnRaceFinished() {
-        StopRecording(LevelTimer.Time);
+    void _OnRaceFinished(float finishTime) {
+        SetPhysicsProcess(false);
+        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
+        LastReplayData = new GC.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
+            { "World", Global.CurrentWorld },                                         // not when the scene is exited
+            { "Positions", PositionsList },                                           // ...only works sometimes
+            { "Frames", FramesList },
+            { "MousePositions", MousePositionsList }
+        };
+
+        if (!FileAccess.FileExists(timePath)) {
+            SaveReplay(finishTime);
+            return;
+        }
+
+        using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
+        var lastBestTime = timeFile.GetDouble();
+        
+        if (finishTime < lastBestTime) {
+            SaveReplay(finishTime);
+        }
     }
 
     #endregion

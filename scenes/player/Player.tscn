@@ -176,4 +176,12 @@ theme_override_fonts/font = ExtResource("4_f6y2i")
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 
-[connection signal="tree_exiting" from="DebugRecorder" to="DebugRecorder" method="_OnTreeExiting"]
+[connection signal="HPChanged" from="." to="PlayerUI" method="_OnHPChanged"]
+[connection signal="OffGround" from="." to="Particles" method="_OffGround"]
+[connection signal="OnDeath" from="." to="PlayerUI" method="_OnDeath"]
+[connection signal="OnGround" from="." to="Particles" method="_OnGround"]
+[connection signal="WeaponChanged" from="." to="PlayerUI" method="_OnWeaponChanged"]
+[connection signal="WeaponReloading" from="." to="PlayerUI" method="_OnWeaponReloading"]
+[connection signal="WeaponShot" from="." to="PlayerUI" method="_OnWeaponShot"]
+[connection signal="WeaponShot" from="." to="Particles" method="_OnWeaponShot"]
+[connection signal="TimeChanged" from="Timers/LevelTimer" to="PlayerUI" method="_OnTimeChanged"]

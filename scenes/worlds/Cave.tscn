@@ -222,7 +222,12 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/4"]
 shape = SubResource("RectangleShape2D_xcvuo")
 
+[connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
 [connection signal="timeout" from="Markers/FinishTimer" to="Markers/Finish" method="_OnTimeout"]
+[connection signal="RaceFinished" from="Markers/Finish" to="Player/PlayerUI" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Finish" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Finish" to="Player/ReplayRecorder" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Finish" to="Player/DebugRecorder" method="_OnRaceFinished"]
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
 
 [editable path="Player"]

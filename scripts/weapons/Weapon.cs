@@ -15,14 +15,15 @@ public abstract class Weapon {
     protected float Refire;
 
     public virtual void Shoot(Player player) {
-        player.EmitSignal(Player.SignalName.WeaponShot, Name, Ammo == null ? -1 : (int) Ammo);
+        if (Ammo <= 0) return;
+        Ammo--;
+        player.EmitSignal(Player.SignalName.WeaponShot, player);
 
         var mousePosToPlayerPos = Player.LastMousePos.DirectionTo(player.GlobalPosition);
         player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, mousePosToPlayerPos))
             + mousePosToPlayerPos.Normalized() * Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
-        Ammo--;
         ShootTracer(player, -mousePosToPlayerPos);
         player.ActionTimer.Start(Refire);
         // player.UI.UpdateAmmo(Name, Ammo);
@@ -63,7 +64,7 @@ public abstract class Weapon {
         if (player.WeaponRaycast.IsColliding()) {
             Node hitPlayer = (Node) player.WeaponRaycast.GetCollider();
             
-            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), Damage);
+            // player.EmitSignal(Player.SignalName.OtherPlayerHit, this, long.Parse(hitPlayer.Name));
             // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), player.CurrentWeapon.Damage);
 
             // if (player.CurrentWeapon is Murasama) {
@@ -77,7 +78,7 @@ public abstract class Weapon {
             return;
         }
 
-        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload);
+        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload, (int) BaseAmmo);
         Ammo = 0; // prevent firing remaining ammo while reloading
 
         player.ReloadTimer.Start(); // prevent reloading in quick succession, and reloading 2+ weapons

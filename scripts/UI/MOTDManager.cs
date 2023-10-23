@@ -155,8 +155,8 @@ public partial class MOTDManager : RichTextLabel {
 			if (e is ObjectDisposedException) {
 				GD.Print("bad object dispose :(");
 			} else {
-				throw e;
-			}
+                throw;
+            }
 		}
 	}
 

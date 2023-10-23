@@ -30,8 +30,8 @@ public partial class LevelTimer : Node {
 
     [Signal] public delegate void TimeChangedEventHandler(float newTime);
 
-    void _OnRaceFinished() {
-        SetProcess(false);
+    void _OnRaceFinished(float finishTime) {
+        ProcessMode = ProcessModeEnum.Disabled;
     }
 
     #endregion

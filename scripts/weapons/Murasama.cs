@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Godot;
 
 public class Murasama : Weapon {
+    public float IntangibilityTime { get; } = 0.3f;
+
     public Murasama() {
         Name = "Murasama";
 
@@ -18,14 +20,14 @@ public class Murasama : Weapon {
     }
 
     public override void Shoot(Player player) {
-        player.EmitSignal(Player.SignalName.WeaponShot, Name, Ammo == null ? -1 : (int) Ammo);
+        player.EmitSignal(Player.SignalName.WeaponShot, player);
         
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player.LastMousePos);
         player.LinearVelocity = (0.5f * player.LinearVelocity.DistanceTo(new Vector2(0, 0)) * playerPosToMousePos.Normalized())
             + playerPosToMousePos.Normalized() * Knockback;
         // ^ transfer 0.5 of previous speed into the new direction, and add on regular knock"back"
 
-        player.ChangeHP(-25);
+        player.ChangeHP(player.GetHP() - 25);
         player.ActionTimer.Start(Refire);
 
         // replace with receiving signal in particlesmanager script

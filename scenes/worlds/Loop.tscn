@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://dflb1cnqx5kf4"]
+[gd_scene load_steps=14 format=3 uid="uid://dflb1cnqx5kf4"]
 
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="1_kqj1u"]
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_msmq3"]
-[ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_wx2k6"]
 [ext_resource type="Texture2D" uid="uid://2dl0phwjpjvj" path="res://sprites/tilesheets/loop.png" id="4_8w57p"]
 [ext_resource type="Script" path="res://scripts/environment/Lap.cs" id="4_8wsru"]
 [ext_resource type="Script" path="res://scripts/environment/Checkpoints.cs" id="4_lm84s"]
@@ -60,8 +59,6 @@ position = Vector2(0, -745)
 
 [node name="ReplayPlayer" parent="." instance=ExtResource("2_msmq3")]
 position = Vector2(0, -745)
-
-[node name="ExtraUI" parent="." instance=ExtResource("2_wx2k6")]
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(10, 10)
@@ -125,5 +122,13 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/3"]
 shape = SubResource("RectangleShape2D_jsnbf")
 
+[connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
 [connection signal="timeout" from="Markers/FinishTimer" to="Markers/Lap" method="_OnTimeout"]
+[connection signal="LapPassed" from="Markers/Lap" to="Player/PlayerUI" method="_OnLapPassed"]
+[connection signal="RaceFinished" from="Markers/Lap" to="Player/PlayerUI" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Lap" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Lap" to="Player/ReplayRecorder" method="_OnRaceFinished"]
+[connection signal="RaceFinished" from="Markers/Lap" to="Player/DebugRecorder" method="_OnRaceFinished"]
 [connection signal="body_entered" from="Markers/Lap" to="Markers/Lap" method="_OnPlayerEntered"]
+
+[editable path="Player"]

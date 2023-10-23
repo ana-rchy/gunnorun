@@ -36,17 +36,18 @@ public partial class Player : RigidBody2D, IPlayer {
         GroundRaycast = GetNode<RayCast2D>("Raycasts/GroundRaycast");
 
         // signals
-        HPChanged += ChangeHP;
+        if (Multiplayer.GetPeers().Length != 0) {
+            var playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
+        }
 
-        // set player color
-        var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).
-            SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
         // etc
         Weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = Weapons[CurrentWeaponIndex];
         EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
+        var playerColor = Global.PlayerData.Color;
+        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).
+            SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
@@ -79,7 +80,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         Regen();
         if (GroundRaycast.IsColliding()) {
-            EmitSignal(SignalName.OnGround);
+            EmitSignal(SignalName.OnGround, LinearVelocity.X);
         } else {
             EmitSignal(SignalName.OffGround);
         }
@@ -115,6 +116,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     public async void ChangeHP(int newHP) {
         if (HP <= 0) return;
+        EmitSignal(SignalName.HPChanged, newHP);
         HP = newHP;
 
         if (HP <= 0) {
@@ -194,9 +196,9 @@ public partial class Player : RigidBody2D, IPlayer {
     #region | signals
 
     [Signal] public delegate void WeaponShotEventHandler(Player player);
-    [Signal] public delegate void WeaponReloadingEventHandler(string weaponName);
+    [Signal] public delegate void WeaponReloadingEventHandler(string weaponName, float reloadTime, int baseAmmo);
     [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
-    [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage);
+    [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
     [Signal] public delegate void OnDeathEventHandler(float deathTime);
     [Signal] public delegate void OnGroundEventHandler(float xVel);

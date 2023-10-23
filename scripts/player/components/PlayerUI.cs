@@ -7,7 +7,6 @@ public partial class PlayerUI : Node {
 	Label LapCounter;
 	Label HP;
 	Label CurrentWeapon = null;
-	
 
 	public override void _Ready() {
 		LevelTime = GetNode<Label>("Control/LevelTime");
@@ -25,21 +24,22 @@ public partial class PlayerUI : Node {
 	//---------------------------------------------------------------------------------//
 	#region | signals
 
-	void _OnWeaponShot(string weaponName, int ammo) {
-		if ((ammo == -1 ? null : ammo) == null) return;
+	void _OnWeaponShot(Player player) {
+		if (player.CurrentWeapon.Ammo == null) return;
 
 		try {
-			GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = ammo.ToString();
+			GetNode<Label>("Control/Weapons/" + player.CurrentWeapon.Name + "/Ammo").Text
+				= player.CurrentWeapon.Ammo.ToString();
 		} catch (Exception e) {
 			if (e is ObjectDisposedException) {
 				GD.Print("bad object dispose :(");
 			} else {
-				throw e;
+				throw;
 			}
 		}
 	}
 
-	async void _OnWeaponReloading(string weaponName, float reloadTime) {
+	async void _OnWeaponReloading(string weaponName, float reloadTime, int BaseAmmo) {
 		var progressBar = GetNode<ProgressBar>("Control/Weapons/" + weaponName + "/ProgressBar");
 		progressBar.Show();
 
@@ -54,9 +54,11 @@ public partial class PlayerUI : Node {
 			if (e is ObjectDisposedException) {
 				GD.Print("bad object dispose :(");
 			} else {
-				throw e;
+				throw;
 			}
 		}
+
+		GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = BaseAmmo.ToString();
 	}
 
 	void _OnWeaponChanged(string weaponName) {
@@ -73,6 +75,10 @@ public partial class PlayerUI : Node {
 	void _OnTimeChanged(float newTime) {
 		LevelTime.Text = Math.Round(newTime, 3).ToString() + "s";
 	}
+
+	void _OnHPChanged(int newHP) {
+		HP.Text = newHP.ToString();
+	}
 	
 	async void _OnDeath(float deathTime) {
 		HP.Text = "ur dead lol";
@@ -85,9 +91,9 @@ public partial class PlayerUI : Node {
 	}
 
 	public void _OnRaceFinished(float finishTime) {
-		var raceFinishUI = GetNode<Control>("RaceFinish");
+		var raceFinishUI = GetNode<Control>("Control/RaceFinish");
 		raceFinishUI.Show();
-		raceFinishUI.GetNode<Label>("Label").Text = finishTime.ToString() + "s";
+		raceFinishUI.GetNode<Label>("Label").Text = Math.Round(finishTime, 3).ToString() + "s";
 
 		GetNode<Timer>(Global.WORLD_PATH + "Markers/FinishTimer").Start();
 	}

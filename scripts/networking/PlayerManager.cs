@@ -31,7 +31,7 @@ public partial class PlayerManager : Node {
     [Rpc(RpcMode.AnyPeer)] public void Server_PlayerHit(long id, int damage) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_TracerShot(float rotation, float range) {}
     [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(byte frame) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_MurasamaIntangibility(long id) {}
+    [Rpc(RpcMode.AnyPeer)] public void Server_Intangibility(long id, float time) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -90,6 +90,16 @@ public partial class PlayerManager : Node {
         Task.Run(() => {
             _ = player.Intangibility(MURASAMA_INTAGIBILITY_TIME);
         });
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    public void _OnOtherPlayerHit(Weapon weapon, long playerID) {
+        if (weapon.Name == "Murasama")
+            Rpc(nameof(Server_Intangibility));
     }
 
     #endregion

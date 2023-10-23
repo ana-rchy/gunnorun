@@ -15,7 +15,7 @@ public partial class DebugRecorder : Node {
     GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
     GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
 
-    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; } = null;
+    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; }
 
     public override void _Ready() {
         Player = GetParent<Player>();
@@ -31,8 +31,11 @@ public partial class DebugRecorder : Node {
         VelocityCapList.Add(Player.DebugData.VelSoftCap);
         ReelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
     }
+    
+    //---------------------------------------------------------------------------------//
+	#region | signals
 
-    void _OnTreeExiting() {
+    void _OnRaceFinished(float finishTime) {
         LastDebugData = new GC.Dictionary<string, Variant>() {
             { "Positions", PositionsList },
             { "MousePositions", MousePositionsList },
@@ -44,4 +47,6 @@ public partial class DebugRecorder : Node {
             { "ReelbackStrengths", ReelbackStrengthList }
         };
     }
+
+    #endregion
 }
