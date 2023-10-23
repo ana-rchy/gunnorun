@@ -1,9 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 using Godot;
-using static Godot.GD;
-using System.Diagnostics;
 
 public partial class Player : RigidBody2D, IPlayer {
     public Timer ActionTimer { get; private set; }
@@ -13,6 +10,7 @@ public partial class Player : RigidBody2D, IPlayer {
     RayCast2D GroundRaycast;
 
     const float MAXIMUM_VELOCITY = 4000f;
+    const float SPAWN_INTANGIBILITY_TIME = 2f;
     const int HP_REGEN = 5;
     const float DEATH_TIME = 3f;
 
@@ -20,7 +18,7 @@ public partial class Player : RigidBody2D, IPlayer {
     public Weapon CurrentWeapon { get; private set; }
     public static int CurrentWeaponIndex { get; private set; } = 0; // needed to perserve weapon choice, but w/o weapon data
     float MomentumMultiplier;
-    int HP = 100;
+    public int HP { get; private set; } = 100;
 
     public static Vector2 LastMousePos { get; private set; } = new Vector2(0, 0);
     public static (Vector2 StateVel, Vector2 VelSoftCap, Single ReelbackStrength) DebugData { get; private set; }
@@ -52,7 +50,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
-            Task.Run(SpawnInvuln);
+            Task.Run(() => Intangibility(SPAWN_INTANGIBILITY_TIME));
         }
     }
 
@@ -75,14 +73,16 @@ public partial class Player : RigidBody2D, IPlayer {
         if (Input.IsActionJustPressed("Reload") && ReloadTimer.IsStopped()) {
             CurrentWeapon.ReloadWeapon(this);
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && HP > 0) {
-            EmitSignal(SignalName.WeaponShot, this);
             LastMousePos = GetGlobalMousePosition();
             CurrentWeapon.Shoot(this);
         }
 
         Regen();
-        if (GroundRaycast.IsColliding())
+        if (GroundRaycast.IsColliding()) {
             EmitSignal(SignalName.OnGround);
+        } else {
+            EmitSignal(SignalName.OffGround);
+        }
         //ParticlesManager.EmitGrinding(LinearVelocity.X);
     }
 
@@ -103,10 +103,14 @@ public partial class Player : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | main funcs
 
-        async Task SpawnInvuln() {
+    public async Task Intangibility(float time) {
         SetCollisionMaskValue(4, false);
-        await this.Sleep(2f);
+        await this.Sleep(time);
         SetCollisionMaskValue(4, true);
+    }
+
+    public int GetHP() {
+        return HP;
     }
 
     public async void ChangeHP(int newHP) {
@@ -114,10 +118,10 @@ public partial class Player : RigidBody2D, IPlayer {
         HP = newHP;
 
         if (HP <= 0) {
-            EmitSignal(SignalName.OnDeath);
+            EmitSignal(SignalName.OnDeath, DEATH_TIME);
             await this.Sleep(DEATH_TIME);
             HP = 100;
-            _ = SpawnInvuln();
+            _ = Intangibility(SPAWN_INTANGIBILITY_TIME);
         }
     }
 
@@ -192,11 +196,15 @@ public partial class Player : RigidBody2D, IPlayer {
     [Signal] public delegate void WeaponShotEventHandler(Player player);
     [Signal] public delegate void WeaponReloadingEventHandler(string weaponName);
     [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
-    [Signal] public delegate void AmmoChangedEventHandler(int newAmmo);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
-    [Signal] public delegate void OnDeathEventHandler();
+    [Signal] public delegate void OnDeathEventHandler(float deathTime);
     [Signal] public delegate void OnGroundEventHandler(float xVel);
+    [Signal] public delegate void OffGroundEventHandler();
+
+    void _OnReplayOnly() {
+        QueueFree();
+    }
 
     #endregion
 }

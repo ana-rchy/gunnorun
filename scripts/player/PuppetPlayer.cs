@@ -6,7 +6,7 @@ using static Godot.GD;
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     double Timer;
     public Vector2 PuppetPosition;
-    int HP = 100;
+    public int HP { get; private set; } = 100;
 
     public override void _PhysicsProcess(double delta) {
         if (Timer >= Global.TICK_RATE) {
@@ -21,12 +21,16 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    public async void ChangeHP(int change) {
+    public int GetHP() {
+        return HP;
+    }
+
+    public async void ChangeHP(int newHP) {
         if (HP <= 0) return;
 
         var greenHP = GetNode<ColorRect>("GreenHP");
 
-        HP += change;
+        HP = newHP;
         greenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
 
         if (HP <= 0) {
@@ -41,6 +45,21 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         SetCollisionLayerValue(2, false);
         await this.Sleep(2f);
         SetCollisionLayerValue(2, true);
+    }
+
+    public void SpawnTracer(float rotation, float range) {
+        var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
+        var tracer = tracerScene.Instantiate<Tracer>();
+
+        tracer.GlobalPosition = GlobalPosition;
+        tracer.Rotation = rotation;
+        tracer.Range = range;
+
+        var tracerArea = tracer.GetNode<Area2D>("Area2D");
+        tracerArea.SetCollisionMaskValue(4, false);
+        tracerArea.SetCollisionMaskValue(2, true);
+
+        GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
     #endregion

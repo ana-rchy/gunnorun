@@ -18,6 +18,8 @@ public class Murasama : Weapon {
     }
 
     public override void Shoot(Player player) {
+        player.EmitSignal(Player.SignalName.WeaponShot, Name, Ammo == null ? -1 : (int) Ammo);
+        
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player.LastMousePos);
         player.LinearVelocity = (0.5f * player.LinearVelocity.DistanceTo(new Vector2(0, 0)) * playerPosToMousePos.Normalized())
             + playerPosToMousePos.Normalized() * Knockback;

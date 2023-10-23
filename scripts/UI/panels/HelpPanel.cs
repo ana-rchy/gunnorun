@@ -28,7 +28,7 @@ public partial class HelpPanel : Panel {
 
     void _OnSaveDebug() {
         using var debugFile = FileAccess.Open("user://replays/debug/debug_replay.gdr", FileAccess.ModeFlags.Write);
-        debugFile.StoreVar(Global.LastDebugData);
+        debugFile.StoreVar(DebugRecorder.LastDebugData);
     }
 
     void _OnViewDebug() {

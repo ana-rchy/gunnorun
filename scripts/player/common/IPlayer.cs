@@ -1,3 +1,4 @@
 public interface IPlayer {
-    public void ChangeHP(int change);
+    int GetHP();
+    void ChangeHP(int newHP);
 }

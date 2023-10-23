@@ -9,18 +9,20 @@ public abstract class Weapon {
     protected int Damage;
     protected float Range;
 
-    protected int? Ammo, BaseAmmo;
+    public int? Ammo { get; protected set; }
+    protected int? BaseAmmo;
     protected float Reload;
     protected float Refire;
 
     public virtual void Shoot(Player player) {
+        player.EmitSignal(Player.SignalName.WeaponShot, Name, Ammo == null ? -1 : (int) Ammo);
+
         var mousePosToPlayerPos = Player.LastMousePos.DirectionTo(player.GlobalPosition);
         player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, mousePosToPlayerPos))
             + mousePosToPlayerPos.Normalized() * Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
         Ammo--;
-        player.EmitSignal(Player.SignalName.AmmoChanged, Ammo == null ? -1 : (int) Ammo);
         ShootTracer(player, -mousePosToPlayerPos);
         player.ActionTimer.Start(Refire);
         // player.UI.UpdateAmmo(Name, Ammo);
@@ -75,7 +77,7 @@ public abstract class Weapon {
             return;
         }
 
-        player.EmitSignal(Player.SignalName.WeaponReloading, Name);
+        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload);
         Ammo = 0; // prevent firing remaining ammo while reloading
 
         player.ReloadTimer.Start(); // prevent reloading in quick succession, and reloading 2+ weapons

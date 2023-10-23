@@ -1,7 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://bd12xd7fnj35o"]
+[gd_scene load_steps=15 format=3 uid="uid://bd12xd7fnj35o"]
 
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_7rigj"]
-[ext_resource type="PackedScene" uid="uid://vm8p6ovoxsy4" path="res://scenes/UI/RaceFinUI.tscn" id="2_286pq"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
 [ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="4_gbq3f"]
@@ -155,8 +154,6 @@ position = Vector2(191, 535)
 [node name="ReplayPlayer" parent="." instance=ExtResource("2_7rigj")]
 position = Vector2(191, 535)
 
-[node name="ExtraUI" parent="." instance=ExtResource("2_286pq")]
-
 [node name="TileMap" type="TileMap" parent="."]
 texture_filter = 1
 position = Vector2(-2, 0)
@@ -227,3 +224,5 @@ shape = SubResource("RectangleShape2D_xcvuo")
 
 [connection signal="timeout" from="Markers/FinishTimer" to="Markers/Finish" method="_OnTimeout"]
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
+
+[editable path="Player"]

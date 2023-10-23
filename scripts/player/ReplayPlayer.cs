@@ -36,7 +36,8 @@ public partial class ReplayPlayer : Node2D {
         SetPhysicsProcess(false);
 
         if (Global.ReplayOnly == true) {
-            GetNode(Global.WORLD_PATH + "Player").QueueFree();
+            EmitSignal(SignalName.ReplayOnly);
+            // GetNode(Global.WORLD_PATH + "Player").QueueFree();
             Crosshair.Show();
 
             AddReplayOnlyCamera();
@@ -52,21 +53,21 @@ public partial class ReplayPlayer : Node2D {
     //---------------------------------------------------------------------------------//
     #region | loop
 
-    int _replayFileIndex = 0;
+    int _replayDataIndex = 0;
     public override void _PhysicsProcess(double delta) {
-        if (_replayFileIndex >= PositionsList.Count && Global.ReplayOnly == false) {
+        if (_replayDataIndex >= PositionsList.Count && Global.ReplayOnly == false) {
             SetPhysicsProcess(false);
             GetNode<Sprite2D>("FinishMarker").Show();
             return;
-        } else if (_replayFileIndex >= PositionsList.Count) {
-            _replayFileIndex = 0;
+        } else if (_replayDataIndex >= PositionsList.Count) {
+            _replayDataIndex = 0;
         }
 
-        Position = PositionsList[_replayFileIndex];
-        Sprite.Frame = FramesList[_replayFileIndex];
-        Crosshair.GlobalPosition = MousePositionsList[_replayFileIndex];
+        Position = PositionsList[_replayDataIndex];
+        Sprite.Frame = FramesList[_replayDataIndex];
+        Crosshair.GlobalPosition = MousePositionsList[_replayDataIndex];
 
-        _replayFileIndex++;
+        _replayDataIndex++;
     }
 
     #endregion
@@ -90,5 +91,12 @@ public partial class ReplayPlayer : Node2D {
         MousePositionsList = (GC.Array<Vector2>) dictionary["MousePositions"];
     }
 
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signal
+
+    [Signal] public delegate void ReplayOnlyEventHandler();
+    
     #endregion
 }

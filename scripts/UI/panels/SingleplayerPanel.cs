@@ -3,8 +3,8 @@ using System.Linq;
 using Godot;
 
 public partial class SingleplayerPanel : MainPanel {
-    public static int SelectedWorldIndex = 0;
-    public static int SelectedReplayIndex = 0;
+    public static int SelectedWorldIndex { get; private set; } = 0;
+    public static int SelectedReplayIndex { get; private set; } = 0;
 
     OptionButton MapSelect;
     OptionButton ReplaySelect;
@@ -23,14 +23,47 @@ public partial class SingleplayerPanel : MainPanel {
         CheckImportedReplays();
         MapSelect.Selected = SelectedWorldIndex;
         ReplaySelect.Selected = SelectedReplayIndex;
-        if (Global.LastTime != 0) LastTime.Text = "last time: " + Global.LastTime.ToString() + "s";
+        if (LevelTimer.Time != 0) LastTime.Text = "last time: " + LevelTimer.Time.ToString() + "s";
     }
 
     //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    void UpdateBestTime() {
+        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
+        if (FileAccess.FileExists(timePath)) {
+            using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
+            BestTime.Text = "best time: " + timeFile.GetDouble().ToString() + "s";
+        } else {
+            BestTime.Text = "";
+        }
+    }
+
+    void CheckImportedReplays() {
+        var allFiles = DirAccess.GetFilesAt("user://imported_replays/");
+        var replayFiles = allFiles.Where( file => file.EndsWith(".grp") );
+
+        var currentMapReplays = replayFiles.Where( replay => {
+            var replayFile = FileAccess.Open("user://imported_replays/" + replay, FileAccess.ModeFlags.Read);
+            var replayData = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
+            var worldName = replayData["World"];
+
+            return (string) worldName == Global.CurrentWorld;
+        });
+
+        ReplaySelect.Clear();
+        ReplaySelect.AddItem("best time");
+        foreach (var replayName in currentMapReplays) {
+            ReplaySelect.AddItem(replayName);
+        }
+    }
+
+    #endregion
+
+        //---------------------------------------------------------------------------------//
     #region | signals
 
-    void _OnSingleplayerPressed() {
-        Multiplayer.MultiplayerPeer = new OfflineMultiplayerPeer();        
+    void _OnSingleplayerPressed() {    
         Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
     }
 
@@ -69,40 +102,6 @@ public partial class SingleplayerPanel : MainPanel {
         Global.PlayerData.Color = color;
 
         GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor").Color = color;
-    }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
-    #region | funcs
-
-    void UpdateBestTime() {
-        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
-        if (FileAccess.FileExists(timePath)) {
-            using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
-            BestTime.Text = "best time: " + timeFile.GetDouble().ToString() + "s";
-        } else {
-            BestTime.Text = "";
-        }
-    }
-
-    void CheckImportedReplays() {
-        var allFiles = DirAccess.GetFilesAt("user://imported_replays/");
-        var replayFiles = allFiles.Where( file => file.EndsWith(".grp") );
-
-        var currentMapReplays = replayFiles.Where( replay => {
-            var replayFile = FileAccess.Open("user://imported_replays/" + replay, FileAccess.ModeFlags.Read);
-            var replayData = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
-            var worldName = replayData["World"];
-
-            return (string) worldName == Global.CurrentWorld;
-        });
-
-        ReplaySelect.Clear();
-        ReplaySelect.AddItem("best time");
-        foreach (var replayName in currentMapReplays) {
-            ReplaySelect.AddItem(replayName);
-        }
     }
 
     #endregion

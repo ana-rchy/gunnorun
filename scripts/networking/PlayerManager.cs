@@ -8,6 +8,22 @@ using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class PlayerManager : Node {
+    const float MURASAMA_INTAGIBILITY_TIME = 0.3f;
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
+        var newPlayer = Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
+        GetNode(Global.WORLD_PATH).CallDeferred("add_child", newPlayer);
+
+        newPlayer.Name = id.ToString();
+        newPlayer.GetNode<Label>("Username").Text = username;
+        ((ShaderMaterial) newPlayer.GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+    }
+
+    #endregion
+
     //---------------------------------------------------------------------------------//
     #region | rpc
 
@@ -33,22 +49,24 @@ public partial class PlayerManager : Node {
 
     [Rpc] void Client_PlayerHit(long id, int damage) {     
         var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
-        player.UpdateHP(-damage);
+        player.ChangeHP(player.GetHP() - damage);
     }
 
     [Rpc] void Client_TracerShot(long id, float rotation, float range) {
-        var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
-        var tracer = tracerScene.Instantiate<Tracer>();
+        GetNode<PuppetPlayer>(Global.WORLD_PATH + id.ToString()).SpawnTracer(rotation, range);
 
-        tracer.GlobalPosition = GetNode<Node2D>(Global.WORLD_PATH + id.ToString()).GlobalPosition;
-        tracer.Rotation = rotation;
-        tracer.Range = range;
+        // var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
+        // var tracer = tracerScene.Instantiate<Tracer>();
 
-        var tracerArea = tracer.GetNode<Area2D>("Area2D");
-        tracerArea.SetCollisionMaskValue(4, false);
-        tracerArea.SetCollisionMaskValue(2, true);
+        // tracer.GlobalPosition = GetNode<Node2D>(Global.WORLD_PATH + id.ToString()).GlobalPosition;
+        // tracer.Rotation = rotation;
+        // tracer.Range = range;
 
-        GetNode(Global.WORLD_PATH).AddChild(tracer);
+        // var tracerArea = tracer.GetNode<Area2D>("Area2D");
+        // tracerArea.SetCollisionMaskValue(4, false);
+        // tracerArea.SetCollisionMaskValue(2, true);
+
+        // GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
@@ -60,31 +78,18 @@ public partial class PlayerManager : Node {
     }
 
     [Rpc] void Client_LapChanged(int lap, int maxLaps) {
-        var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + Multiplayer.GetUniqueId() + "/PlayerUI").LapCounter;
-        lapCounter.Text = "lap " + lap.ToString() + "/" + maxLaps.ToString();
+        var lapManager = GetNode<Lap>(Global.WORLD_PATH + "Markers/Lap");
+        lapManager.EmitSignal(Lap.SignalName.LapPassed, lap, maxLaps);
+
+        // var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + Multiplayer.GetUniqueId() + "/PlayerUI").LapCounter;
+        // lapCounter.Text = "lap " + lap.ToString() + "/" + maxLaps.ToString();
     }
 
     [Rpc] void Client_MurasamaIntangibility() {
-        var player = GetNode<RigidBody2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId().ToString());
-        Task.Run(async () => {
-            player.SetCollisionMaskValue(4, false);
-            await this.Sleep(0.3f);
-            player.SetCollisionMaskValue(4, true);
+        var player = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId().ToString());
+        Task.Run(() => {
+            _ = player.Intangibility(MURASAMA_INTAGIBILITY_TIME);
         });
-    }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
-    #region | funcs
-
-    public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
-        var newPlayer = Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
-        GetNode(Global.WORLD_PATH).CallDeferred("add_child", newPlayer);
-
-        newPlayer.Name = id.ToString();
-        newPlayer.GetNode<Label>("Username").Text = username;
-        ((ShaderMaterial) newPlayer.GetNode<AnimatedSprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
     }
 
     #endregion

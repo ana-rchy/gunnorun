@@ -26,20 +26,13 @@ public partial class LevelTimer : Node {
     }
 
     //---------------------------------------------------------------------------------//
-    #region | funcs
-
-    public double StopTimer() {
-        SetProcess(false);
-        // Global.LastTime = Math.Round(Time, 3);
-        return Math.Round(Time, 3);
-    }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
     #region | signals
 
     [Signal] public delegate void TimeChangedEventHandler(float newTime);
+
+    void _OnRaceFinished() {
+        SetProcess(false);
+    }
 
     #endregion
 }

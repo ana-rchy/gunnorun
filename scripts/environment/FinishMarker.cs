@@ -2,19 +2,21 @@ using System;
 using Godot;
 
 public partial class FinishMarker : Node {
+    [Signal] public delegate void RaceFinishedEventHandler();
+    
     void _OnPlayerEntered(Node2D player) {
         if (Checkpoints.UnpassedCheckpoints.Count == 0) {
-            var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
-            var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
+            EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
 
-            var time = levelTimer.StopTimer();
+            // var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
+            // var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
-            extraUI.Show();
-            extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
+            // var time = levelTimer.StopTimer();
 
-            player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
+            // extraUI.Show();
+            // extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
 
-            GetNode<Timer>("../FinishTimer").Start();
+            // player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
         }
     }
 

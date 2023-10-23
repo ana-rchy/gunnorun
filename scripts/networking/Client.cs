@@ -7,6 +7,22 @@ using MsgPack.Serialization;
 
 public partial class Client : Node {
 	//---------------------------------------------------------------------------------//
+	#region | funcs
+
+	public void JoinServer(string ip, int port) {
+		var peer = new ENetMultiplayerPeer();
+		peer.CreateClient(ip, port);
+		Multiplayer.MultiplayerPeer = peer;
+	}
+
+	public void LeaveServer() {
+		Multiplayer.MultiplayerPeer.Close();
+		GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
+	}
+
+	#endregion
+
+	//---------------------------------------------------------------------------------//
 	#region | rpc
 
 	[Rpc(RpcMode.AnyPeer)] void Server_NewPlayerData(string username, Color color) {}
@@ -37,22 +53,6 @@ public partial class Client : Node {
 		} else if (gameState == "Ingame") {
 			GetNode(Global.WORLD_PATH + id).QueueFree();
 		}
-	}
-
-	#endregion
-
-	//---------------------------------------------------------------------------------//
-	#region | funcs
-
-	public void JoinServer(string ip, int port) {
-		var peer = new ENetMultiplayerPeer();
-		peer.CreateClient(ip, port);
-		Multiplayer.MultiplayerPeer = peer;
-	}
-
-	public void LeaveServer() {
-		Multiplayer.MultiplayerPeer.Close();
-		GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
 	}
 
 	#endregion

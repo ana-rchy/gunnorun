@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Menu : Node {
-	public static int SelectedTab = 0;
+	static int SelectedTab = 0;
 
 	public override void _Ready() {
 		GetNode<TabContainer>("TabContainer").CurrentTab = SelectedTab;
@@ -17,9 +17,9 @@ public partial class Menu : Node {
 	}
 
 	void _OnSaveLastReplayPressed() {
-		if (Global.LastReplayData != null) {
+		if (ReplayRecorder.LastReplayData != null) {
 			using var replayFile = FileAccess.Open("user://imported_replays/saved_replay.grp", FileAccess.ModeFlags.Write);
-			replayFile.StoreVar(Global.LastReplayData);
+			replayFile.StoreVar(ReplayRecorder.LastReplayData);
 		}
 	}
 

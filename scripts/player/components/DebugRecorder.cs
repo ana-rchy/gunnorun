@@ -15,6 +15,8 @@ public partial class DebugRecorder : Node {
     GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
     GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
 
+    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; } = null;
+
     public override void _Ready() {
         Player = GetParent<Player>();
     }
@@ -31,7 +33,7 @@ public partial class DebugRecorder : Node {
     }
 
     void _OnTreeExiting() {
-        Global.LastDebugData = new GC.Dictionary<string, Variant>() {
+        LastDebugData = new GC.Dictionary<string, Variant>() {
             { "Positions", PositionsList },
             { "MousePositions", MousePositionsList },
             { "Velocities", VelocityList },

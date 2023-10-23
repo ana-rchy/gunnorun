@@ -5,8 +5,8 @@ using System.Linq;
 public partial class Lap : Node {
     Checkpoints CheckpointManager;
 
-    [Export] public int MaxLaps;
-    public int LapCount = 0;
+    [Export] int MaxLaps;
+    int LapCount = 0;
 
     public override void _Ready() {
         if (Multiplayer.GetPeers().Length != 0) {
@@ -14,33 +14,46 @@ public partial class Lap : Node {
         }
 
         CheckpointManager = GetNode<Checkpoints>("../Checkpoints");
+
+        EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
     }
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    [Signal] public delegate void LapPassedEventHandler(int lapCount, int maxLaps);
+    [Signal] public delegate void RaceFinishedEventHandler();
 
     void _OnPlayerEntered(Node2D player) {
         if (Checkpoints.UnpassedCheckpoints.Count == 0) {
             if (LapCount < MaxLaps) {
                 LapCount++;
-                CheckpointManager.RefreshCheckpoints();
             } else {
-                var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
-                var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
+                EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
 
-                var time = levelTimer.StopTimer();
+                // var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
+                // var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
 
-                extraUI.Show();
-                extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
+                // var time = levelTimer.StopTimer();
 
-                player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
+                // extraUI.Show();
+                // extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
 
-                GetNode<Timer>("../FinishTimer").Start();
+                // player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
+
+                // GetNode<Timer>("../FinishTimer").Start();
             }
         }
 
-        var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + "Player/PlayerUI").LapCounter;
-        lapCounter.Text = "lap " + LapCount.ToString() + "/" + MaxLaps.ToString();
+        EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
+
+        // var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + "Player/PlayerUI").LapCounter;
+        // lapCounter.Text = "lap " + LapCount.ToString() + "/" + MaxLaps.ToString();
     }
 
     void _OnTimeout() {
         GetNode<Client>(Global.SERVER_PATH).LeaveServer();
     }
+
+    #endregion
 }

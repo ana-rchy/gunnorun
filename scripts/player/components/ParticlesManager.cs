@@ -14,16 +14,27 @@ public partial class ParticlesManager : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    public void EmitGrinding(float xVel) {
-        if (GrindingRaycast.IsColliding()) {
-            var speed = MathF.Abs(xVel);
+    void _OnGround(float xVel) {
+        var speed = MathF.Abs(xVel);
 
-            GrindingParticles.Emitting = true;
-            GrindingParticles.Amount = (int) Math.Clamp((speed / 1f), 1, 64);
-        } else {
-            GrindingParticles.Emitting = false;
-        }
+        GrindingParticles.Emitting = true;
+        GrindingParticles.Amount = (int) Math.Clamp((speed / 1f), 1, 64);
     }
+
+    void _OffGround() {
+        GrindingParticles.Emitting = false;
+    }
+
+    // public void EmitGrinding(float xVel) {
+    //     if (GrindingRaycast.IsColliding()) {
+    //         var speed = MathF.Abs(xVel);
+
+    //         GrindingParticles.Emitting = true;
+    //         GrindingParticles.Amount = (int) Math.Clamp((speed / 1f), 1, 64);
+    //     } else {
+    //         GrindingParticles.Emitting = false;
+    //     }
+    // }
 
     void _OnWeaponShot(Player player) {
         if (player.CurrentWeapon.Name == "Murasama") {
