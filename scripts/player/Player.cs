@@ -38,6 +38,8 @@ public partial class Player : RigidBody2D, IPlayer {
         // signals
         if (Multiplayer.GetPeers().Length != 0) {
             var playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
+            OtherPlayerHit += playerManager._OnOtherPlayerHit;
+            HPChanged += playerManager._OnHPChanged;
         }
 
         // etc

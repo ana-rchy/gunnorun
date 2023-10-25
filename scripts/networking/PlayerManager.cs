@@ -28,10 +28,10 @@ public partial class PlayerManager : Node {
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerHit(long id, int damage) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_TracerShot(float rotation, float range) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_PlayerFrameChanged(byte frame) {}
-    [Rpc(RpcMode.AnyPeer)] public void Server_Intangibility(long id, float time) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_TracerShot(float rotation, float range) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -97,9 +97,24 @@ public partial class PlayerManager : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    public void _OnOtherPlayerHit(Weapon weapon, long playerID) {
-        if (weapon.Name == "Murasama")
-            Rpc(nameof(Server_Intangibility));
+    public void _OnWeaponShot(Player player) {
+        var playerPosToMousePos = player.GlobalPosition.DirectionTo(player.GetGlobalMousePosition());
+        Rpc(nameof(Server_TracerShot), new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
+    }
+
+    public void _OnHPChanged(int newHP) {
+        Rpc(nameof(Server_PlayerHPChanged), Multiplayer.GetUniqueId(), newHP);
+    }
+
+    public void _OnOtherPlayerHit(long playerID, int newHP, string weaponName) {
+        Rpc(nameof(Server_PlayerHPChanged), playerID, newHP);
+
+        if (weaponName == "Murasama")
+            Rpc(nameof(Server_Intangibility), playerID, Murasama.INTANGIBILITY_TIME);
+    }
+
+    public void _OnPlayerFrameChanged(int frame) {
+        Rpc(nameof(Server_PlayerFrameChanged), frame);
     }
 
     #endregion

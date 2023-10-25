@@ -7,7 +7,7 @@ public abstract class Weapon {
     protected float Knockback;
     protected float ReelbackStrength;
     protected int Damage;
-    protected float Range;
+    public float Range { get; protected set; }
 
     public int? Ammo { get; protected set; }
     protected int? BaseAmmo;
@@ -62,9 +62,9 @@ public abstract class Weapon {
         player.WeaponRaycast.ForceRaycastUpdate();
 
         if (player.WeaponRaycast.IsColliding()) {
-            Node hitPlayer = (Node) player.WeaponRaycast.GetCollider();
+            var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
             
-            // player.EmitSignal(Player.SignalName.OtherPlayerHit, this, long.Parse(hitPlayer.Name));
+            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP, Name);
             // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), player.CurrentWeapon.Damage);
 
             // if (player.CurrentWeapon is Murasama) {

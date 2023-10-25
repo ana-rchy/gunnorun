@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 
 public class Murasama : Weapon {
-    public float IntangibilityTime { get; } = 0.3f;
+    public const float INTANGIBILITY_TIME = 0.3f;
 
     public Murasama() {
         Name = "Murasama";

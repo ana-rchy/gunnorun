@@ -94,8 +94,6 @@ public partial class PlayerUI : Node {
 		var raceFinishUI = GetNode<Control>("Control/RaceFinish");
 		raceFinishUI.Show();
 		raceFinishUI.GetNode<Label>("Label").Text = Math.Round(finishTime, 3).ToString() + "s";
-
-		GetNode<Timer>(Global.WORLD_PATH + "Markers/FinishTimer").Start();
 	}
 
 	// public void ChangeWeapon(string weaponName) {
