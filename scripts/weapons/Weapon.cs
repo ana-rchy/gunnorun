@@ -15,7 +15,9 @@ public abstract class Weapon {
     protected float Refire;
 
     public virtual void Shoot(Player player) {
-        if (Ammo <= 0) return;
+        if (Ammo <= 0) {
+            return;
+        }
         Ammo--;
         player.EmitSignal(Player.SignalName.WeaponShot, player);
 
@@ -28,14 +30,16 @@ public abstract class Weapon {
         player.ActionTimer.Start(Refire);
         // player.UI.UpdateAmmo(Name, Ammo);
 
-        if (player.Multiplayer.GetPeers().Length != 0)
+        if (player.Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(player, -mousePosToPlayerPos);
+        }
     }
 
     float GetMomentumMultiplier(Vector2 currentVelocity, Vector2 mousePosToPlayerPos) {
         float angleDelta = currentVelocity.AngleTo(mousePosToPlayerPos);
-        if (Mathf.RadToDeg(angleDelta) <= 45) // if less than 45 degrees change, keep all momentum
+        if (Mathf.RadToDeg(angleDelta) <= 45) { // if less than 45 degrees change, keep all momentum
             return 1f;
+        }
         
         angleDelta -= MathF.Round(MathF.PI / 4, 4);
 

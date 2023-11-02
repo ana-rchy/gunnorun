@@ -3,6 +3,17 @@ using System.Linq;
 using Godot;
 
 public partial class MultiplayerPanel : MainPanel {
+    public override void _Ready() {
+        base._Ready();
+
+        JoinPressed += GetNode<Client>(Global.SERVER_PATH)._OnJoinPressed;
+    }
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    [Signal] public delegate void JoinPressedEventHandler(string ip, int port);
+
     void _OnJoinPressed() {
         Global.PlayerData.Username = UsernameField.Text;
         Global.PlayerData.Color = ColorField.Color;
@@ -11,7 +22,8 @@ public partial class MultiplayerPanel : MainPanel {
         ip = ip == "" ? "localhost" : ip; // localhost by default, entered ip otherwise
         var port = (int) GetNode<SpinBox>("Port").Value;
 
-        Client.JoinServer(ip, port);
+        EmitSignal(SignalName.JoinPressed, ip, port);
+        // Client.JoinServer(ip, port);
     }
 
     void _OnUsernameChanged(string text) {
@@ -25,4 +37,6 @@ public partial class MultiplayerPanel : MainPanel {
 
         GetNode<ColorPickerButton>("/root/Menu/TabContainer/Singleplayer/Panel/PlayerColor").Color = color;
     }
+
+    #endregion
 }

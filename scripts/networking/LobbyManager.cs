@@ -3,7 +3,10 @@ using Godot;
 using static Godot.MultiplayerApi;
 
 public partial class LobbyManager : Node {
-    [Rpc(RpcMode.AnyPeer)] public void Server_UpdateStatus(bool ready) {}
+    //---------------------------------------------------------------------------------//
+    #region | rpc
+
+    [Rpc(RpcMode.AnyPeer)] void Server_UpdateStatus(bool ready) {}
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
         if (Multiplayer.GetUniqueId() != id) {
@@ -23,4 +26,15 @@ public partial class LobbyManager : Node {
             GetNode<PlayerManager>("../PlayerManager").CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
         }
     }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    public void _OnReadyToggled(bool readyStatus) {
+        Rpc(nameof(Server_UpdateStatus), readyStatus);
+    }
+
+    #endregion
 }

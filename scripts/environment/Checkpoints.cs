@@ -17,9 +17,14 @@ public partial class Checkpoints : Node {
         }
     }
 
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
     void RefreshCheckpoints() {
         UnpassedCheckpoints = new List<Node>(FindChildren("*", "Area2D"));
     }
+
+    #endregion
 
     //---------------------------------------------------------------------------------//
     #region | signals

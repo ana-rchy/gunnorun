@@ -14,13 +14,15 @@ public partial class Tracer : Node2D {
     public override void _PhysicsProcess(double delta) {
         Area.Position = new Vector2(Area.Position.X + Speed, Area.Position.Y);
 
-        if (Area.Position.X >= Range) QueueFree();
+        if (Area.Position.X >= Range) {
+            QueueFree();
+        }
     }
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    private void _OnCollision(Node2D body) {
+    void _OnCollision(Node2D body) {
         QueueFree();
     }
 

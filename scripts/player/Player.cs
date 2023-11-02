@@ -48,8 +48,8 @@ public partial class Player : RigidBody2D, IPlayer {
         EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
         GetNode<Label>("Username").Text = Global.PlayerData.Username;
         var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material).
-            SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material)
+            .SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
@@ -117,7 +117,9 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     public async void ChangeHP(int newHP) {
-        if (HP <= 0) return;
+        if (HP <= 0) {
+            return;
+        }
         EmitSignal(SignalName.HPChanged, newHP);
         HP = newHP;
 

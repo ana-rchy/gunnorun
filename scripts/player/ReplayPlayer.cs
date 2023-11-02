@@ -46,8 +46,9 @@ public partial class ReplayPlayer : Node2D {
     }
 
     public override void _Input(InputEvent e) {
-        if (Input.IsActionPressed("Shoot"))
+        if (Input.IsActionPressed("Shoot")) {
             SetPhysicsProcess(true);
+        }
     }
 
     //---------------------------------------------------------------------------------//

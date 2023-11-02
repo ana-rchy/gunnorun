@@ -8,7 +8,7 @@ using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class PlayerManager : Node {
-    const float MURASAMA_INTAGIBILITY_TIME = 0.3f;
+    const float MURASAMA_INTANGIBILITY_TIME = 0.3f;
 
     //---------------------------------------------------------------------------------//
     #region | funcs
@@ -40,16 +40,15 @@ public partial class PlayerManager : Node {
 
         foreach (var kvp in puppetPositions) {
             var puppetPlayer = GetNodeOrNull<PuppetPlayer>(Global.WORLD_PATH + kvp.Key);
-            if (puppetPlayer != null) puppetPlayer.PuppetPosition = kvp.Value;
+            if (puppetPlayer != null) {
+                puppetPlayer.PuppetPosition = kvp.Value;
+            }
         }
 
         var player = GetNodeOrNull<Node2D>(Global.WORLD_PATH + Multiplayer.GetUniqueId());
-        if (player != null) Rpc(nameof(Server_UpdatePlayerPosition), player.Position);
-    }
-
-    [Rpc] void Client_PlayerHit(long id, int damage) {     
-        var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
-        player.ChangeHP(player.GetHP() - damage);
+        if (player != null) {
+            Rpc(nameof(Server_UpdatePlayerPosition), player.Position);
+        }
     }
 
     [Rpc] void Client_TracerShot(long id, float rotation, float range) {
@@ -69,6 +68,18 @@ public partial class PlayerManager : Node {
         // GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
+    [Rpc] void Client_Intangibility(float time) {
+        var player = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId().ToString());
+        Task.Run(() => {
+            _ = player.Intangibility(time);
+        });
+    }
+
+    [Rpc] void Client_PlayerHPChanged(long id, int newHP) {     
+        var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
+        player.ChangeHP(newHP);
+    }
+
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
         if (id != Multiplayer.GetUniqueId()) {
             var playerSprite = GetNode<AnimatedSprite2D>(Global.WORLD_PATH + id.ToString() + "/Sprite");
@@ -83,13 +94,6 @@ public partial class PlayerManager : Node {
 
         // var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + Multiplayer.GetUniqueId() + "/PlayerUI").LapCounter;
         // lapCounter.Text = "lap " + lap.ToString() + "/" + maxLaps.ToString();
-    }
-
-    [Rpc] void Client_MurasamaIntangibility() {
-        var player = GetNode<Player>(Global.WORLD_PATH + Multiplayer.GetUniqueId().ToString());
-        Task.Run(() => {
-            _ = player.Intangibility(MURASAMA_INTAGIBILITY_TIME);
-        });
     }
 
     #endregion
@@ -109,8 +113,9 @@ public partial class PlayerManager : Node {
     public void _OnOtherPlayerHit(long playerID, int newHP, string weaponName) {
         Rpc(nameof(Server_PlayerHPChanged), playerID, newHP);
 
-        if (weaponName == "Murasama")
+        if (weaponName == "Murasama") {
             Rpc(nameof(Server_Intangibility), playerID, Murasama.INTANGIBILITY_TIME);
+        }
     }
 
     public void _OnPlayerFrameChanged(int frame) {

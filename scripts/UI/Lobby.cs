@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Lobby : Node {
-    LobbyManager LobbyManager;
     Button ReadyButton;
 
     public override void _Ready() {
+        ReadyButton = GetNode<Button>("Ready");
+
+        if (Multiplayer.GetPeers().Length != 0) {
+            ReadyToggled += GetNode<LobbyManager>(Global.SERVER_PATH + "LobbyManager")._OnReadyToggled;
+        }
+
         var slot1 = GetNode("Slot1");
         slot1.GetNode<Label>("Username").Text = Global.PlayerData.Username;
         var playerColor = Global.PlayerData.Color;
         ((ShaderMaterial) slot1.GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
-
         RefreshList();
 
-        LobbyManager = GetNode<LobbyManager>(Global.SERVER_PATH + "LobbyManager");
-        ReadyButton = GetNode<Button>("Ready");
+        // LobbyManager = GetNode<LobbyManager>(Global.SERVER_PATH + "LobbyManager");
     }
 
     //---------------------------------------------------------------------------------//
@@ -24,8 +27,9 @@ public partial class Lobby : Node {
     public void RefreshList() {
         var players = new List<Global.PlayerDataStruct>(Global.OtherPlayerData.Values);
 
-        for (int i = 2; i <= 8; i++)
+        for (int i = 2; i <= 8; i++) {
             GetNode<Panel>("Slot" + i.ToString()).Hide();
+        }
 
         for (int i = 0; i < players.Count; i++) {
             var slot = GetNode<Panel>("Slot" + (i+2).ToString());
@@ -50,6 +54,8 @@ public partial class Lobby : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
+    [Signal] public delegate void ReadyToggledEventHandler(bool readyStatus);
+
     void _OnReadyToggle(bool buttonPressed) {
         Global.PlayerData.ReadyStatus = !Global.PlayerData.ReadyStatus;
 
@@ -58,7 +64,8 @@ public partial class Lobby : Node {
         panel.BgColor = buttonPressed ? new Color("0ecc00") : new Color("cc0000");
         readyButton.Text = !buttonPressed ? "Unready" : "Ready";
 
-        LobbyManager.Rpc(nameof(LobbyManager.Server_UpdateStatus), Global.PlayerData.ReadyStatus);
+        EmitSignal(SignalName.ReadyToggled, Global.PlayerData.ReadyStatus);
+        // LobbyManager.Rpc(nameof(LobbyManager.Server_UpdateStatus), Global.PlayerData.ReadyStatus);
     }
 
     #endregion

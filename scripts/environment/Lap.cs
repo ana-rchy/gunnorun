@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 
 public partial class Lap : Node {
-    Checkpoints CheckpointManager;
+    Timer FinishTimer;
 
     [Export] int MaxLaps;
     int LapCount = 0;
@@ -13,8 +13,9 @@ public partial class Lap : Node {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        CheckpointManager = GetNode<Checkpoints>("../Checkpoints");
+        FinishTimer = GetNode<Timer>("../FinishTimer");
 
+        FinishTimer.Timeout += GetNode<Client>(Global.SERVER_PATH)._OnFinishTimerTimeout;
         EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
     }
 
@@ -30,7 +31,7 @@ public partial class Lap : Node {
                 LapCount++;
             } else {
                 EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
-                GetNode<Timer>("../FinishTimer").Start();
+                FinishTimer.Start();
 
                 // var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
                 // var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");

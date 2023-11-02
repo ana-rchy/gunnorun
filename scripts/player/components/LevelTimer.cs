@@ -9,6 +9,7 @@ public partial class LevelTimer : Node {
             QueueFree();
         }
 
+        Time = 0;
         SetProcess(false);
     }
 

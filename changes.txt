@@ -39,3 +39,4 @@ bug fixes:
 - replays didnt manually save
 - debug replays wouldnt save if a replay was watched before saving them
 - imported replays list didnt update without first selecting another map and then back
+- manually saved replays would record past the finish point

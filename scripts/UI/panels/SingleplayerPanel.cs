@@ -8,6 +8,8 @@ public partial class SingleplayerPanel : MainPanel {
 
     OptionButton MapSelect;
     OptionButton ReplaySelect;
+    LineEdit OpposingUsernameField;
+    ColorPickerButton OpposingColorPicker;
     Label LastTime;
     Label BestTime;
 
@@ -16,6 +18,8 @@ public partial class SingleplayerPanel : MainPanel {
 
         MapSelect = GetNode<OptionButton>("MapSelect");
         ReplaySelect = GetNode<OptionButton>("ReplaySelect");
+        OpposingUsernameField = GetNode<LineEdit>("/root/Menu/TabContainer/Multiplayer/Panel/Username");
+        OpposingColorPicker = GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor");
         LastTime = GetNode<Label>("LastTime");
         BestTime = GetNode<Label>("BestTime");
 
@@ -23,7 +27,9 @@ public partial class SingleplayerPanel : MainPanel {
         CheckImportedReplays();
         MapSelect.Selected = SelectedWorldIndex;
         ReplaySelect.Selected = SelectedReplayIndex;
-        if (LevelTimer.Time != 0) LastTime.Text = "last time: " + Math.Round(LevelTimer.Time, 3).ToString() + "s";
+        if (LevelTimer.Time != 0) {
+            LastTime.Text = "last time: " + Math.Round(LevelTimer.Time, 3).ToString() + "s";
+        }
     }
 
     //---------------------------------------------------------------------------------//
@@ -89,7 +95,7 @@ public partial class SingleplayerPanel : MainPanel {
     void _OnUsernameChanged(string text) {
         Global.PlayerData.Username = text;
 
-        GetNode<LineEdit>("/root/Menu/TabContainer/Multiplayer/Panel/Username").Text = text;
+        OpposingUsernameField.Text = text;
     }
 
     void _OnViewReplayPressed() {
@@ -101,7 +107,7 @@ public partial class SingleplayerPanel : MainPanel {
     void _OnColorChanged(Color color) {
         Global.PlayerData.Color = color;
 
-        GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor").Color = color;
+        OpposingColorPicker.Color = color;
     }
 
     void _OnSaveLastReplayPressed() {

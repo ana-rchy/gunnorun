@@ -14,8 +14,9 @@ public partial class PlayerUI : Node {
 		HP = GetNode<Label>("Control/HP");
 		
 		var lapManager = GetNodeOrNull<Lap>(Global.WORLD_PATH + "Markers/Lap");
-		if (lapManager == null)
+		if (lapManager == null) {
 			LapCounter.QueueFree();
+		}
 		// } else {
 		// 	LapCounter.Text = "lap 1/" + lapManager.MaxLaps.ToString();
 		// }
@@ -62,14 +63,16 @@ public partial class PlayerUI : Node {
 	}
 
 	void _OnWeaponChanged(string weaponName) {
-		if (CurrentWeapon != null)
+		if (CurrentWeapon != null) {
 			CurrentWeapon.LabelSettings.FontColor = new Color("#ffffff");
+		}
 
 		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 		
-		if (weaponName == "Murasama")
+		if (weaponName == "Murasama") {
 			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d00");
+		}
 	}
 
 	void _OnTimeChanged(float newTime) {

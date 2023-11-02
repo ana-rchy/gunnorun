@@ -200,7 +200,6 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_8n8ai")
 
 [connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
-[connection signal="timeout" from="Markers/FinishTimer" to="Markers/Finish" method="_OnTimeout"]
 [connection signal="RaceFinished" from="Markers/Finish" to="Player/PlayerUI" method="_OnRaceFinished"]
 [connection signal="RaceFinished" from="Markers/Finish" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
 [connection signal="RaceFinished" from="Markers/Finish" to="Player/ReplayRecorder" method="_OnRaceFinished"]

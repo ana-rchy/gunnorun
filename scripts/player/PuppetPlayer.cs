@@ -5,7 +5,7 @@ using static Godot.GD;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     double Timer;
-    public Vector2 PuppetPosition;
+    public Vector2 PuppetPosition { get; set; }
     public int HP { get; private set; } = 100;
 
     public override void _PhysicsProcess(double delta) {
@@ -26,7 +26,9 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     }
 
     public async void ChangeHP(int newHP) {
-        if (HP <= 0) return;
+        if (HP <= 0) {
+            return;
+        }
 
         var greenHP = GetNode<ColorRect>("GreenHP");
 

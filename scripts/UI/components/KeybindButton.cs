@@ -21,7 +21,6 @@ public partial class KeybindButton : Button {
 				Unbind();
 			}
 
-			
 			SaveKeybindConfig();
 			
 			ButtonPressed = false;
@@ -48,8 +47,9 @@ public partial class KeybindButton : Button {
     #region | funcs
 	
 	void ChangeBind(InputEvent e) {
-		if (e is InputEventMouseButton)
+		if (e is InputEventMouseButton) {
 			((InputEventMouseButton) e).DoubleClick = false;
+		}
 		
 		InputMap.ActionEraseEvents(Name);
 		InputMap.ActionAddEvent(Name, e);

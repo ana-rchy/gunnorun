@@ -42,7 +42,8 @@ public class Murasama : Weapon {
         //     player.SetCollisionMaskValue(4, true);
         // });
 
-        if (player.Multiplayer.GetPeers().Length != 0)
+        if (player.Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(player, playerPosToMousePos);
+        }
     }
 }

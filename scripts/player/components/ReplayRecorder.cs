@@ -24,8 +24,9 @@ public partial class ReplayRecorder : Node2D {
     }
 
     public override void _Input(InputEvent e) {
-        if (Input.IsActionPressed("Shoot"))
+        if (Input.IsActionPressed("Shoot")) {
             SetPhysicsProcess(true);
+        }
     }
 
     //---------------------------------------------------------------------------------//
@@ -46,6 +47,7 @@ public partial class ReplayRecorder : Node2D {
 
     void _OnRaceFinished(float finishTime) {
         SetPhysicsProcess(false);
+        ProcessMode = ProcessModeEnum.Disabled;
         var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
         LastReplayData = new GC.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
             { "World", Global.CurrentWorld },                                         // not when the scene is exited
@@ -61,7 +63,6 @@ public partial class ReplayRecorder : Node2D {
 
         using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
         var lastBestTime = timeFile.GetDouble();
-        
         if (finishTime < lastBestTime) {
             SaveReplay(finishTime);
         }

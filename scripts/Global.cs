@@ -16,7 +16,9 @@ public partial class Global : Node {
         
         var config = new ConfigFile();
         var err = config.Load("user://config.cfg");
-        if (err != Error.Ok) Print("cant open config file");
+        if (err != Error.Ok) {
+            Print("cant open config file");
+        }
 
         foreach (var action in config.GetSectionKeys("Keybinds")) {
             string value = (string) config.GetValue("Keybinds", action);
@@ -38,9 +40,9 @@ public partial class Global : Node {
     }
 
     public override void _UnhandledInput(InputEvent e) {
-		if (e.IsActionPressed("Leave")) {
-			GetNode<Client>("/root/Server").LeaveServer();
-        } else if (e.IsActionPressed("Respawn") && Multiplayer.GetPeers().Length == 0) {
+		// if (e.IsActionPressed("Leave")) {
+		// 	GetNode<Client>("/root/Server").LeaveServer();
+        if (e.IsActionPressed("Respawn") && Multiplayer.GetPeers().Length == 0) {
             GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
         }
 	}
