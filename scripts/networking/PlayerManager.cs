@@ -75,9 +75,9 @@ public partial class PlayerManager : Node {
         });
     }
 
-    [Rpc] void Client_PlayerHPChanged(long id, int newHP) {     
+    [Rpc] void Client_PlayerHPChanged(long id, int newHP) { 
         var player = GetNode<IPlayer>(Global.WORLD_PATH + id);
-        player.ChangeHP(newHP);
+        player.ChangeHP(newHP, false);
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {

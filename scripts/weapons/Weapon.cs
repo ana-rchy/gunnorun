@@ -68,7 +68,7 @@ public abstract class Weapon {
         if (player.WeaponRaycast.IsColliding()) {
             var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
             
-            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP, Name);
+            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
             // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), player.CurrentWeapon.Damage);
 
             // if (player.CurrentWeapon is Murasama) {

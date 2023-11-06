@@ -116,11 +116,14 @@ public partial class Player : RigidBody2D, IPlayer {
         return HP;
     }
 
-    public async void ChangeHP(int newHP) {
+    public async void ChangeHP(int newHP, bool emitSignal = true) {
         if (HP <= 0) {
             return;
         }
-        EmitSignal(SignalName.HPChanged, newHP);
+
+        if (emitSignal) {
+            EmitSignal(SignalName.HPChanged, newHP);
+        }
         HP = newHP;
 
         if (HP <= 0) {

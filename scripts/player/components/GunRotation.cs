@@ -14,7 +14,13 @@ public partial class GunRotation : AnimatedSprite2D {
     }
 
 
-    public override void _Process(double delta) {
+    public override void _Input(InputEvent e) {
+        if (e is not InputEventMouseMotion) {
+            return;
+        }
+
+        var prevFrame = Frame;
+
         var normal = new Vector2(0, -1);
         var angle = normal.AngleTo(Parent.GetLocalMousePosition());
 
@@ -33,8 +39,11 @@ public partial class GunRotation : AnimatedSprite2D {
         } else if (absAngle > pi8th * 7) {
             Frame += 4;
         }
+        
+        if (Frame != prevFrame) {
+            EmitSignal(SignalName.PlayerFrameChanged, Frame);
+        }
 
-        EmitSignal(SignalName.PlayerFrameChanged, Frame);
         // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerFrameChanged), Frame);
     }
 

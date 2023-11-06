@@ -25,7 +25,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         return HP;
     }
 
-    public async void ChangeHP(int newHP) {
+    public async void ChangeHP(int newHP, bool emitSignal = true) {
         if (HP <= 0) {
             return;
         }
