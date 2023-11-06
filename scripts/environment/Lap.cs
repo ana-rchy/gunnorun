@@ -32,30 +32,11 @@ public partial class Lap : Node {
             } else {
                 EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
                 FinishTimer.Start();
-
-                // var levelTimer = player.GetNode<LevelTimer>("Timers/LevelTimer");
-                // var extraUI = GetNode<CanvasLayer>(Global.WORLD_PATH + "ExtraUI");
-
-                // var time = levelTimer.StopTimer();
-
-                // extraUI.Show();
-                // extraUI.GetNode<Label>("Label").Text = time.ToString() + "s";
-
-                // player.GetNode<ReplayRecorder>("ReplayRecorder").StopRecording(time);
-
-                // GetNode<Timer>("../FinishTimer").Start();
             }
         }
 
         EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
-
-        // var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + "Player/PlayerUI").LapCounter;
-        // lapCounter.Text = "lap " + LapCount.ToString() + "/" + MaxLaps.ToString();
     }
-
-    // void _OnTimeout() {
-    //     GetNode<Client>(Global.SERVER_PATH).LeaveServer();
-    // }
 
     #endregion
 }

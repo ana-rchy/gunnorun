@@ -23,9 +23,6 @@ public partial class Player : RigidBody2D, IPlayer {
     public static Vector2 LastMousePos { get; private set; } = new Vector2(0, 0);
     public static (Vector2 StateVel, Vector2 VelSoftCap, Single ReelbackStrength) DebugData { get; private set; }
         = (new Vector2(0, 0), new Vector2(0, 0), 0f);
-    // public static Vector2 Debug_VelocitySoftCap { get; private set; } = new Vector2(0, 0);
-    // public static Single Debug_ReelbackStrength { get; private set; } = 0f;
-    // public static Vector2 Debug_StateVelocity { get; private set; } = new Vector2(0, 0);
 
     public override void _Ready() {
         // node references
@@ -67,7 +64,6 @@ public partial class Player : RigidBody2D, IPlayer {
                 CurrentWeaponIndex = i-1;
 
                 EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
-                //UI.ChangeWeapon(CurrentWeapon.Name);
             }
         }
     }
@@ -86,7 +82,6 @@ public partial class Player : RigidBody2D, IPlayer {
         } else {
             EmitSignal(SignalName.OffGround);
         }
-        //ParticlesManager.EmitGrinding(LinearVelocity.X);
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
@@ -140,62 +135,6 @@ public partial class Player : RigidBody2D, IPlayer {
             RegenTimer.Start();
         }
     }
-
-    // async void Reload(Weapon reloadingWeapon) {
-    //     reloadingWeapon.Ammo = 0; // prevent firing remaining ammo while reloading
-
-    //     UI.Reload(reloadingWeapon.Name, reloadingWeapon.Reload);
-    //     ReloadTimer.Start(reloadingWeapon.Reload); // prevent reloading in quick succession, and reloading 2+ weapons
-    //     await this.Sleep(reloadingWeapon.Reload); // prevent having ammo to fire while should be reloading
-        
-    //     reloadingWeapon.Ammo = reloadingWeapon.BaseAmmo;
-    //     UI.UpdateAmmo(reloadingWeapon.Name, reloadingWeapon.Ammo);
-    // }
-
-    // public void ShootTracer(Vector2 playerPosToMousePos) {
-    //     var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
-    //     var tracer = tracerScene.Instantiate<Tracer>();
-
-    //     tracer.GlobalPosition = GlobalPosition;
-    //     tracer.Rotation = (new Vector2(0, 0)).AngleToPoint(playerPosToMousePos);
-    //     tracer.Range = CurrentWeapon.Range;
-
-    //     AddSibling(tracer);
-
-    //     // if (Multiplayer.GetPeers().Length != 0) {
-    //     //     PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
-    //     // }
-    // }
-
-    // public void CheckPlayerHit(Vector2 playerPosToMousePos) {
-    //     WeaponRaycast.TargetPosition = playerPosToMousePos.Normalized() * CurrentWeapon.Range;
-    //     WeaponRaycast.ForceRaycastUpdate();
-
-    //     if (WeaponRaycast.IsColliding()) {
-    //         Node hitPlayer = (Node) WeaponRaycast.GetCollider();
-            
-    //         PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), CurrentWeapon.Damage);
-
-    //         if (CurrentWeapon is Murasama) {
-    //             PlayerManager.Rpc(nameof(PlayerManager.Server_MurasamaIntangibility), long.Parse(hitPlayer.Name));
-    //         }
-    //     }
-    // }
-
-    // public async Task UpdateHP(int change) {
-    //     if (HP <= 0) return;
-        
-    //     HP += change;
-    //     UI.HP.SetDeferred("text", HP.ToString());
-
-    //     if (HP <= 0) {
-    //         UI.HP.SetDeferred("text", "ur dead lol");
-    //         await this.Sleep(3f);
-    //         HP = 100;
-    //         UI.HP.Text = HP.ToString();
-    //         _ = SpawnInvuln();
-    //     }
-    // }
 
     #endregion
 

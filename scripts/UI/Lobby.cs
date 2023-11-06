@@ -17,8 +17,6 @@ public partial class Lobby : Node {
         var playerColor = Global.PlayerData.Color;
         ((ShaderMaterial) slot1.GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
         RefreshList();
-
-        // LobbyManager = GetNode<LobbyManager>(Global.SERVER_PATH + "LobbyManager");
     }
 
     //---------------------------------------------------------------------------------//
@@ -65,7 +63,6 @@ public partial class Lobby : Node {
         readyButton.Text = !buttonPressed ? "Unready" : "Ready";
 
         EmitSignal(SignalName.ReadyToggled, Global.PlayerData.ReadyStatus);
-        // LobbyManager.Rpc(nameof(LobbyManager.Server_UpdateStatus), Global.PlayerData.ReadyStatus);
     }
 
     #endregion

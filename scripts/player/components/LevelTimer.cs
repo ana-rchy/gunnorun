@@ -16,7 +16,6 @@ public partial class LevelTimer : Node {
     public override void _Process(double delta) {
         Time += delta;
         EmitSignal(SignalName.TimeChanged, Time);
-        // UI.LevelTime.Text = Math.Round(Time, 3).ToString() + "s";
     }
 
     public override void _PhysicsProcess(double delta) {

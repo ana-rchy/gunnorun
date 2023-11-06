@@ -23,7 +23,6 @@ public partial class MultiplayerPanel : MainPanel {
         var port = (int) GetNode<SpinBox>("Port").Value;
 
         EmitSignal(SignalName.JoinPressed, ip, port);
-        // Client.JoinServer(ip, port);
     }
 
     void _OnUsernameChanged(string text) {

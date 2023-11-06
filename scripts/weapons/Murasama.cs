@@ -30,18 +30,6 @@ public class Murasama : Weapon {
         player.ChangeHP(player.GetHP() - 25);
         player.ActionTimer.Start(Refire);
 
-        // replace with receiving signal in particlesmanager script
-        // var particlesManager = player.GetNode<ParticlesManager>("Particles");
-        // Task.Run(async () => {
-        //     player.SetCollisionMaskValue(4, false);
-        //     particlesManager.MurasamaParticles.SetDeferred("emitting", true);
-
-        //     await player.Sleep(0.3f);
-            
-        //     particlesManager.MurasamaParticles.SetDeferred("emitting", false);
-        //     player.SetCollisionMaskValue(4, true);
-        // });
-
         if (player.Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(player, playerPosToMousePos);
         }

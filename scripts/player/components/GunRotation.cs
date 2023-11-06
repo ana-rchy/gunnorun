@@ -43,8 +43,6 @@ public partial class GunRotation : AnimatedSprite2D {
         if (Frame != prevFrame) {
             EmitSignal(SignalName.PlayerFrameChanged, Frame);
         }
-
-        // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerFrameChanged), Frame);
     }
 
     //---------------------------------------------------------------------------------//

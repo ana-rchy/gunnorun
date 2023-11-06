@@ -37,7 +37,6 @@ public partial class ReplayPlayer : Node2D {
 
         if (Global.ReplayOnly == true) {
             EmitSignal(SignalName.ReplayOnly);
-            // GetNode(Global.WORLD_PATH + "Player").QueueFree();
             Crosshair.Show();
 
             AddReplayOnlyCamera();

@@ -25,17 +25,6 @@ public partial class ParticlesManager : Node {
         GrindingParticles.Emitting = false;
     }
 
-    // public void EmitGrinding(float xVel) {
-    //     if (GrindingRaycast.IsColliding()) {
-    //         var speed = MathF.Abs(xVel);
-
-    //         GrindingParticles.Emitting = true;
-    //         GrindingParticles.Amount = (int) Math.Clamp((speed / 1f), 1, 64);
-    //     } else {
-    //         GrindingParticles.Emitting = false;
-    //     }
-    // }
-
     void _OnWeaponShot(Player player) {
         if (player.CurrentWeapon.Name == "Murasama") {
             Task.Run(async () => {

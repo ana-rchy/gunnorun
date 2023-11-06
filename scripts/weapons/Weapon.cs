@@ -28,7 +28,6 @@ public abstract class Weapon {
 
         ShootTracer(player, -mousePosToPlayerPos);
         player.ActionTimer.Start(Refire);
-        // player.UI.UpdateAmmo(Name, Ammo);
 
         if (player.Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(player, -mousePosToPlayerPos);
@@ -55,10 +54,6 @@ public abstract class Weapon {
         tracer.Range = Range;
 
         player.AddSibling(tracer);
-
-        // if (Multiplayer.GetPeers().Length != 0) {
-        //     PlayerManager.Rpc(nameof(PlayerManager.Server_TracerShot), tracer.Rotation, tracer.Range);
-        // }
     }
 
     protected void CheckPlayerHit(Player player, Vector2 playerPosToMousePos) {
@@ -67,13 +62,7 @@ public abstract class Weapon {
 
         if (player.WeaponRaycast.IsColliding()) {
             var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
-            
             player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
-            // PlayerManager.Rpc(nameof(PlayerManager.Server_PlayerHit), long.Parse(hitPlayer.Name), player.CurrentWeapon.Damage);
-
-            // if (player.CurrentWeapon is Murasama) {
-            //     PlayerManager.Rpc(nameof(PlayerManager.Server_MurasamaIntangibility), long.Parse(hitPlayer.Name));
-            // }
         }
     }
 

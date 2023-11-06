@@ -53,19 +53,6 @@ public partial class PlayerManager : Node {
 
     [Rpc] void Client_TracerShot(long id, float rotation, float range) {
         GetNode<PuppetPlayer>(Global.WORLD_PATH + id.ToString()).SpawnTracer(rotation, range);
-
-        // var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
-        // var tracer = tracerScene.Instantiate<Tracer>();
-
-        // tracer.GlobalPosition = GetNode<Node2D>(Global.WORLD_PATH + id.ToString()).GlobalPosition;
-        // tracer.Rotation = rotation;
-        // tracer.Range = range;
-
-        // var tracerArea = tracer.GetNode<Area2D>("Area2D");
-        // tracerArea.SetCollisionMaskValue(4, false);
-        // tracerArea.SetCollisionMaskValue(2, true);
-
-        // GetNode(Global.WORLD_PATH).AddChild(tracer);
     }
 
     [Rpc] void Client_Intangibility(float time) {
@@ -91,9 +78,6 @@ public partial class PlayerManager : Node {
     [Rpc] void Client_LapChanged(int lap, int maxLaps) {
         var lapManager = GetNode<Lap>(Global.WORLD_PATH + "Markers/Lap");
         lapManager.EmitSignal(Lap.SignalName.LapPassed, lap, maxLaps);
-
-        // var lapCounter = GetNode<PlayerUI>(Global.WORLD_PATH + Multiplayer.GetUniqueId() + "/PlayerUI").LapCounter;
-        // lapCounter.Text = "lap " + lap.ToString() + "/" + maxLaps.ToString();
     }
 
     #endregion
