@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=18 format=3 uid="uid://cir4wtbahb0if"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
 [ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/PlayerUI.tscn" id="2_0rg58"]
@@ -17,28 +17,6 @@ friction = 0.1
 [sub_resource type="Gradient" id="Gradient_b3yp1"]
 offsets = PackedFloat32Array(0, 0.9, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.858268, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_xjete"]
-gradient = SubResource("Gradient_b3yp1")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rclhy"]
-emission_shape = 3
-emission_box_extents = Vector3(1, 1, 1)
-particle_flag_disable_z = true
-direction = Vector3(0, 1, 0)
-spread = 40.0
-gravity = Vector3(0, 200, 0)
-initial_velocity_min = -125.0
-initial_velocity_max = -125.0
-angular_velocity_min = -360.0
-angular_velocity_max = 360.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-scale_min = 8.0
-scale_max = 12.0
-color = Color(1, 0.752667, 0.47, 0.784314)
-color_ramp = SubResource("GradientTexture1D_xjete")
-hue_variation_max = 0.25
 
 [sub_resource type="Gradient" id="Gradient_jpn1k"]
 offsets = PackedFloat32Array(0, 0.2, 0.85, 1)
@@ -126,12 +104,25 @@ hit_from_inside = true
 z_index = 1
 script = ExtResource("6_xmwqc")
 
-[node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
+[node name="GrindingParticles" type="CPUParticles2D" parent="Particles"]
 position = Vector2(0, 105)
-emitting = false
 amount = 16
-process_material = SubResource("ParticleProcessMaterial_rclhy")
 fixed_fps = 60
+draw_order = 1
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, 1)
+spread = 40.0
+gravity = Vector2(0, 200)
+initial_velocity_min = -125.0
+initial_velocity_max = -125.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_amount_min = 8.0
+scale_amount_max = 12.0
+color = Color(0.988235, 0.380392, 0, 0.784314)
+color_ramp = SubResource("Gradient_b3yp1")
+hue_variation_max = 0.25
 
 [node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]
 emitting = false

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class ParticlesManager : Node {
-    GpuParticles2D GrindingParticles;
+    CpuParticles2D GrindingParticles;
     GpuParticles2D MurasamaParticles;
 
     public override void _Ready() {
-        GrindingParticles = GetNode<GpuParticles2D>("GrindingParticles");
+        GrindingParticles = GetNode<CpuParticles2D>("GrindingParticles");
         MurasamaParticles = GetNode<GpuParticles2D>("MurasamaParticles");
     }
 
@@ -16,9 +16,14 @@ public partial class ParticlesManager : Node {
 
     void _OnGround(float xVel) {
         var speed = MathF.Abs(xVel);
+        GD.Print(speed);
 
-        GrindingParticles.Emitting = true;
-        GrindingParticles.Amount = (int) Math.Clamp((speed / 1f), 1, 64);
+        if (speed > 250f) {
+            GrindingParticles.Emitting = true;
+        } else {
+            GrindingParticles.Emitting = false;
+        }
+        GrindingParticles.Amount = (int) Math.Clamp((speed / 20f), 1, 64);
     }
 
     void _OffGround() {
