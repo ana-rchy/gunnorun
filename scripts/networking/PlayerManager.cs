@@ -14,7 +14,7 @@ public partial class PlayerManager : Node {
 
     public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
         var newPlayer = GD.Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
-        GetNode(Global.WORLD_PATH).CallDeferred("add_child", newPlayer);
+        this.GetNodeConst("WORLD").CallDeferred("add_child", newPlayer);
 
         newPlayer.Name = id.ToString();
         newPlayer.GetNode<Label>("Username").Text = username;
@@ -38,44 +38,44 @@ public partial class PlayerManager : Node {
         puppetPositions.Remove(Multiplayer.GetUniqueId());
 
         foreach (var kvp in puppetPositions) {
-            var puppetPlayer = GetNodeOrNull<PuppetPlayer>($"{Global.WORLD_PATH}/{kvp.Key}");
+            var puppetPlayer = GetNodeOrNull<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{kvp.Key}");
             if (puppetPlayer != null) {
                 puppetPlayer.PuppetPosition = kvp.Value;
             }
         }
 
-        var player = GetNodeOrNull<Node2D>($"{Global.WORLD_PATH}/{Multiplayer.GetUniqueId()}");
+        var player = GetNodeOrNull<Node2D>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}");
         if (player != null) {
             Rpc(nameof(Server_UpdatePlayerPosition), player.Position);
         }
     }
 
     [Rpc] void Client_TracerShot(long id, float rotation, float range) {
-        GetNode<PuppetPlayer>($"{Global.WORLD_PATH}/{id}").SpawnTracer(rotation, range);
+        GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}").SpawnTracer(rotation, range);
     }
 
     [Rpc] void Client_Intangibility(float time) {
-        var player = GetNode<Player>($"{Global.WORLD_PATH}/{Multiplayer.GetUniqueId()}");
+        var player = GetNode<Player>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}");
         Task.Run(() => {
             _ = player.Intangibility(time);
         });
     }
 
     [Rpc] void Client_PlayerHPChanged(long id, int newHP) { 
-        var player = GetNode<IPlayer>($"{Global.WORLD_PATH}/{id}");
+        var player = GetNode<IPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
         player.ChangeHP(newHP, false);
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
         if (id != Multiplayer.GetUniqueId()) {
-            var playerSprite = GetNode<AnimatedSprite2D>($"{Global.WORLD_PATH}/{id}/Sprite");
+            var playerSprite = GetNode<AnimatedSprite2D>($"{Paths.GetNodePath("WORLD")}/{id}/Sprite");
 
             playerSprite.Frame = frame;
         }
     }
 
     [Rpc] void Client_LapChanged(int lap, int maxLaps) {
-        var lapManager = GetNode<Lap>($"{Global.WORLD_PATH}/Markers/Lap");
+        var lapManager = this.GetNodeConst<Lap>("LAP");
         lapManager.EmitSignal(Lap.SignalName.LapPassed, lap, maxLaps);
     }
 

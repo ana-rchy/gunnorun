@@ -16,7 +16,7 @@ public partial class LobbyManager : Node {
             player.ReadyStatus = ready;
             Global.OtherPlayerData[id] = player;
 
-            GetNode<Lobby>("/root/Lobby").RefreshList();
+            this.GetNodeConst<Lobby>("LOBBY").RefreshList();
         }
     }
 

@@ -29,7 +29,7 @@ public partial class Player : RigidBody2D, IPlayer {
     public override void _Ready() {
         // signals
         if (Multiplayer.GetPeers().Length != 0) {
-            var playerManager = GetNode<PlayerManager>($"{Global.SERVER_PATH}/PlayerManager");
+            var playerManager = this.GetNodeConst<PlayerManager>("PLAYER_MANAGER");
             OtherPlayerHit += playerManager._OnOtherPlayerHit;
             HPChanged += playerManager._OnHPChanged;
         }

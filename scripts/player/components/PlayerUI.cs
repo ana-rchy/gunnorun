@@ -8,8 +8,9 @@ public partial class PlayerUI : Node {
 	[Export] Control RaceFinishUI;
 	Label CurrentWeapon = null;
 
-	public override void _Ready() {
-		var lapManager = GetNodeOrNull<Lap>($"{Global.WORLD_PATH}/Markers/Lap");
+	public async override void _Ready() {
+		await this.Sleep(0.01f); // HACK: no clue how else im supposed to wait until the scene loads in
+		var lapManager = this.GetNodeConst<Lap>("LAP");
 		if (lapManager == null) {
 			LapCounter.QueueFree();
 		}

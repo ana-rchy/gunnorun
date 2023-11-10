@@ -16,7 +16,7 @@ public partial class ReplayPlayer : Node2D {
             var scene = GD.Load<PackedScene>("res://scenes/player/DebugReplayPlayer.tscn");
             var instance = scene.Instantiate();
             
-            GetNode(Global.WORLD_PATH).CallDeferred("add_child", instance);
+            this.GetNodeConst("WORLD").CallDeferred("add_child", instance);
             QueueFree();
         }
 

@@ -16,7 +16,7 @@ public partial class DebugReplayPlayer : Node2D {
     GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
 
     public override void _Ready() {
-        GetNode($"{Global.WORLD_PATH}/Player").QueueFree();
+        this.GetNodeConst("PLAYER").QueueFree();
 
         using var debugFile = FileAccess.Open("user://replays/debug/debug_replay.gdr", FileAccess.ModeFlags.Read);
         var debugData = (GC.Dictionary<string, Variant>) debugFile.GetVar();

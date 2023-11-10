@@ -5,11 +5,13 @@ public partial class FinishMarker : Node {
     [Export] Timer FinishTimer;
 
     public override void _Ready() {
+        Paths.AddNodePath("FINISH_TIMER", FinishTimer.GetPath());
+
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        FinishTimer.Timeout += GetNode<Client>(Global.SERVER_PATH)._OnFinishTimerTimeout;
+        FinishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
     }
 
     //---------------------------------------------------------------------------------//

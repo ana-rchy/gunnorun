@@ -48,8 +48,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     }
 
     public void SpawnTracer(float rotation, float range) {
-        var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
-        var tracer = tracerScene.Instantiate<Tracer>();
+        var tracer = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn").Instantiate<Tracer>();
 
         tracer.GlobalPosition = GlobalPosition;
         tracer.Rotation = rotation;
@@ -59,7 +58,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         tracerArea.SetCollisionMaskValue(4, false);
         tracerArea.SetCollisionMaskValue(2, true);
 
-        GetNode(Global.WORLD_PATH).AddChild(tracer);
+        this.GetNodeConst("WORLD").AddChild(tracer);
     }
 
     #endregion

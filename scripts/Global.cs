@@ -63,23 +63,6 @@ public partial class Global : Node {
     #endregion
 
     //---------------------------------------------------------------------------------//
-    #region | paths
-
-    public const string WORLD_PATH = "/root/World";
-    public const string SERVER_PATH = "/root/Server";
-    Dictionary<string, string> NodePaths = new();
-
-    public void AddNodePath(string name, string path) {
-        NodePaths.Add(name, path);
-    }
-
-    public string GetNodePath(string name) {
-        return NodePaths[name];
-    }
-
-    #endregion
-
-    //---------------------------------------------------------------------------------//
     #region | everything else
 
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));

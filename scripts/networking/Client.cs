@@ -46,7 +46,7 @@ public partial class Client : Node {
 		if (Multiplayer.GetUniqueId() != id) {
 			Global.OtherPlayerData.TryAdd(id, new Global.PlayerDataStruct(username, color));
 
-			GetNode<Lobby>("/root/Lobby").RefreshList();
+			this.GetNodeConst<Lobby>("LOBBY").RefreshList();
 		}
 	}
 
@@ -54,9 +54,9 @@ public partial class Client : Node {
 		Global.OtherPlayerData.Remove(id);
 
 		if (gameState == "Lobby") {
-			GetNode<Lobby>("/root/Lobby").RefreshList();
+			this.GetNodeConst<Lobby>("LOBBY").RefreshList();
 		} else if (gameState == "Ingame") {
-			GetNode($"{Global.WORLD_PATH}/{id}").QueueFree();
+			GetNode($"{Paths.GetNodePath("SERVER")}/{id}").QueueFree();
 		}
 	}
 

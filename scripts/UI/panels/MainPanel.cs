@@ -12,7 +12,7 @@ public partial class MainPanel : Panel {
 
     public override void _Ready() {
         Tree = GetTree();
-        Client = GetNode<Client>(Global.SERVER_PATH);
+        Client = this.GetNodeConst<Client>("SERVER");
 
         UsernameField.Text = Global.PlayerData.Username;
         ColorField.Color = Global.PlayerData.Color;

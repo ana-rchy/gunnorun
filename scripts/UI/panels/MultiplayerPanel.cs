@@ -8,7 +8,7 @@ public partial class MultiplayerPanel : MainPanel {
     public override void _Ready() {
         base._Ready();
 
-        JoinPressed += GetNode<Client>(Global.SERVER_PATH)._OnJoinPressed;
+        JoinPressed += this.GetNodeConst<Client>("SERVER")._OnJoinPressed;
     }
 
     //---------------------------------------------------------------------------------//

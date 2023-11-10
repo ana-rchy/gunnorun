@@ -8,11 +8,14 @@ public partial class Lap : Node {
     int LapCount = 0;
 
     public override void _Ready() {
+        Paths.AddNodePath("FINISH_TIMER", FinishTimer.GetPath());
+        Paths.AddNodePath("LAP", GetPath());
+
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        FinishTimer.Timeout += GetNode<Client>(Global.SERVER_PATH)._OnFinishTimerTimeout;
+        FinishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
         EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
     }
 

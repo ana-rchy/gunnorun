@@ -8,7 +8,7 @@ public partial class GunRotation : AnimatedSprite2D {
         Parent = GetParent<Node2D>();
 
         if (Multiplayer.GetPeers().Length != 0) {
-            PlayerFrameChanged += GetNode<PlayerManager>($"{Global.SERVER_PATH}/PlayerManager")._OnPlayerFrameChanged;
+            PlayerFrameChanged += this.GetNodeConst<PlayerManager>("PLAYER_MANAGER")._OnPlayerFrameChanged;
         }
     }
 
