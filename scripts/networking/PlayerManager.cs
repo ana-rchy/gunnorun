@@ -7,13 +7,15 @@ using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class PlayerManager : Node {
+    [Export(PropertyHint.File)] string PuppetPlayerScene;
+
     const float MURASAMA_INTANGIBILITY_TIME = 0.3f;
 
     //---------------------------------------------------------------------------------//
     #region | funcs
 
     public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
-        var newPlayer = GD.Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
+        var newPlayer = GD.Load<PackedScene>(PuppetPlayerScene).Instantiate();
         this.GetNodeConst("WORLD").CallDeferred("add_child", newPlayer);
 
         newPlayer.Name = id.ToString();

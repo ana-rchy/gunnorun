@@ -46,7 +46,7 @@ public abstract class Weapon {
     }
 
     void ShootTracer(Player player, Vector2 playerPosToMousePos) {
-        var tracerScene = GD.Load<PackedScene>("res://scenes/player/components/Tracer.tscn");
+        var tracerScene = GD.Load<PackedScene>(player.TracerScene);
         var tracer = tracerScene.Instantiate<Tracer>();
 
         tracer.GlobalPosition = player.GlobalPosition;

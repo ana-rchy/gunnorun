@@ -7,9 +7,12 @@
 
 [node name="Server" type="Node"]
 script = ExtResource("1_mvbva")
+MenuScene = "res://scenes/UI/Menu.tscn"
+LobbyScene = "res://scenes/UI/Lobby.tscn"
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("2_560by")
+PuppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
 
 [node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("PlayerManager")]
 script = ExtResource("3_paiy0")

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class Player : RigidBody2D, IPlayer {
+    [Export(PropertyHint.File)] public string TracerScene { get; private set; }
     [Export] public Timer ActionTimer { get; private set; }
     [Export] public Timer ReloadTimer { get; private set; }
     [Export] Timer RegenTimer;

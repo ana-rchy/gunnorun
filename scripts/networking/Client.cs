@@ -5,6 +5,9 @@ using static Godot.MultiplayerApi;
 using MsgPack.Serialization;
 
 public partial class Client : Node {
+	[Export(PropertyHint.File)] string MenuScene;
+	[Export(PropertyHint.File)] string LobbyScene;
+
 	public override void _UnhandledInput(InputEvent e) {
 		if (e.IsActionPressed("Leave")) {
 			LeaveServer();
@@ -22,7 +25,7 @@ public partial class Client : Node {
 
 	void LeaveServer() {
 		Multiplayer.MultiplayerPeer.Close();
-		GetTree().ChangeSceneToFile("res://scenes/UI/Menu.tscn");
+		GetTree().ChangeSceneToFile(MenuScene);
 	}
 
 	#endregion
@@ -38,7 +41,7 @@ public partial class Client : Node {
 
 		Global.OtherPlayerData = playerData;
 
-		GetTree().ChangeSceneToFile("res://scenes/UI/Lobby.tscn");
+		GetTree().ChangeSceneToFile(LobbyScene);
 		Rpc(nameof(Server_NewPlayerData), Global.PlayerData.Username, Global.PlayerData.Color);
 	}
 

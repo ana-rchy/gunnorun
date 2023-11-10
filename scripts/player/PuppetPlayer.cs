@@ -2,6 +2,7 @@ using System;
 using Godot;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
+    [Export(PropertyHint.File)] string TracerScene;
     [Export] ColorRect GreenHP;
 
     double Timer;
@@ -48,7 +49,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     }
 
     public void SpawnTracer(float rotation, float range) {
-        var tracer = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn").Instantiate<Tracer>();
+        var tracer = GD.Load<PackedScene>(TracerScene).Instantiate<Tracer>();
 
         tracer.GlobalPosition = GlobalPosition;
         tracer.Rotation = rotation;

@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using Godot;
 using GC = Godot.Collections;
 
 public partial class ReplayPlayer : Node2D {
+    [Export(PropertyHint.File)] string DebugPlayerScene;
     [Export] AnimatedSprite2D Sprite;
     [Export] Node2D Crosshair;
     [Export] Sprite2D FinishMarker;
@@ -13,7 +15,7 @@ public partial class ReplayPlayer : Node2D {
 
     public override void _Ready() {
         if (Global.DebugReplay && Global.ReplayOnly && FileAccess.FileExists("user://replays/debug/debug_replay.gdr")) {
-            var scene = GD.Load<PackedScene>("res://scenes/player/DebugReplayPlayer.tscn");
+            var scene = GD.Load<PackedScene>(DebugPlayerScene);
             var instance = scene.Instantiate();
             
             this.GetNodeConst("WORLD").CallDeferred("add_child", instance);

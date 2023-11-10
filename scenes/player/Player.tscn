@@ -63,6 +63,7 @@ collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_3j7k5")
 lock_rotation = true
 script = ExtResource("1_gjffp")
+TracerScene = "res://scenes/player/components/Tracer.tscn"
 ActionTimer = NodePath("Timers/ActionTimer")
 ReloadTimer = NodePath("Timers/ReloadTimer")
 RegenTimer = NodePath("Timers/RegenTimer")

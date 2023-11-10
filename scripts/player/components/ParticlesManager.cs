@@ -4,12 +4,13 @@ using Godot;
 using static Godot.GD;
 
 public partial class ParticlesManager : Node {
+    [Export(PropertyHint.File)] string GrindingParticlesScene;
     [Export] GrindingParticles GrindingParticles;
     [Export] GpuParticles2D MurasamaParticles;
 
     public override void _Ready() {
         for (int i = 8; i <= 64; i += 4) {
-            var particlesScene = Load<PackedScene>("res://scenes/player/components/GrindingParticles.tscn");
+            var particlesScene = Load<PackedScene>(GrindingParticlesScene);
             GrindingParticles particles = particlesScene.Instantiate<GrindingParticles>();
             Player player = GetParent<Player>();
             
