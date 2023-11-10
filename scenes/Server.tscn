@@ -11,8 +11,9 @@ script = ExtResource("1_mvbva")
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("2_560by")
 
-[node name="LobbyManager" type="Node" parent="."]
+[node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("PlayerManager")]
 script = ExtResource("3_paiy0")
+PlayerManager = NodePath("../PlayerManager")
 
 [node name="MatchManager" type="Node" parent="."]
 script = ExtResource("4_k6wkw")

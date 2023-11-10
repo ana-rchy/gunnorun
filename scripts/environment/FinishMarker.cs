@@ -2,14 +2,12 @@ using System;
 using Godot;
 
 public partial class FinishMarker : Node {
-    Timer FinishTimer;
+    [Export] Timer FinishTimer;
 
     public override void _Ready() {
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
-
-        FinishTimer = GetNode<Timer>("../FinishTimer");
 
         FinishTimer.Timeout += GetNode<Client>(Global.SERVER_PATH)._OnFinishTimerTimeout;
     }

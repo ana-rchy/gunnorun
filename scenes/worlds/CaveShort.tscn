@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b6nqsqem0ax55"]
+[gd_scene load_steps=9 format=3 uid="uid://b6nqsqem0ax55"]
 
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_5ciuv"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
-[ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="4_gbq3f"]
-[ext_resource type="Script" path="res://scripts/environment/Checkpoints.cs" id="5_kr08e"]
+[ext_resource type="PackedScene" uid="uid://b7ho46u55y1i2" path="res://scenes/worlds/components/MarkersSingle.tscn" id="4_ig6b8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lkv5u"]
 texture = ExtResource("2_sclao")
@@ -122,17 +121,6 @@ texture = ExtResource("2_sclao")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_lkv5u")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_poehd"]
-size = Vector2(160, 800)
-
-[sub_resource type="Gradient" id="Gradient_e8rkh"]
-colors = PackedColorArray(0, 1, 0.0823529, 1, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_r52tf"]
-gradient = SubResource("Gradient_e8rkh")
-width = 160
-height = 800
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bqnpb"]
 size = Vector2(160, 800)
 
@@ -160,50 +148,26 @@ visible = false
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collision"]
 polygon = PackedVector2Array(160, 160, 320, 160, 320, 0, 480, 0, 480, -160, 640, -320, 800, -320, 960, -480, 1440, -480, 1440, -640, 480, -640, -640, 480, -640, 1120, -800, 1120, -800, 1440, -640, 1440, -640, 2400, -1760, 2400, -1760, 2240, -2240, 2240, -2240, 2400, -5920, 2400, -5920, 1600, -5974, 1552, -7458, 3489, 2579, 2404, 4036, -1914, -3436, -1910, -5974, 1552, -5920, 1600, -5120, 1600, -5120, 1760, -4480, 1760, -4480, 1600, -1280, 1600, -1280, 320, -1120, 320, -1120, 0, 0, -1120, 160, -1121, 320, -1280, 800, -1280, 800, -1440, 1280, -1440, 1600, -1120, 1920, -1120, 2080, -960, 2080, -800, 2240, -800, 2240, -640, 2400, -640, 2400, -320, 2560, -320, 2560, 0, 2400, 160, 2400, 320, 2080, 320, 2080, 480, 1920, 480, 1760, 640, -160, 640, -160, 480)
 
-[node name="Markers" type="Node2D" parent="."]
+[node name="Markers" parent="." instance=ExtResource("4_ig6b8")]
 
-[node name="FinishTimer" type="Timer" parent="Markers"]
-wait_time = 3.0
-one_shot = true
-
-[node name="Finish" type="Area2D" parent="Markers"]
-position = Vector2(-5840, 2000)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("4_gbq3f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Finish"]
-visible = false
-shape = SubResource("RectangleShape2D_poehd")
-
-[node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
-texture = SubResource("GradientTexture2D_r52tf")
-
-[node name="Checkpoints" type="Node2D" parent="Markers"]
-script = ExtResource("5_kr08e")
-
-[node name="1" type="Area2D" parent="Markers/Checkpoints"]
+[node name="1" parent="Markers/Checkpoints" index="0"]
 position = Vector2(880, -1040)
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/1"]
+[node name="CollisionShape2D" parent="Markers/Checkpoints/1" index="0"]
 shape = SubResource("RectangleShape2D_bqnpb")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
-[node name="2" type="Area2D" parent="Markers/Checkpoints"]
+[node name="2" parent="Markers/Checkpoints" index="1"]
 position = Vector2(-2320, 2000)
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/2"]
+[node name="CollisionShape2D" parent="Markers/Checkpoints/2" index="0"]
 shape = SubResource("RectangleShape2D_8n8ai")
 
 [connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/PlayerUI" method="_OnRaceFinished"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/ReplayRecorder" method="_OnRaceFinished"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/DebugRecorder" method="_OnRaceFinished"]
-[connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered"]
 
 [editable path="Player"]
+[editable path="Markers"]

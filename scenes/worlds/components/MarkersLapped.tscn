@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://bb1ev3j2uoqfp"]
+
+[ext_resource type="Script" path="res://scripts/environment/Checkpoints.cs" id="1_gbnco"]
+[ext_resource type="Script" path="res://scripts/environment/Lap.cs" id="2_t5pwa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4yotf"]
+size = Vector2(160, 800)
+
+[sub_resource type="Gradient" id="Gradient_0k4lp"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0.682353, 1, 0, 0, 0.682353, 1, 1, 0, 0.682353, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xsj30"]
+gradient = SubResource("Gradient_0k4lp")
+
+[node name="Markers" type="Node2D"]
+
+[node name="Checkpoints" type="Node2D" parent="."]
+script = ExtResource("1_gbnco")
+
+[node name="FinishTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Lap" type="Area2D" parent="." node_paths=PackedStringArray("FinishTimer")]
+position = Vector2(0, -1040)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_t5pwa")
+FinishTimer = NodePath("../FinishTimer")
+MaxLaps = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lap"]
+shape = SubResource("RectangleShape2D_4yotf")
+
+[node name="Sprite2D" type="Sprite2D" parent="Lap"]
+position = Vector2(1.19209e-06, -1.04904e-05)
+scale = Vector2(2.5, 12.5)
+texture = SubResource("GradientTexture2D_xsj30")
+
+[connection signal="body_entered" from="Lap" to="Lap" method="_OnPlayerEntered"]

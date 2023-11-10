@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using static Godot.MultiplayerApi;
 
 public partial class GunRotation : AnimatedSprite2D {
     Node2D Parent;

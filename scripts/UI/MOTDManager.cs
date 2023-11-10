@@ -3,6 +3,12 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class MOTDManager : RichTextLabel {
+	[Export] AudioStreamPlayer DoorKnock;
+	[Export] AudioStreamPlayer VineBoom;
+	[Export] AudioStreamPlayer NavalInvasion;
+	[Export] TextureRect UnhingedKnight;
+	[Export] TextureRect LiveLeak;
+	
 	string[] MotdMessages;
 	
 	public override async void _Ready() {
@@ -108,7 +114,8 @@ public partial class MOTDManager : RichTextLabel {
 			"Are you... [i]pursuing[/i] me?",
 			"Now with more french bread!",
 			"im in spain, but with the s",
-			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA",
+			"「MADE IN HEAVEN」"
 		};
 
 		var rnd = new RandomNumberGenerator();
@@ -122,14 +129,14 @@ public partial class MOTDManager : RichTextLabel {
 			switch (uncenteredText) {
 				case "i am in your walls.":
 					await this.Sleep(2.5f);
-					GetNode<AudioStreamPlayer>("DoorKnock").Play(); break;
+					DoorKnock.Play(); break;
 				case "naaah no wayyy omg bruuuhhh":
 					await this.Sleep(0.5f);
-					GetNode<AudioStreamPlayer>("VineBoom").Play(); break;
+					VineBoom.Play(); break;
 				case "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.":
 					AddThemeFontSizeOverride("normal_font_size", 8); break;
 				case "hello spez":
-					GetNode<TextureRect>("../SubtitleImages/Knight").Show(); break;
+					UnhingedKnight.Show(); break;
 				case "you know what? fuck you. *crashes your game*":
 					await this.Sleep(2f);
 					GetTree().Root.GuiEmbedSubwindows = false;
@@ -143,13 +150,13 @@ public partial class MOTDManager : RichTextLabel {
 					dialog.Canceled += () => dialog.QueueFree();
 					dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true; break;
 				case " ":
-					GetNode<TextureRect>("../SubtitleImages/LiveLeak").Show(); break;
+					LiveLeak.Show(); break;
 				case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
 					RenderingServer.SetDefaultClearColor(new Color("000000")); break;
 				case "10":
 					_ = Countdown(uncenteredText); break;
 				case "[color=#aa0000]Dangerous naval invasion![/color]":
-					GetNode<AudioStreamPlayer>("NavalInvasion").Play(); break;
+					NavalInvasion.Play(); break;
 			}
 		} catch (Exception e) {
 			if (e is ObjectDisposedException) {

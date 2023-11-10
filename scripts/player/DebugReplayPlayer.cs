@@ -3,8 +3,8 @@ using Godot;
 using GC = Godot.Collections;
 
 public partial class DebugReplayPlayer : Node2D {
-    Node2D Crosshair;
-    Label DebugInfo;
+    [Export] Node2D Crosshair;
+    [Export] Label DebugInfo;
 
     GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
     GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
@@ -17,9 +17,6 @@ public partial class DebugReplayPlayer : Node2D {
 
     public override void _Ready() {
         GetNode($"{Global.WORLD_PATH}/Player").QueueFree();
-
-        Crosshair = GetNode<Node2D>("Crosshair");
-        DebugInfo = GetNode<Label>("DebugUI/Control/Label");
 
         using var debugFile = FileAccess.Open("user://replays/debug/debug_replay.gdr", FileAccess.ModeFlags.Read);
         var debugData = (GC.Dictionary<string, Variant>) debugFile.GetVar();

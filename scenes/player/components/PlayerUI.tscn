@@ -32,8 +32,12 @@ font_size = 60
 resource_local_to_scene = true
 font_size = 60
 
-[node name="PlayerUI" type="CanvasLayer"]
+[node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("LevelTime", "LapCounter", "HP", "RaceFinishUI")]
 script = ExtResource("2_5xriv")
+LevelTime = NodePath("Control/LevelTime")
+LapCounter = NodePath("Control/LapCounter")
+HP = NodePath("Control/HP")
+RaceFinishUI = NodePath("Control/RaceFinish")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

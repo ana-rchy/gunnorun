@@ -2,16 +2,19 @@ using Godot;
 using System;
 
 public partial class HelpPanel : Panel {
+    [Export] Label UserDataPath;
+    [Export] Label Controls;
+
     public override void _Ready() {
         switch (OS.GetName()) {
             case "Linux":
-                GetNode<Label>("UserDataPath").Text = "user data path: ~/.local/share/godot/app_userdata/gunnorun/";
+                UserDataPath.Text = "user data path: ~/.local/share/godot/app_userdata/gunnorun/";
                 break;
             case "Windows":
-                GetNode<Label>("UserDataPath").Text = "user data path: %APPDATA%\\Godot\\app_userdata\\gunnorun\\";
+                UserDataPath.Text = "user data path: %APPDATA%\\Godot\\app_userdata\\gunnorun\\";
                 break;
             case "macOS":
-                GetNode<Label>("UserDataPath").Text = "user data path: ~/Library/Application Support/Godot/app_userdata/gunnorun/";
+                UserDataPath.Text = "user data path: ~/Library/Application Support/Godot/app_userdata/gunnorun/";
                 break;
         }
     }
@@ -67,7 +70,7 @@ public partial class HelpPanel : Panel {
     }
 
     void _OnVisibilityChanged() {
-        GetNode<Label>("Controls").Text =
+        Controls.Text =
             $"{InputMap.ActionGetEvents("Num1")[0].AsText()}-{InputMap.ActionGetEvents("Num4")[0].AsText()} - switch weapons\n" +
             $"{InputMap.ActionGetEvents("Reload")[0].AsText()} - reload\n" + 
             $"{InputMap.ActionGetEvents("Leave")[0].AsText()} - return to menu\n" +

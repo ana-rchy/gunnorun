@@ -1,18 +1,14 @@
 using System;
-using System.Threading.Tasks;
 using Godot;
 
 public partial class PlayerUI : Node {
-	Label LevelTime;
-	Label LapCounter;
-	Label HP;
+	[Export] Label LevelTime;
+	[Export] Label LapCounter;
+	[Export] Label HP;
+	[Export] Control RaceFinishUI;
 	Label CurrentWeapon = null;
 
 	public override void _Ready() {
-		LevelTime = GetNode<Label>("Control/LevelTime");
-		LapCounter = GetNode<Label>("Control/LapCounter");
-		HP = GetNode<Label>("Control/HP");
-		
 		var lapManager = GetNodeOrNull<Lap>($"{Global.WORLD_PATH}/Markers/Lap");
 		if (lapManager == null) {
 			LapCounter.QueueFree();
@@ -91,9 +87,8 @@ public partial class PlayerUI : Node {
 	}
 
 	public void _OnRaceFinished(float finishTime) {
-		var raceFinishUI = GetNode<Control>("Control/RaceFinish");
-		raceFinishUI.Show();
-		raceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
+		RaceFinishUI.Show();
+		RaceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
 	}
 
 	#endregion

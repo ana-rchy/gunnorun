@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://dxjsu1p6d85kn"]
 
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="1_nfo52"]
 [ext_resource type="PackedScene" uid="uid://x1ncd56btc4b" path="res://scenes/UI/UI components/Slot.tscn" id="2_uxq0b"]
@@ -30,7 +30,7 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wqmne"]
 
-[node name="Lobby" type="Control"]
+[node name="Lobby" type="Control" node_paths=PackedStringArray("ReadyButton", "Slot1")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,6 +38,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_cig11")
+ReadyButton = NodePath("Ready")
+Slot1 = NodePath("Slot1")
 
 [node name="Slot1" parent="." instance=ExtResource("2_uxq0b")]
 layout_mode = 0

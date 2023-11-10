@@ -1,10 +1,9 @@
 using System;
 using Godot;
 using GC = Godot.Collections;
-using MsgPack.Serialization;
 
 public partial class ReplayRecorder : Node2D {
-    AnimatedSprite2D Sprite;
+    [Export] AnimatedSprite2D Sprite;
     
     GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
     GC.Array<sbyte> FramesList = new GC.Array<sbyte>();
@@ -13,8 +12,6 @@ public partial class ReplayRecorder : Node2D {
 
     public override void _Ready() {
         SetPhysicsProcess(false);
-
-        Sprite = GetNode<AnimatedSprite2D>("../Sprite");
     }
 
     public override void _PhysicsProcess(double delta) {

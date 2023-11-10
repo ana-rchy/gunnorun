@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using static Godot.GD;
 using static Godot.MultiplayerApi;
 using MsgPack.Serialization;
 

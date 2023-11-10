@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Godot;
 using GC = Godot.Collections;
 
 public partial class ReplayPlayer : Node2D {
-    AnimatedSprite2D Sprite;
-    Node2D Crosshair;
+    [Export] AnimatedSprite2D Sprite;
+    [Export] Node2D Crosshair;
+    [Export] Sprite2D FinishMarker;
 
     GC.Array<Vector2> PositionsList;
     GC.Array<int> FramesList;
@@ -20,7 +20,6 @@ public partial class ReplayPlayer : Node2D {
             QueueFree();
         }
 
-
         string replayPath = Global.ReplayName == null ? $"user://replays/{Global.CurrentWorld}_best_replay.grp"
             : $"user://imported_replays/{Global.ReplayName}";
         if (!FileAccess.FileExists(replayPath)) {
@@ -28,9 +27,6 @@ public partial class ReplayPlayer : Node2D {
             return;
         }
 
-
-        Sprite = GetNode<AnimatedSprite2D>("Sprite");
-        Crosshair = GetNode<Node2D>("Crosshair");
 
         ReadFromReplayFile(replayPath);
         SetPhysicsProcess(false);
@@ -57,7 +53,7 @@ public partial class ReplayPlayer : Node2D {
     public override void _PhysicsProcess(double delta) {
         if (_replayDataIndex >= PositionsList.Count && Global.ReplayOnly == false) {
             SetPhysicsProcess(false);
-            GetNode<Sprite2D>("FinishMarker").Show();
+            FinishMarker.Show();
             return;
         } else if (_replayDataIndex >= PositionsList.Count) {
             _replayDataIndex = 0;

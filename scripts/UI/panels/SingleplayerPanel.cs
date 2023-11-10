@@ -6,22 +6,13 @@ public partial class SingleplayerPanel : MainPanel {
     public static int SelectedWorldIndex { get; private set; } = 0;
     public static int SelectedReplayIndex { get; private set; } = 0;
 
-    OptionButton MapSelect;
-    OptionButton ReplaySelect;
-    LineEdit OpposingUsernameField;
-    ColorPickerButton OpposingColorPicker;
-    Label LastTime;
-    Label BestTime;
+    [Export] OptionButton MapSelect;
+    [Export] OptionButton ReplaySelect;
+    [Export] Label LastTime;
+    [Export] Label BestTime;
 
     public override void _Ready() {
         base._Ready();
-
-        MapSelect = GetNode<OptionButton>("MapSelect");
-        ReplaySelect = GetNode<OptionButton>("ReplaySelect");
-        OpposingUsernameField = GetNode<LineEdit>("/root/Menu/TabContainer/Multiplayer/Panel/Username");
-        OpposingColorPicker = GetNode<ColorPickerButton>("/root/Menu/TabContainer/Multiplayer/Panel/PlayerColor");
-        LastTime = GetNode<Label>("LastTime");
-        BestTime = GetNode<Label>("BestTime");
 
         UpdateBestTime();
         CheckImportedReplays();
@@ -92,22 +83,10 @@ public partial class SingleplayerPanel : MainPanel {
         Global.ReplayName = ReplaySelect.GetItemText(index);
     }
 
-    void _OnUsernameChanged(string text) {
-        Global.PlayerData.Username = text;
-
-        OpposingUsernameField.Text = text;
-    }
-
     void _OnViewReplayPressed() {
         Global.ReplayOnly = true;
 
         Tree.ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
-    }
-
-    void _OnColorChanged(Color color) {
-        Global.PlayerData.Color = color;
-
-        OpposingColorPicker.Color = color;
     }
 
     void _OnSaveLastReplayPressed() {

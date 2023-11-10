@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
-using static Godot.GD;
 using static Godot.MultiplayerApi;
 using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
@@ -14,7 +13,7 @@ public partial class PlayerManager : Node {
     #region | funcs
 
     public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
-        var newPlayer = Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
+        var newPlayer = GD.Load<PackedScene>("res://scenes/player/PuppetPlayer.tscn").Instantiate();
         GetNode(Global.WORLD_PATH).CallDeferred("add_child", newPlayer);
 
         newPlayer.Name = id.ToString();

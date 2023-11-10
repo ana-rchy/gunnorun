@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Menu : Node {
+	[Export] TabContainer TabContainer;
+	[Export] ColorRect SettingsPanel;
+	[Export] ColorRect HelpPanel;
+
 	static int SelectedTab = 0;
 
 	public override void _Ready() {
-		GetNode<TabContainer>("TabContainer").CurrentTab = SelectedTab;
+		TabContainer.CurrentTab = SelectedTab;
 	}
 
 	//---------------------------------------------------------------------------------//
@@ -24,11 +28,11 @@ public partial class Menu : Node {
 	}
 
 	void _OnSettingsPressed() {
-		GetNode<ColorRect>("Settings/ColorRect").Show();
+		SettingsPanel.Show();
 	}
 	
 	void _OnHelpPressed() {
-		GetNode<ColorRect>("Help/ColorRect").Show();
+		HelpPanel.Show();
 	}
 
 	#endregion

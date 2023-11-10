@@ -42,7 +42,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="Menu" type="Control"]
+[node name="Menu" type="Control" node_paths=PackedStringArray("TabContainer", "SettingsPanel", "HelpPanel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,6 +51,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_kgwbg")
 script = ExtResource("4_dav64")
+TabContainer = NodePath("TabContainer")
+SettingsPanel = NodePath("Settings/ColorRect")
+HelpPanel = NodePath("Help/ColorRect")
 
 [node name="Title" type="TextureRect" parent="."]
 layout_mode = 1
@@ -131,12 +134,20 @@ tab_alignment = 1
 [node name="Singleplayer" type="Control" parent="TabContainer"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="TabContainer/Singleplayer"]
+[node name="Panel" type="Panel" parent="TabContainer/Singleplayer" node_paths=PackedStringArray("MapSelect", "ReplaySelect", "LastTime", "BestTime", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
 theme = ExtResource("14_gwevq")
 script = ExtResource("10_ws80g")
+MapSelect = NodePath("MapSelect")
+ReplaySelect = NodePath("ReplaySelect")
+LastTime = NodePath("LastTime")
+BestTime = NodePath("BestTime")
+UsernameField = NodePath("Username")
+ColorField = NodePath("PlayerColor")
+OpposingUsernameField = NodePath("../../Multiplayer/Panel/Username")
+OpposingColorField = NodePath("../../Multiplayer/Panel/PlayerColor")
 
 [node name="MapSelect" type="OptionButton" parent="TabContainer/Singleplayer/Panel"]
 layout_mode = 1
@@ -297,12 +308,18 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="TabContainer/Multiplayer"]
+[node name="Panel" type="Panel" parent="TabContainer/Multiplayer" node_paths=PackedStringArray("IP", "Port", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
 theme = ExtResource("14_gwevq")
 script = ExtResource("15_xnftg")
+IP = NodePath("IP")
+Port = NodePath("Port")
+UsernameField = NodePath("Username")
+ColorField = NodePath("PlayerColor")
+OpposingUsernameField = NodePath("../../Singleplayer/Panel/Username")
+OpposingColorField = NodePath("../../Singleplayer/Panel/PlayerColor")
 
 [node name="IP" type="LineEdit" parent="TabContainer/Multiplayer/Panel"]
 layout_mode = 0
@@ -449,7 +466,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="Panel" parent="Settings/ColorRect"]
+[node name="Panel" type="Panel" parent="Settings/ColorRect" node_paths=PackedStringArray("Binds")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.396
@@ -464,6 +481,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("16_pom1n")
+Binds = NodePath("Binds")
 
 [node name="BindNames" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
@@ -614,7 +632,7 @@ offset_top = 0.0200806
 offset_bottom = 0.0200577
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="Panel" parent="Help/ColorRect"]
+[node name="Panel" type="Panel" parent="Help/ColorRect" node_paths=PackedStringArray("UserDataPath", "Controls")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.344
@@ -629,6 +647,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("18_jgm5r")
+UserDataPath = NodePath("UserDataPath")
+Controls = NodePath("Controls")
 
 [node name="SaveLastRunDebugData" type="Button" parent="Help/ColorRect/Panel"]
 layout_mode = 1

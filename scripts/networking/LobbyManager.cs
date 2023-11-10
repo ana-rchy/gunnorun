@@ -3,6 +3,8 @@ using Godot;
 using static Godot.MultiplayerApi;
 
 public partial class LobbyManager : Node {
+    [Export] PlayerManager PlayerManager;
+
     //---------------------------------------------------------------------------------//
     #region | rpc
 
@@ -23,7 +25,7 @@ public partial class LobbyManager : Node {
         GetTree().ChangeSceneToFile($"res://scenes/worlds/{worldName}.tscn");
 
         foreach (var player in Global.OtherPlayerData) {
-            GetNode<PlayerManager>("../PlayerManager").CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
+            PlayerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
         }
     }
 

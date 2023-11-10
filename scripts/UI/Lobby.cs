@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Lobby : Node {
-    Button ReadyButton;
+    [Export] Button ReadyButton;
+    [Export] Panel Slot1;
 
     public override void _Ready() {
-        ReadyButton = GetNode<Button>("Ready");
-
         if (Multiplayer.GetPeers().Length != 0) {
             ReadyToggled += GetNode<LobbyManager>($"{Global.SERVER_PATH}/LobbyManager")._OnReadyToggled;
         }
 
-        var slot1 = GetNode("Slot1");
-        slot1.GetNode<Label>("Username").Text = Global.PlayerData.Username;
+        Slot1.GetNode<Label>("Username").Text = Global.PlayerData.Username;
         var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) slot1.GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+        ((ShaderMaterial) Slot1.GetNode<Sprite2D>("Sprite").Material).SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
         RefreshList();
     }
 
@@ -57,10 +55,9 @@ public partial class Lobby : Node {
     void _OnReadyToggle(bool buttonPressed) {
         Global.PlayerData.ReadyStatus = !Global.PlayerData.ReadyStatus;
 
-        var panel = (StyleBoxFlat) GetNode<Panel>("Slot1/ReadyIndicator").GetThemeStylebox("panel");
-        var readyButton = GetNode<Button>("Ready");
+        var panel = (StyleBoxFlat) Slot1.GetNode<Panel>("ReadyIndicator").GetThemeStylebox("panel");
         panel.BgColor = buttonPressed ? new Color("0ecc00") : new Color("cc0000");
-        readyButton.Text = !buttonPressed ? "Unready" : "Ready";
+        ReadyButton.Text = !buttonPressed ? "Unready" : "Ready";
 
         EmitSignal(SignalName.ReadyToggled, Global.PlayerData.ReadyStatus);
     }

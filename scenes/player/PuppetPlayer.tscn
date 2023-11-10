@@ -12,10 +12,11 @@ size = Vector2(110, 210)
 shader = ExtResource("2_r2d5f")
 shader_parameter/color = null
 
-[node name="PuppetPlayer" type="CharacterBody2D"]
+[node name="PuppetPlayer" type="CharacterBody2D" node_paths=PackedStringArray("GreenHP")]
 collision_layer = 8
 safe_margin = 0.01
 script = ExtResource("3_s52n3")
+GreenHP = NodePath("GreenHP")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_i1jlw")

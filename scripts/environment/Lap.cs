@@ -1,9 +1,8 @@
-using Godot;
 using System;
-using System.Linq;
+using Godot;
 
 public partial class Lap : Node {
-    Timer FinishTimer;
+    [Export] Timer FinishTimer;
 
     [Export] int MaxLaps;
     int LapCount = 0;
@@ -12,8 +11,6 @@ public partial class Lap : Node {
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
-
-        FinishTimer = GetNode<Timer>("../FinishTimer");
 
         FinishTimer.Timeout += GetNode<Client>(Global.SERVER_PATH)._OnFinishTimerTimeout;
         EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);

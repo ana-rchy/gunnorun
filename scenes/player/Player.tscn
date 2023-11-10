@@ -55,7 +55,7 @@ height = 210.0
 shader = ExtResource("5_yasl1")
 shader_parameter/color = null
 
-[node name="Player" type="RigidBody2D"]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("ActionTimer", "ReloadTimer", "RegenTimer", "WeaponRaycast", "GroundRaycast", "Sprite", "Username")]
 z_index = 1
 z_as_relative = false
 position = Vector2(0, -1)
@@ -63,6 +63,13 @@ collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_3j7k5")
 lock_rotation = true
 script = ExtResource("1_gjffp")
+ActionTimer = NodePath("Timers/ActionTimer")
+ReloadTimer = NodePath("Timers/ReloadTimer")
+RegenTimer = NodePath("Timers/RegenTimer")
+WeaponRaycast = NodePath("Raycasts/WeaponRaycast")
+GroundRaycast = NodePath("Raycasts/GroundRaycast")
+Sprite = NodePath("Sprite")
+Username = NodePath("Username")
 
 [node name="PlayerUI" parent="." instance=ExtResource("2_0rg58")]
 
@@ -81,8 +88,9 @@ one_shot = true
 [node name="LevelTimer" type="Node" parent="Timers"]
 script = ExtResource("3_80esj")
 
-[node name="ReplayRecorder" type="Node2D" parent="."]
+[node name="ReplayRecorder" type="Node2D" parent="." node_paths=PackedStringArray("Sprite")]
 script = ExtResource("4_ardvv")
+Sprite = NodePath("../Sprite")
 
 [node name="DebugRecorder" type="Node" parent="."]
 script = ExtResource("5_voyw7")
@@ -97,9 +105,11 @@ collision_mask = 8
 target_position = Vector2(0, 110)
 hit_from_inside = true
 
-[node name="Particles" type="Node2D" parent="."]
+[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("GrindingParticles", "MurasamaParticles")]
 z_index = 1
 script = ExtResource("6_xmwqc")
+GrindingParticles = NodePath("GrindingParticles")
+MurasamaParticles = NodePath("MurasamaParticles")
 
 [node name="GrindingParticles" parent="Particles" instance=ExtResource("7_a5ymy")]
 position = Vector2(0, 105)

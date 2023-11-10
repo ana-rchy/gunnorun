@@ -1,9 +1,9 @@
 using System;
-using System.Threading.Tasks;
 using Godot;
-using static Godot.GD;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
+    [Export] ColorRect GreenHP;
+
     double Timer;
     public Vector2 PuppetPosition { get; set; }
     public int HP { get; private set; } = 100;
@@ -30,15 +30,13 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
             return;
         }
 
-        var greenHP = GetNode<ColorRect>("GreenHP");
-
         HP = newHP;
-        greenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
+        GreenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
 
         if (HP <= 0) {
             await this.Sleep(3f);
             HP = 100;
-            greenHP.Size = new Vector2(200f, 20f);
+            GreenHP.Size = new Vector2(200f, 20f);
             SpawnInvuln();
         }
     }
@@ -50,7 +48,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     }
 
     public void SpawnTracer(float rotation, float range) {
-        var tracerScene = Load<PackedScene>("res://scenes/player/Tracer.tscn");
+        var tracerScene = GD.Load<PackedScene>("res://scenes/player/Tracer.tscn");
         var tracer = tracerScene.Instantiate<Tracer>();
 
         tracer.GlobalPosition = GlobalPosition;

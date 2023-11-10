@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class Player : RigidBody2D, IPlayer {
-    public Timer ActionTimer { get; private set; }
-    public Timer ReloadTimer { get; private set; }
-    Timer RegenTimer;
-    public RayCast2D WeaponRaycast { get; private set; }
-    RayCast2D GroundRaycast;
+    [Export] public Timer ActionTimer { get; private set; }
+    [Export] public Timer ReloadTimer { get; private set; }
+    [Export] Timer RegenTimer;
+    [Export] public RayCast2D WeaponRaycast { get; private set; }
+    [Export] RayCast2D GroundRaycast;
+    [Export] AnimatedSprite2D Sprite;
+    [Export] Label Username;
 
     const float MAXIMUM_VELOCITY = 4000f;
     const float SPAWN_INTANGIBILITY_TIME = 2f;
@@ -25,13 +27,6 @@ public partial class Player : RigidBody2D, IPlayer {
         = (new Vector2(0, 0), new Vector2(0, 0), 0f);
 
     public override void _Ready() {
-        // node references
-        ActionTimer = GetNode<Timer>("Timers/ActionTimer");
-        ReloadTimer = GetNode<Timer>("Timers/ReloadTimer");
-        RegenTimer = GetNode<Timer>("Timers/RegenTimer");
-        WeaponRaycast = GetNode<RayCast2D>("Raycasts/WeaponRaycast");
-        GroundRaycast = GetNode<RayCast2D>("Raycasts/GroundRaycast");
-
         // signals
         if (Multiplayer.GetPeers().Length != 0) {
             var playerManager = GetNode<PlayerManager>($"{Global.SERVER_PATH}/PlayerManager");
@@ -43,9 +38,9 @@ public partial class Player : RigidBody2D, IPlayer {
         Weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = Weapons[CurrentWeaponIndex];
         EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
-        GetNode<Label>("Username").Text = Global.PlayerData.Username;
+        Username.Text = Global.PlayerData.Username;
         var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) GetNode<AnimatedSprite2D>("Sprite").Material)
+        ((ShaderMaterial) Sprite.Material)
             .SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         if (Multiplayer.GetPeers().Length != 0) {

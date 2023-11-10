@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using static Godot.GD;
 
 public partial class Global : Node {
     public override void _Ready() {        
@@ -17,7 +16,7 @@ public partial class Global : Node {
         var config = new ConfigFile();
         var err = config.Load("user://config.cfg");
         if (err != Error.Ok) {
-            Print("cant open config file");
+            GD.Print("cant open config file");
         }
 
         foreach (var action in config.GetSectionKeys("Keybinds")) {
@@ -49,8 +48,6 @@ public partial class Global : Node {
     #region | constants/structs
 
     public const float TICK_RATE = 1 / 60f;
-    public const string WORLD_PATH = "/root/World";
-    public const string SERVER_PATH = "/root/Server";
 
     public struct PlayerDataStruct {
         public PlayerDataStruct(string username, Color color) {
@@ -61,6 +58,23 @@ public partial class Global : Node {
         public string Username;
         public Color Color;
         public bool ReadyStatus = false;
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | paths
+
+    public const string WORLD_PATH = "/root/World";
+    public const string SERVER_PATH = "/root/Server";
+    Dictionary<string, string> NodePaths = new();
+
+    public void AddNodePath(string name, string path) {
+        NodePaths.Add(name, path);
+    }
+
+    public string GetNodePath(string name) {
+        return NodePaths[name];
     }
 
     #endregion
