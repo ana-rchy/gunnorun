@@ -20,7 +20,7 @@ public partial class LobbyManager : Node {
 
     [Rpc] void Client_StartGame(string worldName) {
         Global.PlayerData.ReadyStatus = false;
-        GetTree().ChangeSceneToFile("res://scenes/worlds/" + worldName + ".tscn");
+        GetTree().ChangeSceneToFile($"res://scenes/worlds/{worldName}.tscn");
 
         foreach (var player in Global.OtherPlayerData) {
             GetNode<PlayerManager>("../PlayerManager").CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);

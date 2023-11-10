@@ -57,7 +57,7 @@ public partial class Client : Node {
 		if (gameState == "Lobby") {
 			GetNode<Lobby>("/root/Lobby").RefreshList();
 		} else if (gameState == "Ingame") {
-			GetNode(Global.WORLD_PATH + id).QueueFree();
+			GetNode($"{Global.WORLD_PATH}/{id}").QueueFree();
 		}
 	}
 

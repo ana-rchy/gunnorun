@@ -16,7 +16,7 @@ public partial class DebugReplayPlayer : Node2D {
     GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
 
     public override void _Ready() {
-        GetNode(Global.WORLD_PATH + "Player").QueueFree();
+        GetNode($"{Global.WORLD_PATH}/Player").QueueFree();
 
         Crosshair = GetNode<Node2D>("Crosshair");
         DebugInfo = GetNode<Label>("DebugUI/Control/Label");
@@ -49,13 +49,13 @@ public partial class DebugReplayPlayer : Node2D {
         GlobalPosition = position;
         Crosshair.GlobalPosition = mousePosition;
 
-        DebugInfo.Text = "position: " + position.X + ", " + position.Y +
-        "\nmouse position: " + mousePosition.X + ", " + mousePosition.Y +
-        "\nvelocity: " + velocity.X + ", " + velocity.Y +
-        "\nweapon: " + WeaponList[_debugDataIndex] +
-        "\nvelocity cap: " + velocityCap.X + ", " + velocityCap.Y +
-        "\nreelback strength: " + ReelbackStrengthList[_debugDataIndex] +
-        "\nstate velocity: " + stateVelocity.X + ", " + stateVelocity.Y;
+        DebugInfo.Text = $"position: {position.X}, {position.Y}" +
+        $"\nmouse position: {mousePosition.X}, {mousePosition.Y}" +
+        $"\nvelocity: {velocity.X}, {velocity.Y}" +
+        $"\nweapon: {WeaponList[_debugDataIndex]}" +
+        $"\nvelocity cap: {velocityCap.X}, {velocityCap.Y}" +
+        $"\nreelback strength: {ReelbackStrengthList[_debugDataIndex]}" +
+        $"\nstate velocity: {stateVelocity.X}, {stateVelocity.Y}";
 
         _debugDataIndex++;
     }

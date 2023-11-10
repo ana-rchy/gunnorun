@@ -34,7 +34,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         // signals
         if (Multiplayer.GetPeers().Length != 0) {
-            var playerManager = GetNode<PlayerManager>(Global.SERVER_PATH + "PlayerManager");
+            var playerManager = GetNode<PlayerManager>($"{Global.SERVER_PATH}/PlayerManager");
             OtherPlayerHit += playerManager._OnOtherPlayerHit;
             HPChanged += playerManager._OnHPChanged;
         }
@@ -59,7 +59,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     public override void _Input(InputEvent e) {
         for (int i = 1; i <= 4; i++) {
-            if (e.IsActionPressed("Num" + i.ToString())) {
+            if (e.IsActionPressed($"Num{i}")) {
                 CurrentWeapon = Weapons[i-1];
                 CurrentWeaponIndex = i-1;
 

@@ -36,7 +36,7 @@ public partial class HelpPanel : Panel {
         Global.DebugReplay = true;
         Global.ReplayOnly = true;
 
-        GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+        GetTree().ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
     }
 
     void _OnClearData() {
@@ -51,13 +51,13 @@ public partial class HelpPanel : Panel {
         dialog.Confirmed += () => {
             DirAccess.RemoveAbsolute("user://replays/debug/debug_replay.gdr");
             foreach (var file in DirAccess.GetFilesAt("user://replays")) {
-                DirAccess.RemoveAbsolute("user://replays/" + file);
+                DirAccess.RemoveAbsolute($"user://replays/{file}");
             }
             foreach (var file in DirAccess.GetFilesAt("user://imported_replays")) {
-                DirAccess.RemoveAbsolute("user://imported_replays/" + file);
+                DirAccess.RemoveAbsolute($"user://imported_replays/{file}");
             }
             foreach (var file in DirAccess.GetFilesAt("user://")) {
-                DirAccess.RemoveAbsolute("user://" + file);
+                DirAccess.RemoveAbsolute($"user://{file}");
             }
         };
 
@@ -68,10 +68,10 @@ public partial class HelpPanel : Panel {
 
     void _OnVisibilityChanged() {
         GetNode<Label>("Controls").Text =
-            InputMap.ActionGetEvents("Num1")[0].AsText() + "-" + InputMap.ActionGetEvents("Num4")[0].AsText() + " - switch weapons\n" +
-            InputMap.ActionGetEvents("Reload")[0].AsText() + " - reload\n"+ 
-            InputMap.ActionGetEvents("Leave")[0].AsText() + " - return to menu    " +
-            InputMap.ActionGetEvents("Respawn")[0].AsText() +  "- respawn";
+            $"{InputMap.ActionGetEvents("Num1")[0].AsText()}-{InputMap.ActionGetEvents("Num4")[0].AsText()} - switch weapons\n" +
+            $"{InputMap.ActionGetEvents("Reload")[0].AsText()} - reload\n" + 
+            $"{InputMap.ActionGetEvents("Leave")[0].AsText()} - return to menu\n" +
+            $"{InputMap.ActionGetEvents("Respawn")[0].AsText()} - respawn";
     }
 
     #endregion

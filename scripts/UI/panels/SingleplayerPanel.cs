@@ -28,7 +28,7 @@ public partial class SingleplayerPanel : MainPanel {
         MapSelect.Selected = SelectedWorldIndex;
         ReplaySelect.Selected = SelectedReplayIndex;
         if (LevelTimer.Time != 0) {
-            LastTime.Text = "last time: " + Math.Round(LevelTimer.Time, 3).ToString() + "s";
+            LastTime.Text = $"last time: {Math.Round(LevelTimer.Time, 3)}s";
         }
     }
 
@@ -36,10 +36,10 @@ public partial class SingleplayerPanel : MainPanel {
     #region | funcs
 
     void UpdateBestTime() {
-        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
+        var timePath = $"user://{Global.CurrentWorld}_time.gsd";
         if (FileAccess.FileExists(timePath)) {
             using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
-            BestTime.Text = "best time: " + timeFile.GetDouble().ToString() + "s";
+            BestTime.Text = $"best time: {timeFile.GetDouble()}s";
         } else {
             BestTime.Text = "";
         }
@@ -50,7 +50,7 @@ public partial class SingleplayerPanel : MainPanel {
         var replayFiles = allFiles.Where( file => file.EndsWith(".grp") );
 
         var currentMapReplays = replayFiles.Where( replay => {
-            var replayFile = FileAccess.Open("user://imported_replays/" + replay, FileAccess.ModeFlags.Read);
+            var replayFile = FileAccess.Open($"user://imported_replays/{replay}", FileAccess.ModeFlags.Read);
             var replayData = (Godot.Collections.Dictionary<string, Variant>) replayFile.GetVar();
             var worldName = replayData["World"];
 
@@ -70,7 +70,7 @@ public partial class SingleplayerPanel : MainPanel {
     #region | signals
 
     void _OnSingleplayerPressed() {    
-        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+        Tree.ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
     }
 
     void _OnMapSelected(int index) {
@@ -101,7 +101,7 @@ public partial class SingleplayerPanel : MainPanel {
     void _OnViewReplayPressed() {
         Global.ReplayOnly = true;
 
-        Tree.ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+        Tree.ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
     }
 
     void _OnColorChanged(Color color) {

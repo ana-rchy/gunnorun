@@ -72,10 +72,10 @@ public partial class KeybindButton : Button {
 
 		if (bind is InputEventMouseButton) {
 			var mouseBind = (InputEventMouseButton) bind;
-			config.SetValue("Keybinds", Name, "m" + mouseBind.ButtonIndex.ToString());
+			config.SetValue("Keybinds", Name, $"m{mouseBind.ButtonIndex}");
 		} else if (bind is InputEventKey) {
 			var keyBind = (InputEventKey) bind;
-			config.SetValue("Keybinds", Name, "k" + keyBind.Keycode.ToString());
+			config.SetValue("Keybinds", Name, $"k{keyBind.Keycode}");
 		}
 
 		config.Save("user://config.cfg");

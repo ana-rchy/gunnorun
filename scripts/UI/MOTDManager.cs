@@ -29,7 +29,7 @@ public partial class MOTDManager : RichTextLabel {
 			"i dont invoke the fifth amendment i will not shut up",
 			"le fishe au chocolat",
 			"play less",
-			OS.GetName() == "Windows" ? "...but your crimes against linuxkind... will NOT be forgotten. And thy punishment... is DEATH." : (DateTime.Now.Year + 1) + " will be the year of the linux desktop",
+			OS.GetName() == "Windows" ? "...but your crimes against linuxkind... will NOT be forgotten. And thy punishment... is DEATH." : $"{DateTime.Now.Year + 1} will be the year of the linux desktop",
 			"google en passant",
 			"holy hell",
 			"im too busy ???? my gender", 
@@ -115,7 +115,7 @@ public partial class MOTDManager : RichTextLabel {
 		var uncenteredText = Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
 		//Text = MotdMessages[MotdMessages.Length - 1];
 
-		Text = "[center]" + Text + "[/center]";
+		Text = $"[center]{Text}[/center]";
 		CallDeferred(nameof(ResizeText));
 		
 		try {
@@ -178,7 +178,7 @@ public partial class MOTDManager : RichTextLabel {
 	async Task Countdown(string uncenteredText) {
 		var i = int.Parse(uncenteredText);
 		for (;; i--) {
-			SetDeferred("text", "[center]" + i.ToString() + "[/center]");
+			SetDeferred("text", $"[center]{i}[/center]");
 			await this.Sleep(1f);
 		}
 	}

@@ -9,7 +9,7 @@ public partial class Lobby : Node {
         ReadyButton = GetNode<Button>("Ready");
 
         if (Multiplayer.GetPeers().Length != 0) {
-            ReadyToggled += GetNode<LobbyManager>(Global.SERVER_PATH + "LobbyManager")._OnReadyToggled;
+            ReadyToggled += GetNode<LobbyManager>($"{Global.SERVER_PATH}/LobbyManager")._OnReadyToggled;
         }
 
         var slot1 = GetNode("Slot1");
@@ -26,11 +26,11 @@ public partial class Lobby : Node {
         var players = new List<Global.PlayerDataStruct>(Global.OtherPlayerData.Values);
 
         for (int i = 2; i <= 8; i++) {
-            GetNode<Panel>("Slot" + i.ToString()).Hide();
+            GetNode<Panel>($"Slot{i}").Hide();
         }
 
         for (int i = 0; i < players.Count; i++) {
-            var slot = GetNode<Panel>("Slot" + (i+2).ToString());
+            var slot = GetNode<Panel>($"Slot{i+2}");
 
             slot.GetNode<Label>("Username").Text = players[i].Username;
             var playerColor = players[i].Color;

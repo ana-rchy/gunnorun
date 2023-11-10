@@ -41,7 +41,7 @@ public partial class Global : Node {
 
     public override void _UnhandledInput(InputEvent e) {
         if (e.IsActionPressed("Respawn") && Multiplayer.GetPeers().Length == 0) {
-            GetTree().ChangeSceneToFile("res://scenes/worlds/" + Global.CurrentWorld + ".tscn");
+            GetTree().ChangeSceneToFile($"res://scenes/worlds/{CurrentWorld}.tscn");
         }
 	}
 
@@ -49,8 +49,8 @@ public partial class Global : Node {
     #region | constants/structs
 
     public const float TICK_RATE = 1 / 60f;
-    public const string WORLD_PATH = "/root/World/";
-    public const string SERVER_PATH = "/root/Server/";
+    public const string WORLD_PATH = "/root/World";
+    public const string SERVER_PATH = "/root/Server";
 
     public struct PlayerDataStruct {
         public PlayerDataStruct(string username, Color color) {

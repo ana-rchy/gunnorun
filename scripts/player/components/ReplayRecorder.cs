@@ -33,10 +33,10 @@ public partial class ReplayRecorder : Node2D {
     #region | funcs
 
     void SaveReplay(double finishTime) {
-        using var timeFile = FileAccess.Open("user://" + Global.CurrentWorld + "_time.gsd", FileAccess.ModeFlags.Write);
+        using var timeFile = FileAccess.Open($"user://{Global.CurrentWorld}_time.gsd", FileAccess.ModeFlags.Write);
         timeFile.StoreDouble(finishTime);
 
-        using var replayFile = FileAccess.Open("user://replays/" + Global.CurrentWorld + "_best_replay.grp", FileAccess.ModeFlags.Write);
+        using var replayFile = FileAccess.Open($"user://replays/{Global.CurrentWorld}_best_replay.grp", FileAccess.ModeFlags.Write);
         replayFile.StoreVar(LastReplayData);
     }
 
@@ -48,7 +48,7 @@ public partial class ReplayRecorder : Node2D {
     void _OnRaceFinished(float finishTime) {
         SetPhysicsProcess(false);
         ProcessMode = ProcessModeEnum.Disabled;
-        var timePath = "user://" + Global.CurrentWorld + "_time.gsd";
+        var timePath = $"user://{Global.CurrentWorld}_time.gsd";
         LastReplayData = new GC.Dictionary<string, Variant>() { // this is in here so it stops when it hits the finish line,
             { "World", Global.CurrentWorld },                                         // not when the scene is exited
             { "Positions", PositionsList },                                           // ...only works sometimes

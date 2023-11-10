@@ -13,7 +13,7 @@ public partial class PlayerUI : Node {
 		LapCounter = GetNode<Label>("Control/LapCounter");
 		HP = GetNode<Label>("Control/HP");
 		
-		var lapManager = GetNodeOrNull<Lap>(Global.WORLD_PATH + "Markers/Lap");
+		var lapManager = GetNodeOrNull<Lap>($"{Global.WORLD_PATH}/Markers/Lap");
 		if (lapManager == null) {
 			LapCounter.QueueFree();
 		}
@@ -26,7 +26,7 @@ public partial class PlayerUI : Node {
 		if (player.CurrentWeapon.Ammo == null) return;
 
 		try {
-			GetNode<Label>("Control/Weapons/" + player.CurrentWeapon.Name + "/Ammo").Text
+			GetNode<Label>($"Control/Weapons/{player.CurrentWeapon.Name}/Ammo").Text
 				= player.CurrentWeapon.Ammo.ToString();
 		} catch (Exception e) {
 			if (e is ObjectDisposedException) {
@@ -38,7 +38,7 @@ public partial class PlayerUI : Node {
 	}
 
 	async void _OnWeaponReloading(string weaponName, float reloadTime, int BaseAmmo) {
-		var progressBar = GetNode<ProgressBar>("Control/Weapons/" + weaponName + "/ProgressBar");
+		var progressBar = GetNode<ProgressBar>($"Control/Weapons/{weaponName}/ProgressBar");
 		progressBar.Show();
 
 		var tweener = CreateTween();
@@ -56,7 +56,7 @@ public partial class PlayerUI : Node {
 			}
 		}
 
-		GetNode<Label>("Control/Weapons/" + weaponName + "/Ammo").Text = BaseAmmo.ToString();
+		GetNode<Label>($"Control/Weapons/{weaponName}/Ammo").Text = BaseAmmo.ToString();
 	}
 
 	void _OnWeaponChanged(string weaponName) {
@@ -64,7 +64,7 @@ public partial class PlayerUI : Node {
 			CurrentWeapon.LabelSettings.FontColor = new Color("#ffffff");
 		}
 
-		CurrentWeapon = GetNode<Label>("Control/Weapons/" + weaponName);
+		CurrentWeapon = GetNode<Label>($"Control/Weapons/{weaponName}");
 		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 		
 		if (weaponName == "Murasama") {
@@ -73,7 +73,7 @@ public partial class PlayerUI : Node {
 	}
 
 	void _OnTimeChanged(float newTime) {
-		LevelTime.Text = Math.Round(newTime, 3).ToString() + "s";
+		LevelTime.Text = $"{Math.Round(newTime, 3)}s";
 	}
 
 	void _OnHPChanged(int newHP) {
@@ -87,13 +87,13 @@ public partial class PlayerUI : Node {
 	}
 
 	public void _OnLapPassed(int lapCount, int maxLaps) {
-        LapCounter.Text = "lap " + lapCount.ToString() + "/" + maxLaps.ToString();
+        LapCounter.Text = $"lap {lapCount}/{maxLaps}";
 	}
 
 	public void _OnRaceFinished(float finishTime) {
 		var raceFinishUI = GetNode<Control>("Control/RaceFinish");
 		raceFinishUI.Show();
-		raceFinishUI.GetNode<Label>("Label").Text = Math.Round(finishTime, 3).ToString() + "s";
+		raceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
 	}
 
 	#endregion
