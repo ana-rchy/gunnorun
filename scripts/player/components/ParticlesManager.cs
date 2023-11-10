@@ -1,34 +1,31 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using static Godot.GD;
 
 public partial class ParticlesManager : Node {
-    CpuParticles2D GrindingParticles;
+    GrindingParticles GrindingParticles;
     GpuParticles2D MurasamaParticles;
 
     public override void _Ready() {
-        GrindingParticles = GetNode<CpuParticles2D>("GrindingParticles");
+        GrindingParticles = GetNode<GrindingParticles>("GrindingParticles");
         MurasamaParticles = GetNode<GpuParticles2D>("MurasamaParticles");
+
+        for (int i = 8; i <= 64; i += 4) {
+            var particlesScene = Load<PackedScene>("res://scenes/player/components/GrindingParticles.tscn");
+            GrindingParticles particles = particlesScene.Instantiate<GrindingParticles>();
+            Player player = GetParent<Player>();
+            
+            particles.Name = i.ToString();
+            particles.Amount = i;
+            player.OnGround += particles._OnGround;
+            player.OffGround += particles._OffGround;
+            GrindingParticles.AddChild(particles);
+        }
     }
 
     //---------------------------------------------------------------------------------//
     #region | signals
-
-    void _OnGround(float xVel) {
-        var speed = MathF.Abs(xVel);
-        GD.Print(speed);
-
-        if (speed > 250f) {
-            GrindingParticles.Emitting = true;
-        } else {
-            GrindingParticles.Emitting = false;
-        }
-        GrindingParticles.Amount = (int) Math.Clamp((speed / 20f), 1, 64);
-    }
-
-    void _OffGround() {
-        GrindingParticles.Emitting = false;
-    }
 
     void _OnWeaponShot(Player player) {
         if (player.CurrentWeapon.Name == "Murasama") {
