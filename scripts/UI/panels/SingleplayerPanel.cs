@@ -6,6 +6,7 @@ public partial class SingleplayerPanel : MainPanel {
     public static int SelectedWorldIndex { get; private set; } = 0;
     public static int SelectedReplayIndex { get; private set; } = 0;
 
+    [Export(PropertyHint.Dir)] string WorldsDir;
     [Export] OptionButton MapSelect;
     [Export] OptionButton ReplaySelect;
     [Export] Label LastTime;
@@ -61,7 +62,7 @@ public partial class SingleplayerPanel : MainPanel {
     #region | signals
 
     void _OnSingleplayerPressed() {    
-        Tree.ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
+        Tree.ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnMapSelected(int index) {
@@ -86,7 +87,7 @@ public partial class SingleplayerPanel : MainPanel {
     void _OnViewReplayPressed() {
         Global.ReplayOnly = true;
 
-        Tree.ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
+        Tree.ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnSaveLastReplayPressed() {

@@ -140,6 +140,7 @@ offset_right = 700.0
 offset_bottom = 300.0
 theme = ExtResource("14_gwevq")
 script = ExtResource("10_ws80g")
+WorldsDir = "res://scenes/worlds"
 MapSelect = NodePath("MapSelect")
 ReplaySelect = NodePath("ReplaySelect")
 LastTime = NodePath("LastTime")
@@ -647,6 +648,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("18_jgm5r")
+WorldsDir = "res://scenes/worlds"
 UserDataPath = NodePath("UserDataPath")
 Controls = NodePath("Controls")
 

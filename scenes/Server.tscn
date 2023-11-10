@@ -16,6 +16,7 @@ PuppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
 
 [node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("PlayerManager")]
 script = ExtResource("3_paiy0")
+WorldsDir = "res://scenes/worlds"
 PlayerManager = NodePath("../PlayerManager")
 
 [node name="MatchManager" type="Node" parent="."]

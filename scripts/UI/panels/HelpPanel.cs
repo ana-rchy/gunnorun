@@ -2,6 +2,7 @@ using Godot;
 using System;
 
 public partial class HelpPanel : Panel {
+    [Export(PropertyHint.Dir)] string WorldsDir;
     [Export] Label UserDataPath;
     [Export] Label Controls;
 
@@ -39,7 +40,7 @@ public partial class HelpPanel : Panel {
         Global.DebugReplay = true;
         Global.ReplayOnly = true;
 
-        GetTree().ChangeSceneToFile($"res://scenes/worlds/{Global.CurrentWorld}.tscn");
+        GetTree().ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnClearData() {
