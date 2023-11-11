@@ -8,19 +8,25 @@ public partial class PlayerUI : Node {
 	[Export] Control RaceFinishUI;
 	Label CurrentWeapon = null;
 
-	public async override void _Ready() {
-		await this.Sleep(0.01f); // HACK: no clue how else im supposed to wait until the scene loads in
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    void _OnWorldLoaded() {
 		var lapManager = this.GetNodeConst<Lap>("LAP");
 		if (lapManager == null) {
 			LapCounter.QueueFree();
+			LapCounter = null;
 		}
 	}
 
-	//---------------------------------------------------------------------------------//
-	#region | signals
-
 	void _OnWeaponShot(Player player) {
-		if (player.CurrentWeapon.Ammo == null) return;
+		if (LapCounter != null) {
+			LapCounter.Show();
+		}
+
+		if (player.CurrentWeapon.Ammo == null) {
+			return;
+		}
 
 		try {
 			GetNode<Label>($"Control/Weapons/{player.CurrentWeapon.Name}/Ammo").Text

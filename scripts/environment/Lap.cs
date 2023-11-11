@@ -5,7 +5,7 @@ public partial class Lap : Node {
     [Export] Timer FinishTimer;
 
     [Export] int MaxLaps;
-    int LapCount = 0;
+    int LapCount = 1;
 
     public override void _Ready() {
         Paths.AddNodePath("FINISH_TIMER", FinishTimer.GetPath());

@@ -56,6 +56,7 @@ offset_right = 380.0
 offset_bottom = 109.0
 
 [node name="LapCounter" type="Label" parent="Control"]
+visible = false
 layout_mode = 0
 offset_left = 30.0
 offset_top = 110.0

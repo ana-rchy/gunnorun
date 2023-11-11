@@ -109,6 +109,7 @@ hit_from_inside = true
 [node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("GrindingParticles", "MurasamaParticles")]
 z_index = 1
 script = ExtResource("6_xmwqc")
+GrindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
 GrindingParticles = NodePath("GrindingParticles")
 MurasamaParticles = NodePath("MurasamaParticles")
 

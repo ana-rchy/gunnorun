@@ -68,7 +68,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="."]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("DoorKnock", "VineBoom", "NavalInvasion", "UnhingedKnight", "LiveLeak")]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -81,6 +81,11 @@ bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 script = ExtResource("3_vrprp")
+DoorKnock = NodePath("DoorKnock")
+VineBoom = NodePath("VineBoom")
+NavalInvasion = NodePath("NavalInvasion")
+UnhingedKnight = NodePath("../SubtitleImages/Knight")
+LiveLeak = NodePath("../SubtitleImages/LiveLeak")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")

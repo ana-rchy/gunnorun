@@ -178,7 +178,6 @@ script = ExtResource("4_m5jp1")
 position = Vector2(882, -1040)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Markers/Checkpoints/1"]
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_7dcig")
 
 [node name="2" type="Area2D" parent="Markers/Checkpoints"]
@@ -217,6 +216,7 @@ shape = SubResource("RectangleShape2D_poehd")
 [node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
 texture = SubResource("GradientTexture2D_s4a0g")
 
+[connection signal="ready" from="." to="Player/PlayerUI" method="_OnWorldLoaded"]
 [connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
 [connection signal="RaceFinished" from="Markers/Finish" to="Player/PlayerUI" method="_OnRaceFinished"]
 [connection signal="RaceFinished" from="Markers/Finish" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
