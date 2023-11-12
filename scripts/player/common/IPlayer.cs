@@ -1,4 +1,9 @@
+using Godot;
+
 public interface IPlayer {
-    int GetHP();
-    void ChangeHP(int newHP, bool emitSignal = true);
+    [Signal] public delegate void OnGroundEventHandler(float xVel);
+    [Signal] public delegate void OffGroundEventHandler();
+    
+    public int GetHP();
+    public virtual void ChangeHP(int newHP, bool emitSignal = true) {}
 }

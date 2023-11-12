@@ -23,7 +23,7 @@ public static class Paths {
     }
 
     public static Node GetNodeConst(this Node node, string name) {
-        return node.GetNodeConst<Node>(NodePaths[name]);
+        return node.GetNodeConst<Node>(name);
     }
 
     public static string GetNodePath(string name) {

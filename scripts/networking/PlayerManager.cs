@@ -14,7 +14,7 @@ public partial class PlayerManager : Node {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    public void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
+    void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
         var newPlayer = GD.Load<PackedScene>(PuppetPlayerScene).Instantiate();
         this.GetNodeConst("WORLD").CallDeferred("add_child", newPlayer);
 
@@ -29,7 +29,7 @@ public partial class PlayerManager : Node {
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
-    [Rpc(RpcMode.AnyPeer)] void Server_TracerShot(float rotation, float range) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_WeaponShot(string name, float rotation, float range) {}
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
@@ -52,8 +52,17 @@ public partial class PlayerManager : Node {
         }
     }
 
-    [Rpc] void Client_TracerShot(long id, float rotation, float range) {
-        GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}").SpawnTracer(rotation, range);
+    [Rpc] void Client_WeaponShot(long id, string name, float rotation, float range) {
+        GD.Print($"{Multiplayer.GetUniqueId()}\t{id}");
+        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        switch (name) {
+            case "Murasama":
+                puppetPlayer.GetNode<ParticlesManager>("Particles").EmitMurasamaParticles();
+                break;
+            default:
+                puppetPlayer.SpawnTracer(rotation, range);
+                break;
+        }
     }
 
     [Rpc] void Client_Intangibility(float time) {
@@ -88,7 +97,8 @@ public partial class PlayerManager : Node {
 
     public void _OnWeaponShot(Player player) {
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(player.GetGlobalMousePosition());
-        Rpc(nameof(Server_TracerShot), new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
+        Rpc(nameof(Server_WeaponShot), player.CurrentWeapon.Name,
+            new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
     }
 
     public void _OnHPChanged(int newHP) {

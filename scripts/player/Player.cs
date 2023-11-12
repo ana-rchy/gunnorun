@@ -95,7 +95,7 @@ public partial class Player : RigidBody2D, IPlayer {
     #endregion
 
     //---------------------------------------------------------------------------------//
-    #region | main funcs
+    #region | funcs
 
     public async Task Intangibility(float time) {
         SetCollisionMaskValue(4, false);
@@ -142,9 +142,9 @@ public partial class Player : RigidBody2D, IPlayer {
     [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
-    [Signal] public delegate void OnDeathEventHandler(float deathTime);
     [Signal] public delegate void OnGroundEventHandler(float xVel);
     [Signal] public delegate void OffGroundEventHandler();
+    [Signal] public delegate void OnDeathEventHandler(float deathTime);
 
     void _OnReplayOnly() {
         QueueFree();

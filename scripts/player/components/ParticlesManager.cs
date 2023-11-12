@@ -12,30 +12,43 @@ public partial class ParticlesManager : Node {
         for (int i = 8; i <= 64; i += 4) {
             var particlesScene = Load<PackedScene>(GrindingParticlesScene);
             GrindingParticles particles = particlesScene.Instantiate<GrindingParticles>();
-            Player player = GetParent<Player>();
+            IPlayer player = GetParent<IPlayer>();
             
             particles.Name = i.ToString();
             particles.Amount = i;
-            player.OnGround += particles._OnGround;
-            player.OffGround += particles._OffGround;
+            if (player is Player) {
+                ((Player) player).OnGround += particles._OnGround;
+                ((Player) player).OffGround += particles._OffGround;
+            } else if (player is PuppetPlayer) {
+                ((PuppetPlayer) player).OnGround += particles._OnGround;
+                ((PuppetPlayer) player).OffGround += particles._OffGround;
+            }
             GrindingParticles.AddChild(particles);
         }
     }
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    public void EmitMurasamaParticles() {
+        Task.Run(async () => {
+            MurasamaParticles.SetDeferred("emitting", true);
+
+            await this.Sleep(0.3f);
+            
+            MurasamaParticles.SetDeferred("emitting", false);
+        });
+    }
+
+    #endregion
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
     void _OnWeaponShot(Player player) {
         if (player.CurrentWeapon.Name == "Murasama") {
-            Task.Run(async () => {
-                player.SetCollisionMaskValue(4, false);
-                MurasamaParticles.SetDeferred("emitting", true);
-
-                await player.Sleep(0.3f);
-                
-                MurasamaParticles.SetDeferred("emitting", false);
-                player.SetCollisionMaskValue(4, true);
-            });
+            _ = player.Intangibility(0.3f);
+            EmitMurasamaParticles();
         }
     }
 

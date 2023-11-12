@@ -19,7 +19,7 @@ friction = 0.1
 offsets = PackedFloat32Array(0, 0.2, 0.85, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.62037, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_nv0sk"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0epy5"]
 gradient = SubResource("Gradient_jpn1k")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b4rb8"]
@@ -42,7 +42,7 @@ damping_max = 15.0
 scale_min = 22.0
 scale_max = 26.0
 color = Color(0.890196, 0.176471, 0, 0.705882)
-color_ramp = SubResource("GradientTexture1D_nv0sk")
+color_ramp = SubResource("GradientTexture1D_0epy5")
 hue_variation_min = -0.05
 hue_variation_max = 0.05
 turbulence_noise_speed_random = 0.11

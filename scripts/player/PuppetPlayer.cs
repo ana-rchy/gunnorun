@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
@@ -61,6 +62,14 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
 
         this.GetNodeConst("WORLD").AddChild(tracer);
     }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    [Signal] public delegate void OnGroundEventHandler(float xVel);
+    [Signal] public delegate void OffGroundEventHandler();
 
     #endregion
 }
