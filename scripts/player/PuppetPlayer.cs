@@ -68,8 +68,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    [Signal] public delegate void OnGroundEventHandler(float xVel);
-    [Signal] public delegate void OffGroundEventHandler();
+    [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel = 0);
 
     #endregion
 }

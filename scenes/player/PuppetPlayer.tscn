@@ -76,6 +76,7 @@ turbulence_noise_speed_random = 0.11
 collision_layer = 8
 safe_margin = 0.01
 script = ExtResource("3_s52n3")
+TracerScene = "res://scenes/player/components/Tracer.tscn"
 GreenHP = NodePath("GreenHP")
 
 [node name="Collider" type="CollisionShape2D" parent="."]

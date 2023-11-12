@@ -19,7 +19,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     Weapon[] Weapons;
     public Weapon CurrentWeapon { get; private set; }
-    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to perserve weapon choice, but w/o weapon data
+    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
     float MomentumMultiplier;
     public int HP { get; private set; } = 100;
 
@@ -31,8 +31,10 @@ public partial class Player : RigidBody2D, IPlayer {
         // signals
         if (Multiplayer.GetPeers().Length != 0) {
             var playerManager = this.GetNodeConst<PlayerManager>("PLAYER_MANAGER");
+            WeaponShot += playerManager._OnWeaponShot;
             OtherPlayerHit += playerManager._OnOtherPlayerHit;
             HPChanged += playerManager._OnHPChanged;
+            OnGround += playerManager._OnGround;
         }
 
         // etc
@@ -74,9 +76,9 @@ public partial class Player : RigidBody2D, IPlayer {
 
         Regen();
         if (GroundRaycast.IsColliding()) {
-            EmitSignal(SignalName.OnGround, LinearVelocity.X);
+            EmitSignal(SignalName.OnGround, true, LinearVelocity.X);
         } else {
-            EmitSignal(SignalName.OffGround);
+            EmitSignal(SignalName.OnGround, false, 0);
         }
     }
 
@@ -142,8 +144,7 @@ public partial class Player : RigidBody2D, IPlayer {
     [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
-    [Signal] public delegate void OnGroundEventHandler(float xVel);
-    [Signal] public delegate void OffGroundEventHandler();
+    [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel);
     [Signal] public delegate void OnDeathEventHandler(float deathTime);
 
     void _OnReplayOnly() {

@@ -33,6 +33,7 @@ public partial class PlayerManager : Node {
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerOnGround(bool onGround, float xVel) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -53,7 +54,10 @@ public partial class PlayerManager : Node {
     }
 
     [Rpc] void Client_WeaponShot(long id, string name, float rotation, float range) {
-        GD.Print($"{Multiplayer.GetUniqueId()}\t{id}");
+        if (id == Multiplayer.GetUniqueId()) {
+            return;
+        }
+
         var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
         switch (name) {
             case "Murasama":
@@ -78,11 +82,22 @@ public partial class PlayerManager : Node {
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
-        if (id != Multiplayer.GetUniqueId()) {
-            var playerSprite = GetNode<AnimatedSprite2D>($"{Paths.GetNodePath("WORLD")}/{id}/Sprite");
-
-            playerSprite.Frame = frame;
+        if (id == Multiplayer.GetUniqueId()) {
+            return;
         }
+
+        var playerSprite = GetNode<AnimatedSprite2D>($"{Paths.GetNodePath("WORLD")}/{id}/Sprite");
+
+        playerSprite.Frame = frame;
+    }
+
+    [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
+        if (id == Multiplayer.GetUniqueId()) {
+            return;
+        }
+
+        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        puppetPlayer.EmitSignal(PuppetPlayer.SignalName.OnGround, onGround, xVel);
     }
 
     [Rpc] void Client_LapChanged(int lap, int maxLaps) {
@@ -101,10 +116,6 @@ public partial class PlayerManager : Node {
             new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
     }
 
-    public void _OnHPChanged(int newHP) {
-        Rpc(nameof(Server_PlayerHPChanged), Multiplayer.GetUniqueId(), newHP);
-    }
-
     public void _OnOtherPlayerHit(long playerID, int newHP, string weaponName) {
         Rpc(nameof(Server_PlayerHPChanged), playerID, newHP);
 
@@ -113,8 +124,17 @@ public partial class PlayerManager : Node {
         }
     }
 
+    public void _OnHPChanged(int newHP) {
+        Rpc(nameof(Server_PlayerHPChanged), Multiplayer.GetUniqueId(), newHP);
+    }
+
+
     public void _OnPlayerFrameChanged(int frame) {
         Rpc(nameof(Server_PlayerFrameChanged), frame);
+    }
+
+    public void _OnGround(bool onGround, float xVel) {
+        Rpc(nameof(Server_PlayerOnGround), onGround, xVel);
     }
 
     #endregion

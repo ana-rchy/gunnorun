@@ -18,10 +18,8 @@ public partial class ParticlesManager : Node {
             particles.Amount = i;
             if (player is Player) {
                 ((Player) player).OnGround += particles._OnGround;
-                ((Player) player).OffGround += particles._OffGround;
             } else if (player is PuppetPlayer) {
                 ((PuppetPlayer) player).OnGround += particles._OnGround;
-                ((PuppetPlayer) player).OffGround += particles._OffGround;
             }
             GrindingParticles.AddChild(particles);
         }
