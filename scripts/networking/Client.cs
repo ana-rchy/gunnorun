@@ -59,7 +59,7 @@ public partial class Client : Node {
 		if (gameState == "Lobby") {
 			this.GetNodeConst<Lobby>("LOBBY").RefreshList();
 		} else if (gameState == "Ingame") {
-			GetNode($"{Paths.GetNodePath("SERVER")}/{id}").QueueFree();
+			GetNode($"{Paths.GetNodePath("WORLD")}/{id}").QueueFree();
 		}
 	}
 

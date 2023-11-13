@@ -26,7 +26,7 @@ public class Murasama : Weapon {
             + playerPosToMousePos.Normalized() * Knockback;
         // ^ transfer 0.5 of previous speed into the new direction, and add on regular knock"back"
 
-        player.ChangeHP(player.GetHP() - 25);
+        player.ChangeHP(player.GetHP() - 25, true);
         player.ActionTimer.Start(Refire);
 
         if (player.Multiplayer.GetPeers().Length != 0) {

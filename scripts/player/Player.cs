@@ -33,7 +33,7 @@ public partial class Player : RigidBody2D, IPlayer {
             var playerManager = this.GetNodeConst<PlayerManager>("PLAYER_MANAGER");
             WeaponShot += playerManager._OnWeaponShot;
             OtherPlayerHit += playerManager._OnOtherPlayerHit;
-            HPChanged += playerManager._OnHPChanged;
+            HPChangedMP += playerManager._OnHPChanged;
             OnGround += playerManager._OnGround;
         }
 
@@ -109,13 +109,14 @@ public partial class Player : RigidBody2D, IPlayer {
         return HP;
     }
 
-    public async void ChangeHP(int newHP, bool emitSignal = true) {
+    public async void ChangeHP(int newHP, bool callerIsClient = false) {
         if (HP <= 0) {
             return;
         }
 
-        if (emitSignal) {
-            EmitSignal(SignalName.HPChanged, newHP);
+        EmitSignal(SignalName.HPChanged, newHP);
+        if (Multiplayer.GetPeers().Length != 0 && callerIsClient) {
+            EmitSignal(SignalName.HPChangedMP, newHP);
         }
         HP = newHP;
 
@@ -129,7 +130,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     void Regen() {
         if (_regenTimer.IsStopped() && HP > 0 && HP < 100) {
-            ChangeHP(HP + HP_REGEN);
+            ChangeHP(HP + HP_REGEN, true);
             _regenTimer.Start();
         }
     }
@@ -144,6 +145,7 @@ public partial class Player : RigidBody2D, IPlayer {
     [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
+    [Signal] public delegate void HPChangedMPEventHandler(int newHP);
     [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel);
     [Signal] public delegate void OnDeathEventHandler(float deathTime);
 

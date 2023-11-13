@@ -38,6 +38,7 @@ main changes:
 
 small changes:
 - lap counter now doesnt appear until run starts
+- replay doesnt show in multiplayer anymore
 
 bug fixes:
 - replays didnt manually save

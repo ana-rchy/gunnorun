@@ -15,9 +15,14 @@ public partial class PlayerUI : Node {
         _lapCounter.Text = $"lap {lapCount}/{maxLaps}";
 	}
 
-	public void _OnRaceFinished(float finishTime) {
+	public void _OnRaceFinished(float finishTime, string playerName = null) {
 		_raceFinishUI.Show();
-		_raceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
+		var raceFinishLabel = _raceFinishUI.GetNode<Label>("Label");
+
+		raceFinishLabel.Text = $"{Math.Round(finishTime, 3)}s";
+		if (playerName != null) {
+			raceFinishLabel.Text = $"{playerName} has won\n" + raceFinishLabel.Text;
+		}
 	}
 
     void _OnWorldLoaded() {

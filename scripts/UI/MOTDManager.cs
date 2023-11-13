@@ -3,11 +3,15 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class MOTDManager : RichTextLabel {
+	[ExportGroup("audio & images")]
 	[Export] AudioStreamPlayer _doorKnock;
 	[Export] AudioStreamPlayer _vineBoom;
 	[Export] AudioStreamPlayer _navalInvasion;
 	[Export] TextureRect _unhingedKnight;
 	[Export] TextureRect _liveLeak;
+	[ExportGroup("colors")]
+	[Export(PropertyHint.ResourceType)] Gradient _MIHColors;
+	[Export] Timer _MIHTimer;
 	
 	string[] _motdMessages;
 	
@@ -115,12 +119,13 @@ public partial class MOTDManager : RichTextLabel {
 			"Now with more french bread!",
 			"im in spain, but with the s",
 			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA",
-			"「MADE IN HEAVEN」"
+			"「MADE IN HEAVEN」",
 		};
 
 		var rnd = new RandomNumberGenerator();
-		var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
+		// var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
 		//Text = MotdMessages[MotdMessages.Length - 1];
+		var uncenteredText = Text = "「MADE IN HEAVEN」";
 
 		Text = $"[center]{Text}[/center]";
 		CallDeferred(nameof(ResizeText));
@@ -129,14 +134,18 @@ public partial class MOTDManager : RichTextLabel {
 			switch (uncenteredText) {
 				case "i am in your walls.":
 					await this.Sleep(2.5f);
-					_doorKnock.Play(); break;
+					_doorKnock.Play();
+					break;
 				case "naaah no wayyy omg bruuuhhh":
 					await this.Sleep(0.5f);
-					_vineBoom.Play(); break;
+					_vineBoom.Play();
+					break;
 				case "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.":
-					AddThemeFontSizeOverride("normal_font_size", 8); break;
+					AddThemeFontSizeOverride("normal_font_size", 8);
+					break;
 				case "hello spez":
-					_unhingedKnight.Show(); break;
+					_unhingedKnight.Show();
+					break;
 				case "you know what? fuck you. *crashes your game*":
 					await this.Sleep(2f);
 					GetTree().Root.GuiEmbedSubwindows = false;
@@ -148,15 +157,23 @@ public partial class MOTDManager : RichTextLabel {
 
 					dialog.Confirmed += () => dialog.QueueFree();
 					dialog.Canceled += () => dialog.QueueFree();
-					dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true; break;
+					dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true;
+					break;
 				case " ":
-					_liveLeak.Show(); break;
+					_liveLeak.Show();
+					break;
 				case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
-					RenderingServer.SetDefaultClearColor(new Color("000000")); break;
+					RenderingServer.SetDefaultClearColor(new Color("000000"));
+					break;
 				case "10":
-					_ = Countdown(uncenteredText); break;
+					_ = Countdown(uncenteredText);
+					break;
 				case "[color=#aa0000]Dangerous naval invasion![/color]":
-					_navalInvasion.Play(); break;
+					_navalInvasion.Play();
+					break;
+				case "「MADE IN HEAVEN」":
+					_ = Task.Run(() => { _ = MadeInHeavenBackground(_MIHTimer); });
+					break;
 			}
 		} catch (Exception e) {
 			if (e is ObjectDisposedException) {
@@ -176,7 +193,7 @@ public partial class MOTDManager : RichTextLabel {
 
 	void ResizeText() {
 		if (Size.X > 1900) {
-			var fontSize = (int) (-0.021 * (Size.X - 1900)) + 50;
+			var fontSize = (int) (-0.021 * (Size.X - 1900)) + 50; // magic numbers woo
 			AddThemeFontSizeOverride("normal_font_size", fontSize); // desmos that shit
 			AddThemeFontSizeOverride("italics_font_size", fontSize);
 		}
@@ -188,6 +205,24 @@ public partial class MOTDManager : RichTextLabel {
 			SetDeferred("text", $"[center]{i}[/center]");
 			await this.Sleep(1f);
 		}
+	}
+
+	Task MadeInHeavenBackground(Timer timer) {
+		while (true) {
+			var progression = Math.Abs(timer.TimeLeft - timer.WaitTime) / timer.WaitTime;
+			RenderingServer.SetDefaultClearColor(_MIHColors.Sample((float) progression).Darkened(0.6f));
+		}
+	}
+
+	#endregion
+
+	//---------------------------------------------------------------------------------//
+    #region | signals
+
+	void _OnMIHTimeout() {
+		_MIHTimer.WaitTime = Math.Round(Math.Clamp(_MIHTimer.WaitTime * 0.9f, 1, 5), 2);
+		GD.Print(_MIHTimer.WaitTime);
+		_MIHTimer.Start(); // choppy without manual start
 	}
 
 	#endregion

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=26 format=3 uid="uid://cyjasptaqt1b5"]
 
 [ext_resource type="Theme" uid="uid://vln2mlgupyio" path="res://resources/themes/LobbyTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://c4n3k8f16hdnn" path="res://audio/realistic knocking.mp3" id="5_amtii"]
 [ext_resource type="AudioStream" uid="uid://bpn8qsohuwqd0" path="res://audio/vine boom.mp3" id="6_7y4o0"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="6_j2a7j"]
+[ext_resource type="Gradient" uid="uid://b8a6yvc8jujuf" path="res://resources/animation/MIHGradient.tres" id="6_vf5yt"]
 [ext_resource type="Texture2D" uid="uid://ckf8cgnsltiuw" path="res://sprites/player/character_small.png" id="7_8sbie"]
 [ext_resource type="Script" path="res://scripts/UI/PlayerPreview.cs" id="8_2wb56"]
 [ext_resource type="AudioStream" uid="uid://d4i18wcpt8s3u" path="res://audio/naval invasion.mp3" id="9_dasvf"]
@@ -68,7 +69,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer")]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -86,6 +87,8 @@ _vineBoom = NodePath("VineBoom")
 _navalInvasion = NodePath("NavalInvasion")
 _unhingedKnight = NodePath("../SubtitleImages/Knight")
 _liveLeak = NodePath("../SubtitleImages/LiveLeak")
+_MIHColors = ExtResource("6_vf5yt")
+_MIHTimer = NodePath("MIHTimer")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
@@ -96,6 +99,10 @@ stream = ExtResource("6_7y4o0")
 [node name="NavalInvasion" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("9_dasvf")
 volume_db = -3.0
+
+[node name="MIHTimer" type="Timer" parent="Subtitle"]
+wait_time = 30.0
+autostart = true
 
 [node name="SubtitleImages" type="Control" parent="."]
 layout_mode = 1
@@ -730,6 +737,7 @@ R - reload
 L - return to menu    Tab - respawn"
 horizontal_alignment = 1
 
+[connection signal="timeout" from="Subtitle/MIHTimer" to="Subtitle" method="_OnMIHTimeout"]
 [connection signal="tab_changed" from="TabContainer" to="." method="_OnTabChanged"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/MapSelect" to="TabContainer/Singleplayer/Panel" method="_OnMapSelected"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/ReplaySelect" to="TabContainer/Singleplayer/Panel" method="_OnReplaySelected"]

@@ -76,9 +76,9 @@ public partial class PlayerManager : Node {
         });
     }
 
-    [Rpc] void Client_PlayerHPChanged(long id, int newHP) { 
+    [Rpc] void Client_PlayerHPChanged(long id, int newHP) {
         var player = GetNode<IPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
-        player.ChangeHP(newHP, false);
+        player.ChangeHP(newHP);
     }
 
     [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
@@ -127,7 +127,6 @@ public partial class PlayerManager : Node {
     public void _OnHPChanged(int newHP) {
         Rpc(nameof(Server_PlayerHPChanged), Multiplayer.GetUniqueId(), newHP);
     }
-
 
     public void _OnPlayerFrameChanged(int frame) {
         Rpc(nameof(Server_PlayerFrameChanged), frame);

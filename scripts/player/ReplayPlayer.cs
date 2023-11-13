@@ -24,7 +24,7 @@ public partial class ReplayPlayer : Node2D {
 
         string replayPath = Global.ReplayName == null ? $"user://replays/{Global.CurrentWorld}_best_replay.grp"
             : $"user://imported_replays/{Global.ReplayName}";
-        if (!FileAccess.FileExists(replayPath)) {
+        if (!FileAccess.FileExists(replayPath) || Multiplayer.GetPeers().Length != 0) {
             QueueFree();
             return;
         }
