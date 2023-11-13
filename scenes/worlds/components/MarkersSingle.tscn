@@ -25,12 +25,12 @@ script = ExtResource("2_owan5")
 wait_time = 3.0
 one_shot = true
 
-[node name="Finish" type="Area2D" parent="." node_paths=PackedStringArray("FinishTimer")]
+[node name="Finish" type="Area2D" parent="." node_paths=PackedStringArray("_finishTimer")]
 position = Vector2(5118, -3760)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_fbuix")
-FinishTimer = NodePath("../FinishTimer")
+_finishTimer = NodePath("../FinishTimer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Finish"]
 visible = false

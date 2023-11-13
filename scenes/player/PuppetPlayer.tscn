@@ -72,12 +72,12 @@ hue_variation_min = -0.05
 hue_variation_max = 0.05
 turbulence_noise_speed_random = 0.11
 
-[node name="PuppetPlayer" type="CharacterBody2D" node_paths=PackedStringArray("GreenHP")]
+[node name="PuppetPlayer" type="CharacterBody2D" node_paths=PackedStringArray("_greenHP")]
 collision_layer = 8
 safe_margin = 0.01
 script = ExtResource("3_s52n3")
-TracerScene = "res://scenes/player/components/Tracer.tscn"
-GreenHP = NodePath("GreenHP")
+_tracerScene = "res://scenes/player/components/Tracer.tscn"
+_greenHP = NodePath("GreenHP")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_i1jlw")
@@ -89,11 +89,11 @@ scale = Vector2(10, 10)
 sprite_frames = ExtResource("3_tlkmi")
 animation = &"GunRotation"
 
-[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("GrindingParticles", "MurasamaParticles")]
+[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("_grindingParticles", "_murasamaParticles")]
 script = ExtResource("4_uun5c")
-GrindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
-GrindingParticles = NodePath("GrindingParticles")
-MurasamaParticles = NodePath("MurasamaParticles")
+_grindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
+_grindingParticles = NodePath("GrindingParticles")
+_murasamaParticles = NodePath("MurasamaParticles")
 
 [node name="GrindingParticles" parent="Particles" instance=ExtResource("5_i1cna")]
 position = Vector2(0, 105)

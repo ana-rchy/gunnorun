@@ -42,7 +42,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="Menu" type="Control" node_paths=PackedStringArray("TabContainer", "SettingsPanel", "HelpPanel")]
+[node name="Menu" type="Control" node_paths=PackedStringArray("_tabContainer", "_settingsPanel", "_helpPanel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,9 +51,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_kgwbg")
 script = ExtResource("4_dav64")
-TabContainer = NodePath("TabContainer")
-SettingsPanel = NodePath("Settings/ColorRect")
-HelpPanel = NodePath("Help/ColorRect")
+_tabContainer = NodePath("TabContainer")
+_settingsPanel = NodePath("Settings/ColorRect")
+_helpPanel = NodePath("Help/ColorRect")
 
 [node name="Title" type="TextureRect" parent="."]
 layout_mode = 1
@@ -68,7 +68,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("DoorKnock", "VineBoom", "NavalInvasion", "UnhingedKnight", "LiveLeak")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak")]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -81,11 +81,11 @@ bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 script = ExtResource("3_vrprp")
-DoorKnock = NodePath("DoorKnock")
-VineBoom = NodePath("VineBoom")
-NavalInvasion = NodePath("NavalInvasion")
-UnhingedKnight = NodePath("../SubtitleImages/Knight")
-LiveLeak = NodePath("../SubtitleImages/LiveLeak")
+_doorKnock = NodePath("DoorKnock")
+_vineBoom = NodePath("VineBoom")
+_navalInvasion = NodePath("NavalInvasion")
+_unhingedKnight = NodePath("../SubtitleImages/Knight")
+_liveLeak = NodePath("../SubtitleImages/LiveLeak")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
@@ -139,17 +139,17 @@ tab_alignment = 1
 [node name="Singleplayer" type="Control" parent="TabContainer"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="TabContainer/Singleplayer" node_paths=PackedStringArray("MapSelect", "ReplaySelect", "LastTime", "BestTime", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
+[node name="Panel" type="Panel" parent="TabContainer/Singleplayer" node_paths=PackedStringArray("_mapSelect", "_replaySelect", "_lastTime", "_bestTime", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
 theme = ExtResource("14_gwevq")
 script = ExtResource("10_ws80g")
-WorldsDir = "res://scenes/worlds"
-MapSelect = NodePath("MapSelect")
-ReplaySelect = NodePath("ReplaySelect")
-LastTime = NodePath("LastTime")
-BestTime = NodePath("BestTime")
+_worldsDir = "res://scenes/worlds"
+_mapSelect = NodePath("MapSelect")
+_replaySelect = NodePath("ReplaySelect")
+_lastTime = NodePath("LastTime")
+_bestTime = NodePath("BestTime")
 UsernameField = NodePath("Username")
 ColorField = NodePath("PlayerColor")
 OpposingUsernameField = NodePath("../../Multiplayer/Panel/Username")
@@ -314,14 +314,14 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="TabContainer/Multiplayer" node_paths=PackedStringArray("IP", "Port", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
+[node name="Panel" type="Panel" parent="TabContainer/Multiplayer" node_paths=PackedStringArray("_IP", "_port", "UsernameField", "ColorField", "OpposingUsernameField", "OpposingColorField")]
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 300.0
 theme = ExtResource("14_gwevq")
 script = ExtResource("15_xnftg")
-IP = NodePath("IP")
-Port = NodePath("Port")
+_IP = NodePath("IP")
+_port = NodePath("Port")
 UsernameField = NodePath("Username")
 ColorField = NodePath("PlayerColor")
 OpposingUsernameField = NodePath("../../Singleplayer/Panel/Username")
@@ -472,7 +472,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="Panel" parent="Settings/ColorRect" node_paths=PackedStringArray("Binds")]
+[node name="Panel" type="Panel" parent="Settings/ColorRect" node_paths=PackedStringArray("_binds")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.396
@@ -487,7 +487,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("16_pom1n")
-Binds = NodePath("Binds")
+_binds = NodePath("Binds")
 
 [node name="BindNames" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
@@ -638,7 +638,7 @@ offset_top = 0.0200806
 offset_bottom = 0.0200577
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="Panel" parent="Help/ColorRect" node_paths=PackedStringArray("UserDataPath", "Controls")]
+[node name="Panel" type="Panel" parent="Help/ColorRect" node_paths=PackedStringArray("_userDataPath", "_controls")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.344
@@ -653,9 +653,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("18_jgm5r")
-WorldsDir = "res://scenes/worlds"
-UserDataPath = NodePath("UserDataPath")
-Controls = NodePath("Controls")
+_worldsDir = "res://scenes/worlds"
+_userDataPath = NodePath("UserDataPath")
+_controls = NodePath("Controls")
 
 [node name="SaveLastRunDebugData" type="Button" parent="Help/ColorRect/Panel"]
 layout_mode = 1

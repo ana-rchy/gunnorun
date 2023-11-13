@@ -55,7 +55,7 @@ height = 210.0
 shader = ExtResource("5_yasl1")
 shader_parameter/color = null
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("ActionTimer", "ReloadTimer", "RegenTimer", "WeaponRaycast", "GroundRaycast", "Sprite", "Username")]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("ActionTimer", "ReloadTimer", "WeaponRaycast", "_regenTimer", "_groundRaycast", "_sprite", "_username")]
 z_index = 1
 z_as_relative = false
 position = Vector2(0, -1)
@@ -66,11 +66,11 @@ script = ExtResource("1_gjffp")
 TracerScene = "res://scenes/player/components/Tracer.tscn"
 ActionTimer = NodePath("Timers/ActionTimer")
 ReloadTimer = NodePath("Timers/ReloadTimer")
-RegenTimer = NodePath("Timers/RegenTimer")
 WeaponRaycast = NodePath("Raycasts/WeaponRaycast")
-GroundRaycast = NodePath("Raycasts/GroundRaycast")
-Sprite = NodePath("Sprite")
-Username = NodePath("Username")
+_regenTimer = NodePath("Timers/RegenTimer")
+_groundRaycast = NodePath("Raycasts/GroundRaycast")
+_sprite = NodePath("Sprite")
+_username = NodePath("Username")
 
 [node name="PlayerUI" parent="." instance=ExtResource("2_0rg58")]
 
@@ -89,9 +89,9 @@ one_shot = true
 [node name="LevelTimer" type="Node" parent="Timers"]
 script = ExtResource("3_80esj")
 
-[node name="ReplayRecorder" type="Node2D" parent="." node_paths=PackedStringArray("Sprite")]
+[node name="ReplayRecorder" type="Node2D" parent="." node_paths=PackedStringArray("_sprite")]
 script = ExtResource("4_ardvv")
-Sprite = NodePath("../Sprite")
+_sprite = NodePath("../Sprite")
 
 [node name="DebugRecorder" type="Node" parent="."]
 script = ExtResource("5_voyw7")
@@ -106,12 +106,12 @@ collision_mask = 8
 target_position = Vector2(0, 110)
 hit_from_inside = true
 
-[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("GrindingParticles", "MurasamaParticles")]
+[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("_grindingParticles", "_murasamaParticles")]
 z_index = 1
 script = ExtResource("6_xmwqc")
-GrindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
-GrindingParticles = NodePath("GrindingParticles")
-MurasamaParticles = NodePath("MurasamaParticles")
+_grindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
+_grindingParticles = NodePath("GrindingParticles")
+_murasamaParticles = NodePath("MurasamaParticles")
 
 [node name="GrindingParticles" parent="Particles" instance=ExtResource("7_a5ymy")]
 position = Vector2(0, 105)

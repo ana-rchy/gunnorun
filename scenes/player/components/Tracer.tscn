@@ -14,11 +14,11 @@ gradient = SubResource("Gradient_wo154")
 width = 100
 height = 10
 
-[node name="Tracer" type="Node2D" node_paths=PackedStringArray("Area")]
+[node name="Tracer" type="Node2D" node_paths=PackedStringArray("_area")]
 texture_filter = 1
 script = ExtResource("1_sqalo")
-Area = NodePath("Area2D")
-Speed = 40.0
+_area = NodePath("Area2D")
+_speed = 9600.0
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4

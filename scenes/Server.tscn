@@ -7,17 +7,17 @@
 
 [node name="Server" type="Node"]
 script = ExtResource("1_mvbva")
-MenuScene = "res://scenes/UI/Menu.tscn"
-LobbyScene = "res://scenes/UI/Lobby.tscn"
+_menuScene = "res://scenes/UI/Menu.tscn"
+_lobbyScene = "res://scenes/UI/Lobby.tscn"
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("2_560by")
-PuppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
+_puppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
 
-[node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("PlayerManager")]
+[node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("_playerManager")]
 script = ExtResource("3_paiy0")
-WorldsDir = "res://scenes/worlds"
-PlayerManager = NodePath("../PlayerManager")
+_worldsDir = "res://scenes/worlds"
+_playerManager = NodePath("../PlayerManager")
 
 [node name="MatchManager" type="Node" parent="."]
 script = ExtResource("4_k6wkw")

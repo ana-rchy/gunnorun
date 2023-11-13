@@ -100,10 +100,10 @@ gradient = SubResource("Gradient_mhvxa")
 width = 2
 height = 50
 
-[node name="DebugReplayPlayer" type="Node2D" node_paths=PackedStringArray("Crosshair", "DebugInfo")]
+[node name="DebugReplayPlayer" type="Node2D" node_paths=PackedStringArray("_crosshair", "_debugInfo")]
 script = ExtResource("1_c5xn0")
-Crosshair = NodePath("Crosshair")
-DebugInfo = NodePath("DebugUI/Control/Label")
+_crosshair = NodePath("Crosshair")
+_debugInfo = NodePath("DebugUI/Control/Label")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.392157)

@@ -22,13 +22,12 @@ script = ExtResource("1_gbnco")
 wait_time = 3.0
 one_shot = true
 
-[node name="Lap" type="Area2D" parent="." node_paths=PackedStringArray("FinishTimer")]
+[node name="Lap" type="Area2D" parent="." node_paths=PackedStringArray("_finishTimer")]
 position = Vector2(0, -1040)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_t5pwa")
-FinishTimer = NodePath("../FinishTimer")
-MaxLaps = 5
+_finishTimer = NodePath("../FinishTimer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lap"]
 shape = SubResource("RectangleShape2D_4yotf")

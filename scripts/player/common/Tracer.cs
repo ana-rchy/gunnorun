@@ -8,7 +8,7 @@ public partial class Tracer : Node2D {
     public float Range;
 
     public override void _PhysicsProcess(double delta) {
-        _area.Position = new Vector2(_area.Position.X + _speed, _area.Position.Y);
+        _area.Position = new Vector2(_area.Position.X + _speed * ((float) delta), _area.Position.Y);
 
         if (_area.Position.X >= Range) {
             QueueFree();

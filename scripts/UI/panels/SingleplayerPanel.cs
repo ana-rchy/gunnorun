@@ -11,6 +11,7 @@ public partial class SingleplayerPanel : MainPanel {
 
     public static int SelectedWorldIndex { get; private set; } = 0;
     public static int SelectedReplayIndex { get; private set; } = 0;
+    string a;
 
     public override void _Ready() {
         base._Ready();

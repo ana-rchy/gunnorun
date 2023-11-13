@@ -30,7 +30,7 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wqmne"]
 
-[node name="Lobby" type="Control" node_paths=PackedStringArray("ReadyButton", "Slot1")]
+[node name="Lobby" type="Control" node_paths=PackedStringArray("_readyButton", "_slot1")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,8 +38,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_cig11")
-ReadyButton = NodePath("Ready")
-Slot1 = NodePath("Slot1")
+_readyButton = NodePath("Ready")
+_slot1 = NodePath("Slot1")
 
 [node name="Slot1" parent="." instance=ExtResource("2_uxq0b")]
 layout_mode = 0

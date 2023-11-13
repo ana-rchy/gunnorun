@@ -108,11 +108,12 @@ gradient = SubResource("Gradient_o2kg8")
 width = 120
 height = 15
 
-[node name="ReplayPlayer" type="Node2D" node_paths=PackedStringArray("Sprite", "Crosshair", "FinishMarker")]
+[node name="ReplayPlayer" type="Node2D" node_paths=PackedStringArray("_sprite", "_crosshair", "_finishMarker")]
 script = ExtResource("1_g6tyb")
-Sprite = NodePath("Sprite")
-Crosshair = NodePath("Crosshair")
-FinishMarker = NodePath("FinishMarker")
+_debugPlayerScene = "res://scenes/player/DebugReplayPlayer.tscn"
+_sprite = NodePath("Sprite")
+_crosshair = NodePath("Crosshair")
+_finishMarker = NodePath("FinishMarker")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.392157)
