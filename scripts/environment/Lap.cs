@@ -2,21 +2,21 @@ using System;
 using Godot;
 
 public partial class Lap : Node {
-    [Export] Timer FinishTimer;
+    [Export] Timer _finishTimer;
 
-    [Export] int MaxLaps;
-    int LapCount = 1;
+    [Export] int _maxLaps;
+    int _lapCount = 1;
 
     public override void _Ready() {
-        Paths.AddNodePath("FINISH_TIMER", FinishTimer.GetPath());
+        Paths.AddNodePath("FINISH_TIMER", _finishTimer.GetPath());
         Paths.AddNodePath("LAP", GetPath());
 
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        FinishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
-        EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
+        _finishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
+        EmitSignal(SignalName.LapPassed, _lapCount, _maxLaps);
     }
 
     //---------------------------------------------------------------------------------//
@@ -27,15 +27,15 @@ public partial class Lap : Node {
 
     void _OnPlayerEntered(Node2D player) {
         if (Checkpoints.UnpassedCheckpoints.Count == 0) {
-            if (LapCount < MaxLaps) {
-                LapCount++;
+            if (_lapCount < _maxLaps) {
+                _lapCount++;
             } else {
                 EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
-                FinishTimer.Start();
+                _finishTimer.Start();
             }
         }
 
-        EmitSignal(SignalName.LapPassed, LapCount, MaxLaps);
+        EmitSignal(SignalName.LapPassed, _lapCount, _maxLaps);
     }
 
     #endregion

@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public partial class SettingsPanel : Panel {
-    [Export] VBoxContainer Binds;
+    [Export] VBoxContainer _binds;
 
     public override void _Input(InputEvent e) {
         var mousePos = GetGlobalMousePosition();
@@ -16,7 +16,7 @@ public partial class SettingsPanel : Panel {
 		InputMap.LoadFromProjectSettings();
 		DirAccess.RemoveAbsolute("user://config.cfg");
 
-		foreach (Button button in Binds.GetChildren()) {
+		foreach (Button button in _binds.GetChildren()) {
 			button.Text = InputMap.ActionGetEvents(button.Name)[0].AsText();
         }
 	}

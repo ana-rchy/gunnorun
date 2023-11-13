@@ -3,11 +3,11 @@ using System.Linq;
 using Godot;
 
 public partial class SingleplayerPanel : MainPanel {
-    [Export(PropertyHint.Dir)] string WorldsDir;
-    [Export] OptionButton MapSelect;
-    [Export] OptionButton ReplaySelect;
-    [Export] Label LastTime;
-    [Export] Label BestTime;
+    [Export(PropertyHint.Dir)] string _worldsDir;
+    [Export] OptionButton _mapSelect;
+    [Export] OptionButton _replaySelect;
+    [Export] Label _lastTime;
+    [Export] Label _bestTime;
 
     public static int SelectedWorldIndex { get; private set; } = 0;
     public static int SelectedReplayIndex { get; private set; } = 0;
@@ -17,10 +17,10 @@ public partial class SingleplayerPanel : MainPanel {
 
         UpdateBestTime();
         CheckImportedReplays();
-        MapSelect.Selected = SelectedWorldIndex;
-        ReplaySelect.Selected = SelectedReplayIndex;
+        _mapSelect.Selected = SelectedWorldIndex;
+        _replaySelect.Selected = SelectedReplayIndex;
         if (LevelTimer.Time != 0) {
-            LastTime.Text = $"last time: {Math.Round(LevelTimer.Time, 3)}s";
+            _lastTime.Text = $"last time: {Math.Round(LevelTimer.Time, 3)}s";
         }
     }
 
@@ -31,9 +31,9 @@ public partial class SingleplayerPanel : MainPanel {
         var timePath = $"user://{Global.CurrentWorld}_time.gsd";
         if (FileAccess.FileExists(timePath)) {
             using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
-            BestTime.Text = $"best time: {timeFile.GetDouble()}s";
+            _bestTime.Text = $"best time: {timeFile.GetDouble()}s";
         } else {
-            BestTime.Text = "";
+            _bestTime.Text = "";
         }
     }
 
@@ -49,10 +49,10 @@ public partial class SingleplayerPanel : MainPanel {
             return (string) worldName == Global.CurrentWorld;
         });
 
-        ReplaySelect.Clear();
-        ReplaySelect.AddItem("best time");
+        _replaySelect.Clear();
+        _replaySelect.AddItem("best time");
         foreach (var replayName in currentMapReplays) {
-            ReplaySelect.AddItem(replayName);
+            _replaySelect.AddItem(replayName);
         }
     }
 
@@ -62,12 +62,12 @@ public partial class SingleplayerPanel : MainPanel {
     #region | signals
 
     void _OnSingleplayerPressed() {    
-        Tree.ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
+        Tree.ChangeSceneToFile($"{_worldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnMapSelected(int index) {
-        SelectedWorldIndex = MapSelect.Selected;
-        Global.CurrentWorld = MapSelect.GetItemText(index);
+        SelectedWorldIndex = _mapSelect.Selected;
+        Global.CurrentWorld = _mapSelect.GetItemText(index);
 
         UpdateBestTime();
         CheckImportedReplays();
@@ -81,13 +81,13 @@ public partial class SingleplayerPanel : MainPanel {
             return;
         }
 
-        Global.ReplayName = ReplaySelect.GetItemText(index);
+        Global.ReplayName = _replaySelect.GetItemText(index);
     }
 
     void _OnViewReplayPressed() {
         Global.ReplayOnly = true;
 
-        Tree.ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
+        Tree.ChangeSceneToFile($"{_worldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnSaveLastReplayPressed() {

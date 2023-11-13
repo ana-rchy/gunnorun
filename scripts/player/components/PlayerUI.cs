@@ -2,35 +2,35 @@ using System;
 using Godot;
 
 public partial class PlayerUI : Node {
-	[Export] Label LevelTime;
-	[Export] Label LapCounter;
-	[Export] Label HP;
-	[Export] Control RaceFinishUI;
-	Label CurrentWeapon = null;
+	[Export] Label _levelTime;
+	[Export] Label _lapCounter;
+	[Export] Label _HP;
+	[Export] Control _raceFinishUI;
+	Label _currentWeapon = null;
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
 	public void _OnLapPassed(int lapCount, int maxLaps) {
-        LapCounter.Text = $"lap {lapCount}/{maxLaps}";
+        _lapCounter.Text = $"lap {lapCount}/{maxLaps}";
 	}
 
 	public void _OnRaceFinished(float finishTime) {
-		RaceFinishUI.Show();
-		RaceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
+		_raceFinishUI.Show();
+		_raceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
 	}
 
     void _OnWorldLoaded() {
 		var lapManager = this.GetNodeConst<Lap>("LAP");
 		if (lapManager == null) {
-			LapCounter.QueueFree();
-			LapCounter = null;
+			_lapCounter.QueueFree();
+			_lapCounter = null;
 		}
 	}
 
 	void _OnWeaponShot(Player player) {
-		if (LapCounter != null) {
-			LapCounter.Show();
+		if (_lapCounter != null) {
+			_lapCounter.Show();
 		}
 
 		if (player.CurrentWeapon.Ammo == null) {
@@ -72,30 +72,30 @@ public partial class PlayerUI : Node {
 	}
 
 	void _OnWeaponChanged(string weaponName) {
-		if (CurrentWeapon != null) {
-			CurrentWeapon.LabelSettings.FontColor = new Color("#ffffff");
+		if (_currentWeapon != null) {
+			_currentWeapon.LabelSettings.FontColor = new Color("#ffffff");
 		}
 
-		CurrentWeapon = GetNode<Label>($"Control/Weapons/{weaponName}");
-		CurrentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
+		_currentWeapon = GetNode<Label>($"Control/Weapons/{weaponName}");
+		_currentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 		
 		if (weaponName == "Murasama") {
-			CurrentWeapon.LabelSettings.FontColor = new Color("#e32d00");
+			_currentWeapon.LabelSettings.FontColor = new Color("#e32d00");
 		}
 	}
 
 	void _OnTimeChanged(float newTime) {
-		LevelTime.Text = $"{Math.Round(newTime, 3)}s";
+		_levelTime.Text = $"{Math.Round(newTime, 3)}s";
 	}
 
 	void _OnHPChanged(int newHP) {
-		HP.Text = newHP.ToString();
+		_HP.Text = newHP.ToString();
 	}
 	
 	async void _OnDeath(float deathTime) {
-		HP.Text = "ur dead lol";
+		_HP.Text = "ur dead lol";
 		await this.Sleep(deathTime);
-		HP.Text = "100";
+		_HP.Text = "100";
 	}
 
 	#endregion

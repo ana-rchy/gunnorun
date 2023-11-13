@@ -2,15 +2,15 @@ using Godot;
 using System;
 
 public partial class Tracer : Node2D {
-    [Export] Node2D Area;
+    [Export] Node2D _area;
 
-    [Export] float Speed;
+    [Export] float _speed;
     public float Range;
 
     public override void _PhysicsProcess(double delta) {
-        Area.Position = new Vector2(Area.Position.X + Speed, Area.Position.Y);
+        _area.Position = new Vector2(_area.Position.X + _speed, _area.Position.Y);
 
-        if (Area.Position.X >= Range) {
+        if (_area.Position.X >= Range) {
             QueueFree();
         }
     }

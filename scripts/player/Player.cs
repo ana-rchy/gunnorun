@@ -6,11 +6,11 @@ public partial class Player : RigidBody2D, IPlayer {
     [Export(PropertyHint.File)] public string TracerScene { get; private set; }
     [Export] public Timer ActionTimer { get; private set; }
     [Export] public Timer ReloadTimer { get; private set; }
-    [Export] Timer RegenTimer;
     [Export] public RayCast2D WeaponRaycast { get; private set; }
-    [Export] RayCast2D GroundRaycast;
-    [Export] AnimatedSprite2D Sprite;
-    [Export] Label Username;
+    [Export] Timer _regenTimer;
+    [Export] RayCast2D _groundRaycast;
+    [Export] AnimatedSprite2D _sprite;
+    [Export] Label _username;
 
     const float MAXIMUM_VELOCITY = 4000f;
     const float SPAWN_INTANGIBILITY_TIME = 2f;
@@ -24,8 +24,7 @@ public partial class Player : RigidBody2D, IPlayer {
     public Weapon CurrentWeapon { get; private set; }
     public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
     public int HP { get; private set; } = 100;
-    Weapon[] Weapons;
-    float MomentumMultiplier;
+    Weapon[] _weapons;
     
 
     public override void _Ready() {
@@ -39,12 +38,12 @@ public partial class Player : RigidBody2D, IPlayer {
         }
 
         // etc
-        Weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
-        CurrentWeapon = Weapons[CurrentWeaponIndex];
+        _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
+        CurrentWeapon = _weapons[CurrentWeaponIndex];
         EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
-        Username.Text = Global.PlayerData.Username;
+        _username.Text = Global.PlayerData.Username;
         var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) Sprite.Material)
+        ((ShaderMaterial) _sprite.Material)
             .SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
 
         if (Multiplayer.GetPeers().Length != 0) {
@@ -59,7 +58,7 @@ public partial class Player : RigidBody2D, IPlayer {
     public override void _Input(InputEvent e) {
         for (int i = 1; i <= 4; i++) {
             if (e.IsActionPressed($"Num{i}")) {
-                CurrentWeapon = Weapons[i-1];
+                CurrentWeapon = _weapons[i-1];
                 CurrentWeaponIndex = i-1;
 
                 EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
@@ -76,7 +75,7 @@ public partial class Player : RigidBody2D, IPlayer {
         }
 
         Regen();
-        if (GroundRaycast.IsColliding()) {
+        if (_groundRaycast.IsColliding()) {
             EmitSignal(SignalName.OnGround, true, LinearVelocity.X);
         } else {
             EmitSignal(SignalName.OnGround, false, 0);
@@ -129,9 +128,9 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     void Regen() {
-        if (RegenTimer.IsStopped() && HP > 0 && HP < 100) {
+        if (_regenTimer.IsStopped() && HP > 0 && HP < 100) {
             ChangeHP(HP + HP_REGEN);
-            RegenTimer.Start();
+            _regenTimer.Start();
         }
     }
 

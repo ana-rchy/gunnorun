@@ -4,13 +4,13 @@ using Godot;
 using static Godot.GD;
 
 public partial class ParticlesManager : Node {
-    [Export(PropertyHint.File)] string GrindingParticlesScene;
-    [Export] GrindingParticles GrindingParticles;
-    [Export] GpuParticles2D MurasamaParticles;
+    [Export(PropertyHint.File)] string _grindingParticlesScene;
+    [Export] GrindingParticles _grindingParticles;
+    [Export] GpuParticles2D _murasamaParticles;
 
     public override void _Ready() {
         for (int i = 8; i <= 64; i += 4) {
-            var particlesScene = Load<PackedScene>(GrindingParticlesScene);
+            var particlesScene = Load<PackedScene>(_grindingParticlesScene);
             GrindingParticles particles = particlesScene.Instantiate<GrindingParticles>();
             IPlayer player = GetParent<IPlayer>();
             
@@ -21,7 +21,7 @@ public partial class ParticlesManager : Node {
             } else if (player is PuppetPlayer) {
                 ((PuppetPlayer) player).OnGround += particles._OnGround;
             }
-            GrindingParticles.AddChild(particles);
+            _grindingParticles.AddChild(particles);
         }
     }
 
@@ -30,11 +30,11 @@ public partial class ParticlesManager : Node {
 
     public void EmitMurasamaParticles() {
         Task.Run(async () => {
-            MurasamaParticles.SetDeferred("emitting", true);
+            _murasamaParticles.SetDeferred("emitting", true);
 
             await this.Sleep(0.3f);
             
-            MurasamaParticles.SetDeferred("emitting", false);
+            _murasamaParticles.SetDeferred("emitting", false);
         });
     }
 

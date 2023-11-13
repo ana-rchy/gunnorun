@@ -5,30 +5,30 @@ using GC = Godot.Collections;
 public partial class DebugRecorder : Node {
     public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; }
     
-    Player Player;
+    Player _player;
 
-    GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
-    GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
-    GC.Array<Vector2> VelocityList = new GC.Array<Vector2>();
-    GC.Array<string> WeaponList = new GC.Array<string>();
+    GC.Array<Vector2> _positionsList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _mousePositionsList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _velocityList = new GC.Array<Vector2>();
+    GC.Array<string> _weaponList = new GC.Array<string>();
 
-    GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
-    GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
-    GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
+    GC.Array<Vector2> _stateVelocityList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _velocityCapList = new GC.Array<Vector2>();
+    GC.Array<Single> _reelbackStrengthList = new GC.Array<Single>();
 
     public override void _Ready() {
-        Player = GetParent<Player>();
+        _player = GetParent<Player>();
     }
 
     public override void _PhysicsProcess(double delta) {
-        PositionsList.Add(Player.Position);
-        MousePositionsList.Add(Player.LastMousePos);
-        VelocityList.Add(Player.LinearVelocity);
-        WeaponList.Add(Player.CurrentWeapon.Name);
+        _positionsList.Add(_player.Position);
+        _mousePositionsList.Add(Player.LastMousePos);
+        _velocityList.Add(_player.LinearVelocity);
+        _weaponList.Add(_player.CurrentWeapon.Name);
 
-        StateVelocityList.Add(Player.DebugData.StateVel);
-        VelocityCapList.Add(Player.DebugData.VelSoftCap);
-        ReelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
+        _stateVelocityList.Add(Player.DebugData.StateVel);
+        _velocityCapList.Add(Player.DebugData.VelSoftCap);
+        _reelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
     }
     
     //---------------------------------------------------------------------------------//
@@ -36,14 +36,14 @@ public partial class DebugRecorder : Node {
 
     void _OnRaceFinished(float finishTime) {
         LastDebugData = new GC.Dictionary<string, Variant>() {
-            { "Positions", PositionsList },
-            { "MousePositions", MousePositionsList },
-            { "Velocities", VelocityList },
-            { "Weapons", WeaponList },
+            { "Positions", _positionsList },
+            { "MousePositions", _mousePositionsList },
+            { "Velocities", _velocityList },
+            { "Weapons", _weaponList },
 
-            { "StateVelocities", StateVelocityList },
-            { "VelocityCaps", VelocityCapList },
-            { "ReelbackStrengths", ReelbackStrengthList }
+            { "StateVelocities", _stateVelocityList },
+            { "VelocityCaps", _velocityCapList },
+            { "ReelbackStrengths", _reelbackStrengthList }
         };
     }
 

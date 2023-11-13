@@ -3,17 +3,17 @@ using Godot;
 using GC = Godot.Collections;
 
 public partial class DebugReplayPlayer : Node2D {
-    [Export] Node2D Crosshair;
-    [Export] Label DebugInfo;
+    [Export] Node2D _crosshair;
+    [Export] Label _debugInfo;
 
-    GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
-    GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
-    GC.Array<Vector2> VelocityList = new GC.Array<Vector2>();
-    GC.Array<string> WeaponList = new GC.Array<string>();
+    GC.Array<Vector2> _positionsList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _mousePositionsList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _velocityList = new GC.Array<Vector2>();
+    GC.Array<string> _weaponList = new GC.Array<string>();
 
-    GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
-    GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
-    GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
+    GC.Array<Vector2> _velocityCapList = new GC.Array<Vector2>();
+    GC.Array<Single> _reelbackStrengthList = new GC.Array<Single>();
+    GC.Array<Vector2> _stateVelocityList = new GC.Array<Vector2>();
 
     public override void _Ready() {
         this.GetNodeConst("PLAYER").QueueFree();
@@ -21,37 +21,37 @@ public partial class DebugReplayPlayer : Node2D {
         using var debugFile = FileAccess.Open("user://replays/debug/debug_replay.gdr", FileAccess.ModeFlags.Read);
         var debugData = (GC.Dictionary<string, Variant>) debugFile.GetVar();
 
-        PositionsList = (GC.Array<Vector2>) debugData["Positions"];
-        MousePositionsList = (GC.Array<Vector2>) debugData["MousePositions"];
-        VelocityList = (GC.Array<Vector2>) debugData["Velocities"];
-        WeaponList = (GC.Array<string>) debugData["Weapons"];
+        _positionsList = (GC.Array<Vector2>) debugData["Positions"];
+        _mousePositionsList = (GC.Array<Vector2>) debugData["MousePositions"];
+        _velocityList = (GC.Array<Vector2>) debugData["Velocities"];
+        _weaponList = (GC.Array<string>) debugData["Weapons"];
 
-        VelocityCapList = (GC.Array<Vector2>) debugData["VelocityCaps"];
-        ReelbackStrengthList = (GC.Array<Single>) debugData["ReelbackStrengths"];
-        StateVelocityList = (GC.Array<Vector2>) debugData["StateVelocities"];
+        _velocityCapList = (GC.Array<Vector2>) debugData["VelocityCaps"];
+        _reelbackStrengthList = (GC.Array<Single>) debugData["ReelbackStrengths"];
+        _stateVelocityList = (GC.Array<Vector2>) debugData["StateVelocities"];
     }
 
     int _debugDataIndex = 0;
     public override void _PhysicsProcess(double delta) {
-        if (_debugDataIndex >= PositionsList.Count) {
+        if (_debugDataIndex >= _positionsList.Count) {
             _debugDataIndex = 0;
         }
 
-        var position = PositionsList[_debugDataIndex];
-        var mousePosition = MousePositionsList[_debugDataIndex];
-        var velocity = VelocityList[_debugDataIndex];
-        var velocityCap = VelocityCapList[_debugDataIndex];
-        var stateVelocity = StateVelocityList[_debugDataIndex];
+        var position = _positionsList[_debugDataIndex];
+        var mousePosition = _mousePositionsList[_debugDataIndex];
+        var velocity = _velocityList[_debugDataIndex];
+        var velocityCap = _velocityCapList[_debugDataIndex];
+        var stateVelocity = _stateVelocityList[_debugDataIndex];
 
         GlobalPosition = position;
-        Crosshair.GlobalPosition = mousePosition;
+        _crosshair.GlobalPosition = mousePosition;
 
-        DebugInfo.Text = $"position: {position.X}, {position.Y}" +
+        _debugInfo.Text = $"position: {position.X}, {position.Y}" +
         $"\nmouse position: {mousePosition.X}, {mousePosition.Y}" +
         $"\nvelocity: {velocity.X}, {velocity.Y}" +
-        $"\nweapon: {WeaponList[_debugDataIndex]}" +
+        $"\nweapon: {_weaponList[_debugDataIndex]}" +
         $"\nvelocity cap: {velocityCap.X}, {velocityCap.Y}" +
-        $"\nreelback strength: {ReelbackStrengthList[_debugDataIndex]}" +
+        $"\nreelback strength: {_reelbackStrengthList[_debugDataIndex]}" +
         $"\nstate velocity: {stateVelocity.X}, {stateVelocity.Y}";
 
         _debugDataIndex++;

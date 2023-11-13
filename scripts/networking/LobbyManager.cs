@@ -3,8 +3,8 @@ using Godot;
 using static Godot.MultiplayerApi;
 
 public partial class LobbyManager : Node {
-    [Export(PropertyHint.Dir)] string WorldsDir;
-    [Export] PlayerManager PlayerManager;
+    [Export(PropertyHint.Dir)] string _worldsDir;
+    [Export] PlayerManager _playerManager;
 
     //---------------------------------------------------------------------------------//
     #region | rpc
@@ -23,10 +23,10 @@ public partial class LobbyManager : Node {
 
     [Rpc] void Client_StartGame(string worldName) {
         Global.PlayerData.ReadyStatus = false;
-        GetTree().ChangeSceneToFile($"{WorldsDir}/{worldName}.tscn");
+        GetTree().ChangeSceneToFile($"{_worldsDir}/{worldName}.tscn");
 
         foreach (var player in Global.OtherPlayerData) {
-            PlayerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
+            _playerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
         }
     }
 

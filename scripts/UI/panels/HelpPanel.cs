@@ -2,20 +2,20 @@ using Godot;
 using System;
 
 public partial class HelpPanel : Panel {
-    [Export(PropertyHint.Dir)] string WorldsDir;
-    [Export] Label UserDataPath;
-    [Export] Label Controls;
+    [Export(PropertyHint.Dir)] string _worldsDir;
+    [Export] Label _userDataPath;
+    [Export] Label _controls;
 
     public override void _Ready() {
         switch (OS.GetName()) {
             case "Linux":
-                UserDataPath.Text = "user data path: ~/.local/share/godot/app_userdata/gunnorun/";
+                _userDataPath.Text = "user data path: ~/.local/share/godot/app_userdata/gunnorun/";
                 break;
             case "Windows":
-                UserDataPath.Text = "user data path: %APPDATA%\\Godot\\app_userdata\\gunnorun\\";
+                _userDataPath.Text = "user data path: %APPDATA%\\Godot\\app_userdata\\gunnorun\\";
                 break;
             case "macOS":
-                UserDataPath.Text = "user data path: ~/Library/Application Support/Godot/app_userdata/gunnorun/";
+                _userDataPath.Text = "user data path: ~/Library/Application Support/Godot/app_userdata/gunnorun/";
                 break;
         }
     }
@@ -40,7 +40,7 @@ public partial class HelpPanel : Panel {
         Global.DebugReplay = true;
         Global.ReplayOnly = true;
 
-        GetTree().ChangeSceneToFile($"{WorldsDir}/{Global.CurrentWorld}.tscn");
+        GetTree().ChangeSceneToFile($"{_worldsDir}/{Global.CurrentWorld}.tscn");
     }
 
     void _OnClearData() {
@@ -71,7 +71,7 @@ public partial class HelpPanel : Panel {
     }
 
     void _OnVisibilityChanged() {
-        Controls.Text =
+        _controls.Text =
             $"{InputMap.ActionGetEvents("Num1")[0].AsText()}-{InputMap.ActionGetEvents("Num4")[0].AsText()} - switch weapons\n" +
             $"{InputMap.ActionGetEvents("Reload")[0].AsText()} - reload\n" + 
             $"{InputMap.ActionGetEvents("Leave")[0].AsText()} - return to menu\n" +

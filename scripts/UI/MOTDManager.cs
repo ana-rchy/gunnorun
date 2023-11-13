@@ -3,20 +3,20 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class MOTDManager : RichTextLabel {
-	[Export] AudioStreamPlayer DoorKnock;
-	[Export] AudioStreamPlayer VineBoom;
-	[Export] AudioStreamPlayer NavalInvasion;
-	[Export] TextureRect UnhingedKnight;
-	[Export] TextureRect LiveLeak;
+	[Export] AudioStreamPlayer _doorKnock;
+	[Export] AudioStreamPlayer _vineBoom;
+	[Export] AudioStreamPlayer _navalInvasion;
+	[Export] TextureRect _unhingedKnight;
+	[Export] TextureRect _liveLeak;
 	
-	string[] MotdMessages;
+	string[] _motdMessages;
 	
 	public override async void _Ready() {
 		AddThemeFontSizeOverride("normal_font_size", 50);
 		AddThemeFontSizeOverride("italics_font_size", 50);
 		RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
 
-		MotdMessages = new string[] {
+		_motdMessages = new string[] {
 			"[color=#aa0000]▇▅▆▇▆▅▅█[/color]",
 			"pro tip: shoot yourself",
 			"you should recoil yourself... NOW!!",
@@ -119,7 +119,7 @@ public partial class MOTDManager : RichTextLabel {
 		};
 
 		var rnd = new RandomNumberGenerator();
-		var uncenteredText = Text = MotdMessages[rnd.RandiRange(0, MotdMessages.Length - 1)];
+		var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
 		//Text = MotdMessages[MotdMessages.Length - 1];
 
 		Text = $"[center]{Text}[/center]";
@@ -129,14 +129,14 @@ public partial class MOTDManager : RichTextLabel {
 			switch (uncenteredText) {
 				case "i am in your walls.":
 					await this.Sleep(2.5f);
-					DoorKnock.Play(); break;
+					_doorKnock.Play(); break;
 				case "naaah no wayyy omg bruuuhhh":
 					await this.Sleep(0.5f);
-					VineBoom.Play(); break;
+					_vineBoom.Play(); break;
 				case "The FitnessGram Pacer test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter Pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal *boop*. A single lap should be completed each time you hear this sound *ding*. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.":
 					AddThemeFontSizeOverride("normal_font_size", 8); break;
 				case "hello spez":
-					UnhingedKnight.Show(); break;
+					_unhingedKnight.Show(); break;
 				case "you know what? fuck you. *crashes your game*":
 					await this.Sleep(2f);
 					GetTree().Root.GuiEmbedSubwindows = false;
@@ -150,13 +150,13 @@ public partial class MOTDManager : RichTextLabel {
 					dialog.Canceled += () => dialog.QueueFree();
 					dialog.TreeExited += () => GetTree().Root.GuiEmbedSubwindows = true; break;
 				case " ":
-					LiveLeak.Show(); break;
+					_liveLeak.Show(); break;
 				case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
 					RenderingServer.SetDefaultClearColor(new Color("000000")); break;
 				case "10":
 					_ = Countdown(uncenteredText); break;
 				case "[color=#aa0000]Dangerous naval invasion![/color]":
-					NavalInvasion.Play(); break;
+					_navalInvasion.Play(); break;
 			}
 		} catch (Exception e) {
 			if (e is ObjectDisposedException) {

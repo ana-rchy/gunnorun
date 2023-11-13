@@ -3,22 +3,22 @@ using System.Threading.Tasks;
 using Godot;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
-    [Export(PropertyHint.File)] string TracerScene;
-    [Export] ColorRect GreenHP;
+    [Export(PropertyHint.File)] string _tracerScene;
+    [Export] ColorRect _greenHP;
 
     public Vector2 PuppetPosition { get; set; }
     public int HP { get; private set; } = 100;
 
-    double Timer;
+    double _timer;
 
     public override void _PhysicsProcess(double delta) {
-        if (Timer >= Global.TICK_RATE) {
+        if (_timer >= Global.TICK_RATE) {
             var tween = CreateTween();
             tween.TweenProperty(this, "global_position", PuppetPosition, Global.TICK_RATE);
-            Timer -= Global.TICK_RATE;
+            _timer -= Global.TICK_RATE;
         }
         
-        Timer += delta;
+        _timer += delta;
     }
 
     //---------------------------------------------------------------------------------//
@@ -34,18 +34,18 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         }
 
         HP = newHP;
-        GreenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
+        _greenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
 
         if (HP <= 0) {
             await this.Sleep(3f);
             HP = 100;
-            GreenHP.Size = new Vector2(200f, 20f);
+            _greenHP.Size = new Vector2(200f, 20f);
             SpawnInvuln();
         }
     }
 
     public void SpawnTracer(float rotation, float range) {
-        var tracer = GD.Load<PackedScene>(TracerScene).Instantiate<Tracer>();
+        var tracer = GD.Load<PackedScene>(_tracerScene).Instantiate<Tracer>();
 
         tracer.GlobalPosition = GlobalPosition;
         tracer.Rotation = rotation;

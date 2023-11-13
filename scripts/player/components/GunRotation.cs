@@ -2,10 +2,10 @@ using System;
 using Godot;
 
 public partial class GunRotation : AnimatedSprite2D {
-    Node2D Parent;
+    Node2D _parent;
 
     public override void _Ready() {
-        Parent = GetParent<Node2D>();
+        _parent = GetParent<Node2D>();
 
         if (Multiplayer.GetPeers().Length != 0) {
             PlayerFrameChanged += this.GetNodeConst<PlayerManager>("PLAYER_MANAGER")._OnPlayerFrameChanged;
@@ -21,7 +21,7 @@ public partial class GunRotation : AnimatedSprite2D {
         var prevFrame = Frame;
 
         var normal = new Vector2(0, -1);
-        var angle = normal.AngleTo(Parent.GetLocalMousePosition());
+        var angle = normal.AngleTo(_parent.GetLocalMousePosition());
 
         Frame = angle >= 0 ? 0 : 5;
         var absAngle = MathF.Abs(angle);

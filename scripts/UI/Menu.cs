@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Menu : Node {
-	[Export] TabContainer TabContainer;
-	[Export] ColorRect SettingsPanel;
-	[Export] ColorRect HelpPanel;
+	[Export] TabContainer _tabContainer;
+	[Export] ColorRect _settingsPanel;
+	[Export] ColorRect _helpPanel;
 
-	static int SelectedTab = 0;
+	static int _selectedTab = 0;
 
 	public override void _Ready() {
-		TabContainer.CurrentTab = SelectedTab;
+		_tabContainer.CurrentTab = _selectedTab;
 	}
 
 	//---------------------------------------------------------------------------------//
     #region | signals
 
 	void _OnTabChanged(int index) {
-		SelectedTab = index;
+		_selectedTab = index;
 	}
 
 	void _OnSaveLastReplayPressed() {
@@ -28,11 +28,11 @@ public partial class Menu : Node {
 	}
 
 	void _OnSettingsPressed() {
-		SettingsPanel.Show();
+		_settingsPanel.Show();
 	}
 	
 	void _OnHelpPressed() {
-		HelpPanel.Show();
+		_helpPanel.Show();
 	}
 
 	#endregion

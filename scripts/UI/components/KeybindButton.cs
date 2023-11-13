@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 public partial class KeybindButton : Button {
-	bool ChangingBind;
+	bool _changingBind;
 
     public override void _Ready() {
 		if (InputMap.ActionGetEvents(Name).Count != 0) {
@@ -13,7 +13,7 @@ public partial class KeybindButton : Button {
     }
 
     public override void _Input(InputEvent e) {
-        if (ChangingBind && e.IsPressed()) {
+        if (_changingBind && e.IsPressed()) {
 			if (InputMap.ActionGetEvents(Name).Count == 0 ||
 				InputMap.ActionGetEvents(Name)[0].AsText() != e.AsText()) {
 				ChangeBind(e);
@@ -34,10 +34,10 @@ public partial class KeybindButton : Button {
     void _OnToggled(bool pressed) {
 		if (pressed) {
 			Text = "...";
-			ChangingBind = true;
+			_changingBind = true;
 		} else {
 			Text = InputMap.ActionGetEvents(Name).Count != 0 ? InputMap.ActionGetEvents(Name)[0].AsText() : " ";
-			ChangingBind = false;
+			_changingBind = false;
 		}
 	}
 
