@@ -5,5 +5,5 @@ public interface IPlayer {
     [Signal] public delegate void OffGroundEventHandler();
     
     public int GetHP();
-    public virtual void ChangeHP(int newHP, bool emitSignal = true) {}
+    public void ChangeHP(int newHP, bool emitSignal = true) {}
 }

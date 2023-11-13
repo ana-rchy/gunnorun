@@ -11,6 +11,15 @@ public partial class PlayerUI : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
+	public void _OnLapPassed(int lapCount, int maxLaps) {
+        LapCounter.Text = $"lap {lapCount}/{maxLaps}";
+	}
+
+	public void _OnRaceFinished(float finishTime) {
+		RaceFinishUI.Show();
+		RaceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
+	}
+
     void _OnWorldLoaded() {
 		var lapManager = this.GetNodeConst<Lap>("LAP");
 		if (lapManager == null) {
@@ -87,15 +96,6 @@ public partial class PlayerUI : Node {
 		HP.Text = "ur dead lol";
 		await this.Sleep(deathTime);
 		HP.Text = "100";
-	}
-
-	public void _OnLapPassed(int lapCount, int maxLaps) {
-        LapCounter.Text = $"lap {lapCount}/{maxLaps}";
-	}
-
-	public void _OnRaceFinished(float finishTime) {
-		RaceFinishUI.Show();
-		RaceFinishUI.GetNode<Label>("Label").Text = $"{Math.Round(finishTime, 3)}s";
 	}
 
 	#endregion

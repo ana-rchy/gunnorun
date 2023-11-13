@@ -3,6 +3,8 @@ using Godot;
 using GC = Godot.Collections;
 
 public partial class DebugRecorder : Node {
+    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; }
+    
     Player Player;
 
     GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
@@ -13,8 +15,6 @@ public partial class DebugRecorder : Node {
     GC.Array<Vector2> StateVelocityList = new GC.Array<Vector2>();
     GC.Array<Vector2> VelocityCapList = new GC.Array<Vector2>();
     GC.Array<Single> ReelbackStrengthList = new GC.Array<Single>();
-
-    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; }
 
     public override void _Ready() {
         Player = GetParent<Player>();

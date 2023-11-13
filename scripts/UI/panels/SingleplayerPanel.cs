@@ -3,14 +3,14 @@ using System.Linq;
 using Godot;
 
 public partial class SingleplayerPanel : MainPanel {
-    public static int SelectedWorldIndex { get; private set; } = 0;
-    public static int SelectedReplayIndex { get; private set; } = 0;
-
     [Export(PropertyHint.Dir)] string WorldsDir;
     [Export] OptionButton MapSelect;
     [Export] OptionButton ReplaySelect;
     [Export] Label LastTime;
     [Export] Label BestTime;
+
+    public static int SelectedWorldIndex { get; private set; } = 0;
+    public static int SelectedReplayIndex { get; private set; } = 0;
 
     public override void _Ready() {
         base._Ready();

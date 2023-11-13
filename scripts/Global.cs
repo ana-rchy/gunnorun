@@ -45,9 +45,7 @@ public partial class Global : Node {
 	}
 
     //---------------------------------------------------------------------------------//
-    #region | constants/structs
-
-    public const float TICK_RATE = 1 / 60f;
+    #region | etc
 
     public struct PlayerDataStruct {
         public PlayerDataStruct(string username, Color color) {
@@ -60,10 +58,7 @@ public partial class Global : Node {
         public bool ReadyStatus = false;
     }
 
-    #endregion
-
-    //---------------------------------------------------------------------------------//
-    #region | everything else
+    public const float TICK_RATE = 1 / 60f;    
 
     public static PlayerDataStruct PlayerData = new PlayerDataStruct("", new Color(0, 0, 0, 1));
     public static Dictionary<long, PlayerDataStruct> OtherPlayerData;

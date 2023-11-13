@@ -2,13 +2,13 @@ using System;
 using Godot;
 
 public partial class MainPanel : Panel {
-    protected SceneTree Tree;
-    protected Client Client;
-
     [Export] protected LineEdit UsernameField;
     [Export] protected ColorPickerButton ColorField;
     [Export] protected LineEdit OpposingUsernameField;
     [Export] protected ColorPickerButton OpposingColorField;
+
+    protected SceneTree Tree;
+    protected Client Client;
 
     public override void _Ready() {
         Tree = GetTree();

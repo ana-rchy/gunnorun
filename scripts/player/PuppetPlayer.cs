@@ -6,9 +6,10 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     [Export(PropertyHint.File)] string TracerScene;
     [Export] ColorRect GreenHP;
 
-    double Timer;
     public Vector2 PuppetPosition { get; set; }
     public int HP { get; private set; } = 100;
+
+    double Timer;
 
     public override void _PhysicsProcess(double delta) {
         if (Timer >= Global.TICK_RATE) {
@@ -43,12 +44,6 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         }
     }
 
-    async void SpawnInvuln() {
-        SetCollisionLayerValue(2, false);
-        await this.Sleep(2f);
-        SetCollisionLayerValue(2, true);
-    }
-
     public void SpawnTracer(float rotation, float range) {
         var tracer = GD.Load<PackedScene>(TracerScene).Instantiate<Tracer>();
 
@@ -61,6 +56,12 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         tracerArea.SetCollisionMaskValue(2, true);
 
         this.GetNodeConst("WORLD").AddChild(tracer);
+    }
+
+    async void SpawnInvuln() {
+        SetCollisionLayerValue(2, false);
+        await this.Sleep(2f);
+        SetCollisionLayerValue(2, true);
     }
 
     #endregion

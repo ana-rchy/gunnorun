@@ -3,16 +3,16 @@ using System;
 
 public abstract class Weapon {
     public string Name { get; protected set; }
+    public int? Ammo { get; protected set; }
+    public float Range { get; protected set; }
     
     protected float Knockback;
     protected float ReelbackStrength;
-    protected int Damage;
-    public float Range { get; protected set; }
-
-    public int? Ammo { get; protected set; }
+    
     protected int? BaseAmmo;
     protected float Reload;
     protected float Refire;
+    protected int Damage;
 
     public virtual void Shoot(Player player) {
         if (Ammo <= 0) {
@@ -31,6 +31,30 @@ public abstract class Weapon {
 
         if (player.Multiplayer.GetPeers().Length != 0) {
             CheckPlayerHit(player, -mousePosToPlayerPos);
+        }
+    }
+
+    public async void ReloadWeapon(Player player) {
+        if (Ammo == 100 || Ammo == null) {
+            return;
+        }
+
+        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload, (int) BaseAmmo);
+        Ammo = 0; // prevent firing remaining ammo while reloading
+
+        player.ReloadTimer.Start(); // prevent reloading in quick succession, and reloading 2+ weapons
+        await player.Sleep(Reload); // prevent having ammo to fire while should be reloading
+
+        Ammo = BaseAmmo;
+    }
+
+    protected void CheckPlayerHit(Player player, Vector2 playerPosToMousePos) {
+        player.WeaponRaycast.TargetPosition = playerPosToMousePos.Normalized() * Range;
+        player.WeaponRaycast.ForceRaycastUpdate();
+
+        if (player.WeaponRaycast.IsColliding()) {
+            var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
+            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
         }
     }
 
@@ -54,29 +78,5 @@ public abstract class Weapon {
         tracer.Range = Range;
 
         player.AddSibling(tracer);
-    }
-
-    protected void CheckPlayerHit(Player player, Vector2 playerPosToMousePos) {
-        player.WeaponRaycast.TargetPosition = playerPosToMousePos.Normalized() * Range;
-        player.WeaponRaycast.ForceRaycastUpdate();
-
-        if (player.WeaponRaycast.IsColliding()) {
-            var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
-            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
-        }
-    }
-
-    public async void ReloadWeapon(Player player) {
-        if (Ammo == 100 || Ammo == null) {
-            return;
-        }
-
-        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload, (int) BaseAmmo);
-        Ammo = 0; // prevent firing remaining ammo while reloading
-
-        player.ReloadTimer.Start(); // prevent reloading in quick succession, and reloading 2+ weapons
-        await player.Sleep(Reload); // prevent having ammo to fire while should be reloading
-
-        Ammo = BaseAmmo;
     }
 }

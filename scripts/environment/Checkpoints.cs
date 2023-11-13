@@ -4,6 +4,7 @@ using Godot;
 
 public partial class Checkpoints : Node {
     public static List<Node> UnpassedCheckpoints { get; private set; }
+    
     public override void _Ready() {
         if (Multiplayer.GetPeers().Length != 0) {
             QueueFree();

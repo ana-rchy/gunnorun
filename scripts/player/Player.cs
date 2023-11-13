@@ -17,15 +17,16 @@ public partial class Player : RigidBody2D, IPlayer {
     const int HP_REGEN = 5;
     const float DEATH_TIME = 3f;
 
-    Weapon[] Weapons;
-    public Weapon CurrentWeapon { get; private set; }
-    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
-    float MomentumMultiplier;
-    public int HP { get; private set; } = 100;
-
     public static Vector2 LastMousePos { get; private set; } = new Vector2(0, 0);
     public static (Vector2 StateVel, Vector2 VelSoftCap, Single ReelbackStrength) DebugData { get; private set; }
         = (new Vector2(0, 0), new Vector2(0, 0), 0f);
+
+    public Weapon CurrentWeapon { get; private set; }
+    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
+    public int HP { get; private set; } = 100;
+    Weapon[] Weapons;
+    float MomentumMultiplier;
+    
 
     public override void _Ready() {
         // signals

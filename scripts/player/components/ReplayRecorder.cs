@@ -5,10 +5,10 @@ using GC = Godot.Collections;
 public partial class ReplayRecorder : Node2D {
     [Export] AnimatedSprite2D Sprite;
     
+    public static Godot.Collections.Dictionary<string, Variant> LastReplayData { get; private set; }
     GC.Array<Vector2> PositionsList = new GC.Array<Vector2>();
     GC.Array<sbyte> FramesList = new GC.Array<sbyte>();
     GC.Array<Vector2> MousePositionsList = new GC.Array<Vector2>();
-    public static Godot.Collections.Dictionary<string, Variant> LastReplayData { get; private set; }
 
     public override void _Ready() {
         SetPhysicsProcess(false);

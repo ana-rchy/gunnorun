@@ -2,11 +2,11 @@ using Godot;
 using System;
 
 public partial class GrindingParticles : GpuParticles2D {
+    [Export] int EmissionThreshold = 80;
     Random Rand = new();
-    int EmissionThreshold;
 
     public override void _Ready() {
-        EmissionThreshold = 80 * Amount;
+        EmissionThreshold *= Amount;
     }
     //---------------------------------------------------------------------------------//
     #region | signals
