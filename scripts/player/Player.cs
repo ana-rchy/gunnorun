@@ -133,7 +133,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
     void Regen() {
         if (_regenTimer.IsStopped() && HP > 0 && HP < 100) {
-            ChangeHP(HP + HP_REGEN, true);
+            ChangeHP(Math.Clamp(HP + HP_REGEN, 0, 100), true);
             _regenTimer.Start();
         }
     }
