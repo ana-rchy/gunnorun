@@ -19,5 +19,7 @@ script = ExtResource("3_paiy0")
 _worldsDir = "res://scenes/worlds"
 _playerManager = NodePath("../PlayerManager")
 
-[node name="MatchManager" type="Node" parent="."]
+[node name="MatchManager" type="Node" parent="." node_paths=PackedStringArray("_playerManager")]
 script = ExtResource("4_k6wkw")
+_worldDir = "res://scenes/worlds"
+_playerManager = NodePath("../PlayerManager")

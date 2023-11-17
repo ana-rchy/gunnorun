@@ -8,14 +8,10 @@ public partial class FinishMarker : Node {
         if (Multiplayer.GetPeers().Length != 0) {
             ProcessMode = ProcessModeEnum.Disabled;
         }
-        
-        Paths.AddNodePath("FINISH_TIMER", _finishTimer.GetPath());
 
         RaceFinished += this.GetNodeConst<PlayerUI>("PLAYER_UI")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<LevelTimer>("LEVEL_TIMER")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<DebugRecorder>("DEBUG_RECORDER")._OnRaceFinished;
-
-        _finishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
     }
 
     //---------------------------------------------------------------------------------//

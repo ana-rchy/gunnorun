@@ -53,8 +53,9 @@ colors = PackedColorArray(0, 0.682353, 1, 0, 0, 0.682353, 1, 1, 0, 0.682353, 1, 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xsj30"]
 gradient = SubResource("Gradient_0k4lp")
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("_finishTimer")]
 script = ExtResource("1_de0ng")
+_finishTimer = NodePath("Markers/FinishTimer")
 
 [node name="Player" parent="." instance=ExtResource("1_kqj1u")]
 position = Vector2(0, -745)

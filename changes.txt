@@ -40,6 +40,7 @@ main changes:
 small changes:
 - lap counter now doesnt appear until run starts
 - replay doesnt show in multiplayer anymore
+- murasama + grinding particles show in multiplayer for other players
 
 bug fixes:
 - replays didnt manually save
@@ -47,3 +48,4 @@ bug fixes:
 - imported replays list didnt update without first selecting another map and then back
 - manually saved replays would record past the finish point
 - lap counter starts at 0, meaning 1 more lap than expected. `Loop` keeps same amount of laps (6)
+- hp could regen past 100

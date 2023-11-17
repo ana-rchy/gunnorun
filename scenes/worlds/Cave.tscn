@@ -147,8 +147,9 @@ width = 320
 height = 160
 fill_from = Vector2(1, 1)
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("_finishTimer")]
 script = ExtResource("1_pkcox")
+_finishTimer = NodePath("Markers/FinishTimer")
 
 [node name="Player" parent="." instance=ExtResource("2_i51n6")]
 position = Vector2(191, 535)

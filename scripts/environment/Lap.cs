@@ -12,7 +12,6 @@ public partial class Lap : Node {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        Paths.AddNodePath("FINISH_TIMER", _finishTimer.GetPath());
         Paths.AddNodePath("LAP", GetPath());
 
         var playerUI = this.GetNodeConst<PlayerUI>("PLAYER_UI");
@@ -21,7 +20,6 @@ public partial class Lap : Node {
         RaceFinished += this.GetNodeConst<LevelTimer>("LEVEL_TIMER")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<DebugRecorder>("DEBUG_RECORDER")._OnRaceFinished;
 
-        _finishTimer.Timeout += this.GetNodeConst<Client>("SERVER")._OnFinishTimerTimeout;
         EmitSignal(SignalName.LapPassed, _lapCount, _maxLaps);
     }
 

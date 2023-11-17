@@ -6,10 +6,23 @@ public partial class LobbyManager : Node {
     [Export(PropertyHint.Dir)] string _worldsDir;
     [Export] PlayerManager _playerManager;
 
+    public override void _Ready() {
+        Paths.AddNodePath("LOBBY_MANAGER", GetPath());
+    }
+
     //---------------------------------------------------------------------------------//
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer)] void Server_UpdateStatus(bool ready) {}
+
+    [Rpc] void Client_StartGame(string worldName) {
+        Global.PlayerData.ReadyStatus = false;
+        GetTree().ChangeSceneToFile($"{_worldsDir}/{worldName}.tscn");
+
+        foreach (var player in Global.OtherPlayerData) {
+            _playerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
+        }
+    }
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
         if (Multiplayer.GetUniqueId() != id) {
@@ -18,15 +31,6 @@ public partial class LobbyManager : Node {
             Global.OtherPlayerData[id] = player;
 
             this.GetNodeConst<Lobby>("LOBBY").RefreshList();
-        }
-    }
-
-    [Rpc] void Client_StartGame(string worldName) {
-        Global.PlayerData.ReadyStatus = false;
-        GetTree().ChangeSceneToFile($"{_worldsDir}/{worldName}.tscn");
-
-        foreach (var player in Global.OtherPlayerData) {
-            _playerManager.CallDeferred("CreateNewPuppetPlayer", player.Key, player.Value.Username, player.Value.Color);
         }
     }
 
