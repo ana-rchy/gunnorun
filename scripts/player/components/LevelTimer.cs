@@ -30,7 +30,7 @@ public partial class LevelTimer : Node {
 
     [Signal] public delegate void TimeChangedEventHandler(float newTime);
 
-    void _OnRaceFinished(float finishTime) {
+    void _OnRaceFinished(float finishTime, string playerName = "") {
         ProcessMode = ProcessModeEnum.Disabled;
     }
 

@@ -5,22 +5,30 @@ public partial class PlayerUI : Node {
 	[Export] Label _levelTime;
 	[Export] Label _lapCounter;
 	[Export] Label _HP;
-	[Export] Control _raceFinishUI;
+	[Export] Control _overlayUI;
 	Label _currentWeapon = null;
+
+    public override void _Ready() {
+        this.GetNodeConst<Inputs>("INPUTS").Paused += _OnPause;
+    }
+
+    public override void _ExitTree() {
+        this.GetNodeConst<Inputs>("INPUTS").Paused -= _OnPause;
+    }
 
     //---------------------------------------------------------------------------------//
     #region | signals
 
-	public void _OnLapPassed(int lapCount, int maxLaps) {
+    public void _OnLapPassed(int lapCount, int maxLaps) {
         _lapCounter.Text = $"lap {lapCount}/{maxLaps}";
 	}
 
-	public void _OnRaceFinished(float finishTime, string playerName = null) {
-		_raceFinishUI.Show();
-		var raceFinishLabel = _raceFinishUI.GetNode<Label>("Label");
+	public void _OnRaceFinished(float finishTime, string playerName = "") {
+		_overlayUI.Show();
+		var raceFinishLabel = _overlayUI.GetNode<Label>("Label");
 
 		raceFinishLabel.Text = $"{Math.Round(finishTime, 3)}s";
-		if (playerName != null) {
+		if (playerName != "") {
 			raceFinishLabel.Text = $"{playerName} has won\n" + raceFinishLabel.Text;
 		}
 	}
@@ -30,6 +38,16 @@ public partial class PlayerUI : Node {
 		if (lapManager == null) {
 			_lapCounter.QueueFree();
 			_lapCounter = null;
+		}
+	}
+
+	void _OnPause(bool paused) {
+		if (paused) {
+			var label = _overlayUI.GetNode<Label>("Label");
+			_overlayUI.Show();
+			label.Text = "paused";
+		} else {
+			_overlayUI.Hide();
 		}
 	}
 

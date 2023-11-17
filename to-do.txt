@@ -6,7 +6,6 @@ alpha:
 - queuing up reloads
 - controller support?
 - more settings
-- pause menu
 - music player
 - continuous multiplayer (dont have to reconnect after each match)
 
@@ -34,3 +33,4 @@ done:
 - murasama
 - unbinding
 - grinding particles
+- pausing

@@ -32,12 +32,12 @@ font_size = 60
 resource_local_to_scene = true
 font_size = 60
 
-[node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("_levelTime", "_lapCounter", "_HP", "_raceFinishUI")]
+[node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("_levelTime", "_lapCounter", "_HP", "_overlayUI")]
 script = ExtResource("2_5xriv")
 _levelTime = NodePath("Control/LevelTime")
 _lapCounter = NodePath("Control/LapCounter")
 _HP = NodePath("Control/HP")
-_raceFinishUI = NodePath("Control/RaceFinish")
+_overlayUI = NodePath("Control/OverlayUI")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -186,19 +186,19 @@ text = "Murasama"
 label_settings = SubResource("LabelSettings_ti3t6")
 vertical_alignment = 1
 
-[node name="RaceFinish" type="Control" parent="Control"]
+[node name="OverlayUI" type="Control" parent="Control"]
 visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Overlay" type="ColorRect" parent="Control/RaceFinish"]
+[node name="Overlay" type="ColorRect" parent="Control/OverlayUI"]
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 0.313726)
 
-[node name="Label" type="Label" parent="Control/RaceFinish"]
+[node name="Label" type="Label" parent="Control/OverlayUI"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

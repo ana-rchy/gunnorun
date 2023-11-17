@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dshgtmsr03qf4"]
+
+[ext_resource type="Script" path="res://scripts/Inputs.cs" id="1_ilhfs"]
+
+[node name="Inputs" type="Node" node_paths=PackedStringArray("_pauseTimer")]
+script = ExtResource("1_ilhfs")
+_pauseTimer = NodePath("PauseTimer")
+
+[node name="PauseTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="timeout" from="PauseTimer" to="." method="_OnPauseTimeout"]

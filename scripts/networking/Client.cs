@@ -8,24 +8,18 @@ public partial class Client : Node {
 	[Export(PropertyHint.File)] string _menuScene;
 	[Export(PropertyHint.File)] string _lobbyScene;
 
-	public override void _UnhandledInput(InputEvent e) {
-		if (e.IsActionPressed("Leave")) {
-			LeaveServer();
-		}
-	}
-
 	//---------------------------------------------------------------------------------//
 	#region | funcs
+
+	public void LeaveServer() {
+		Multiplayer.MultiplayerPeer.Close();
+		GetTree().ChangeSceneToFile(_menuScene);
+	}
 
 	void JoinServer(string ip, int port) {
 		var peer = new ENetMultiplayerPeer();
 		peer.CreateClient(ip, port);
 		Multiplayer.MultiplayerPeer = peer;
-	}
-
-	void LeaveServer() {
-		Multiplayer.MultiplayerPeer.Close();
-		GetTree().ChangeSceneToFile(_menuScene);
 	}
 
 	#endregion

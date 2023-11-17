@@ -69,7 +69,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer", "_worldLineTimer")]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -89,6 +89,7 @@ _unhingedKnight = NodePath("../SubtitleImages/Knight")
 _liveLeak = NodePath("../SubtitleImages/LiveLeak")
 _MIHColors = ExtResource("6_vf5yt")
 _MIHTimer = NodePath("MIHTimer")
+_worldLineTimer = NodePath("WorldLineTimer")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
@@ -101,8 +102,9 @@ stream = ExtResource("9_dasvf")
 volume_db = -3.0
 
 [node name="MIHTimer" type="Timer" parent="Subtitle"]
-wait_time = 30.0
-autostart = true
+wait_time = 5.0
+
+[node name="WorldLineTimer" type="Timer" parent="Subtitle"]
 
 [node name="SubtitleImages" type="Control" parent="."]
 layout_mode = 1
@@ -738,6 +740,7 @@ L - return to menu    Tab - respawn"
 horizontal_alignment = 1
 
 [connection signal="timeout" from="Subtitle/MIHTimer" to="Subtitle" method="_OnMIHTimeout"]
+[connection signal="timeout" from="Subtitle/WorldLineTimer" to="Subtitle" method="_OnWorldLineTimeout"]
 [connection signal="tab_changed" from="TabContainer" to="." method="_OnTabChanged"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/MapSelect" to="TabContainer/Singleplayer/Panel" method="_OnMapSelected"]
 [connection signal="item_selected" from="TabContainer/Singleplayer/Panel/ReplaySelect" to="TabContainer/Singleplayer/Panel" method="_OnReplaySelected"]

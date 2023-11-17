@@ -38,12 +38,6 @@ public partial class Global : Node {
         }
     }
 
-    public override void _UnhandledInput(InputEvent e) {
-        if (e.IsActionPressed("Respawn") && Multiplayer.GetPeers().Length == 0) {
-            GetTree().ChangeSceneToFile($"res://scenes/worlds/{CurrentWorld}.tscn");
-        }
-	}
-
     //---------------------------------------------------------------------------------//
     #region | etc
 

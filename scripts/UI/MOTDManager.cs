@@ -12,6 +12,8 @@ public partial class MOTDManager : RichTextLabel {
 	[ExportGroup("colors")]
 	[Export(PropertyHint.ResourceType)] Gradient _MIHColors;
 	[Export] Timer _MIHTimer;
+	[ExportGroup("etc")]
+	[Export] Timer _worldLineTimer;
 	
 	string[] _motdMessages;
 	
@@ -120,12 +122,13 @@ public partial class MOTDManager : RichTextLabel {
 			"im in spain, but with the s",
 			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA",
 			"「MADE IN HEAVEN」",
+			"1.130426β",
 		};
 
 		var rnd = new RandomNumberGenerator();
-		// var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
+		var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
 		//Text = MotdMessages[MotdMessages.Length - 1];
-		var uncenteredText = Text = "「MADE IN HEAVEN」";
+		//var uncenteredText = Text = "1.130426β";
 
 		Text = $"[center]{Text}[/center]";
 		CallDeferred(nameof(ResizeText));
@@ -172,7 +175,11 @@ public partial class MOTDManager : RichTextLabel {
 					_navalInvasion.Play();
 					break;
 				case "「MADE IN HEAVEN」":
+				_MIHTimer.Start();
 					_ = Task.Run(() => { _ = MadeInHeavenBackground(_MIHTimer); });
+					break;
+				case "1.130426β":
+					_worldLineTimer.Start();
 					break;
 			}
 		} catch (Exception e) {
@@ -223,6 +230,12 @@ public partial class MOTDManager : RichTextLabel {
 		_MIHTimer.WaitTime = Math.Round(Math.Clamp(_MIHTimer.WaitTime * 0.9f, 1, 5), 2);
 		GD.Print(_MIHTimer.WaitTime);
 		_MIHTimer.Start(); // choppy without manual start
+	}
+	
+	void _OnWorldLineTimeout() {
+		Random rand = new();
+		Text = $"[center]{Math.Round(rand.NextDouble(), 6):F6}α[/center]";
+		_worldLineTimer.Start();
 	}
 
 	#endregion

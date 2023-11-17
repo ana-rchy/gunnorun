@@ -35,6 +35,7 @@ bug fixes:
 main changes:
 - code refactoring
 - grinding particles
+- pausing
 
 small changes:
 - lap counter now doesnt appear until run starts

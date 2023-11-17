@@ -21,7 +21,7 @@ public partial class FinishMarker : Node {
     
     void _OnPlayerEntered(Node2D player) {
         if (Checkpoints.UnpassedCheckpoints.Count == 0) {
-            EmitSignal(SignalName.RaceFinished, LevelTimer.Time);
+            EmitSignal(SignalName.RaceFinished, LevelTimer.Time, "");
             _finishTimer.Start();
         }
     }
