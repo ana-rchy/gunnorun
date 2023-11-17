@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://c3gkoljph4epq"]
+[gd_scene load_steps=16 format=3 uid="uid://c3gkoljph4epq"]
 
 [ext_resource type="Texture2D" uid="uid://d3f7uyp3r0re5" path="res://sprites/placeholder tilesheets/kenney/tiles_packed.png" id="1"]
+[ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_4q12d"]
 [ext_resource type="Texture2D" uid="uid://dynvi6gep8qve" path="res://sprites/placeholder tilesheets/kenney/empty-tiles.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://82selfdamypb" path="res://sprites/placeholder tilesheets/kenney/penis!.png" id="5"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="5_tpfhh"]
@@ -4484,6 +4485,8 @@ sources/1 = SubResource("TileSetAtlasSource_yxcfs")
 [node name="World" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("5_tpfhh")]
+
+[node name="ReplayPlayer" parent="." instance=ExtResource("2_4q12d")]
 
 [node name="Background" type="Sprite2D" parent="."]
 self_modulate = Color(0.372549, 0.666667, 0.858824, 1)

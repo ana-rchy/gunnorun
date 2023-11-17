@@ -13,7 +13,12 @@ public partial class ReplayPlayer : Node2D {
     GC.Array<int> _framesList;
     GC.Array<Vector2> _mousePositionsList;
 
+    public override void _EnterTree() {
+        Paths.AddNodePath("REPLAY_PLAYER", GetPath());
+    }
+
     public override void _Ready() {
+        // change to debug if debug
         if (Global.DebugReplay && Global.ReplayOnly && FileAccess.FileExists("user://replays/debug/debug_replay.gdr")) {
             var scene = GD.Load<PackedScene>(_debugPlayerScene);
             var instance = scene.Instantiate();
@@ -22,6 +27,7 @@ public partial class ReplayPlayer : Node2D {
             QueueFree();
         }
 
+        // get replay data or unload
         string replayPath = Global.ReplayName == null ? $"user://replays/{Global.CurrentWorld}_best_replay.grp"
             : $"user://imported_replays/{Global.ReplayName}";
         if (!FileAccess.FileExists(replayPath) || Multiplayer.GetPeers().Length != 0) {

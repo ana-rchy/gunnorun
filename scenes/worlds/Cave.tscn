@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://bd12xd7fnj35o"]
+[gd_scene load_steps=16 format=3 uid="uid://bd12xd7fnj35o"]
 
+[ext_resource type="Script" path="res://scripts/environment/World.cs" id="1_pkcox"]
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_7rigj"]
 [ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
@@ -147,6 +148,7 @@ height = 160
 fill_from = Vector2(1, 1)
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_pkcox")
 
 [node name="Player" parent="." instance=ExtResource("2_i51n6")]
 position = Vector2(191, 535)
@@ -216,10 +218,6 @@ shape = SubResource("RectangleShape2D_poehd")
 [node name="Sprite2D" type="Sprite2D" parent="Markers/Finish"]
 texture = SubResource("GradientTexture2D_s4a0g")
 
-[connection signal="ready" from="." to="Player/PlayerUI" method="_OnWorldLoaded"]
-[connection signal="ReplayOnly" from="ReplayPlayer" to="Player" method="_OnReplayOnly"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/PlayerUI" method="_OnRaceFinished"]
-[connection signal="RaceFinished" from="Markers/Finish" to="Player/Timers/LevelTimer" method="_OnRaceFinished"]
 [connection signal="body_entered" from="Markers/Finish" to="Markers/Finish" method="_OnPlayerEntered" flags=18]
 
 [editable path="Player"]

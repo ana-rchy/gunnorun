@@ -40,6 +40,10 @@ public partial class Inputs : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
+    public void _OnWorldLoaded() {
+        _canPause = true;
+    }
+
     void _OnPauseTimeout() {
         _canPause = true;
     }

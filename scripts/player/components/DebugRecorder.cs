@@ -3,9 +3,9 @@ using Godot;
 using GC = Godot.Collections;
 
 public partial class DebugRecorder : Node {
-    public static Godot.Collections.Dictionary<string, Variant> LastDebugData { get; private set; }
+    public static GC.Dictionary<string, Variant> LastDebugData { get; private set; }
     
-    Player _player;
+    [Export] Player _player;
 
     GC.Array<Vector2> _positionsList = new GC.Array<Vector2>();
     GC.Array<Vector2> _mousePositionsList = new GC.Array<Vector2>();
@@ -17,7 +17,7 @@ public partial class DebugRecorder : Node {
     GC.Array<Single> _reelbackStrengthList = new GC.Array<Single>();
 
     public override void _Ready() {
-        _player = GetParent<Player>();
+        Paths.AddNodePath("DEBUG_RECORDER", GetPath());
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -34,7 +34,7 @@ public partial class DebugRecorder : Node {
     //---------------------------------------------------------------------------------//
 	#region | signals
 
-    void _OnRaceFinished(float finishTime) {
+    public void _OnRaceFinished(float finishTime, string playerName) {
         LastDebugData = new GC.Dictionary<string, Variant>() {
             { "Positions", _positionsList },
             { "MousePositions", _mousePositionsList },

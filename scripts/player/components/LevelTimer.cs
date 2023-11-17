@@ -9,6 +9,8 @@ public partial class LevelTimer : Node {
             QueueFree();
         }
 
+        Paths.AddNodePath("LEVEL_TIMER", GetPath());
+
         Time = 0;
         SetProcess(false);
     }
@@ -30,7 +32,7 @@ public partial class LevelTimer : Node {
 
     [Signal] public delegate void TimeChangedEventHandler(float newTime);
 
-    void _OnRaceFinished(float finishTime, string playerName = "") {
+    public void _OnRaceFinished(float finishTime, string playerName) {
         ProcessMode = ProcessModeEnum.Disabled;
     }
 

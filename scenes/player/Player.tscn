@@ -93,8 +93,9 @@ script = ExtResource("3_80esj")
 script = ExtResource("4_ardvv")
 _sprite = NodePath("../Sprite")
 
-[node name="DebugRecorder" type="Node" parent="."]
+[node name="DebugRecorder" type="Node" parent="." node_paths=PackedStringArray("_player")]
 script = ExtResource("5_voyw7")
+_player = NodePath("..")
 
 [node name="Raycasts" type="Node2D" parent="."]
 

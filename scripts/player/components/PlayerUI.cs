@@ -9,6 +9,8 @@ public partial class PlayerUI : Node {
 	Label _currentWeapon = null;
 
     public override void _Ready() {
+		Paths.AddNodePath("PLAYER_UI", GetPath());
+		this.GetNodeConst("WORLD").Ready += _OnWorldLoaded;
         this.GetNodeConst<Inputs>("INPUTS").Paused += _OnPause;
     }
 
@@ -19,25 +21,25 @@ public partial class PlayerUI : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
+	public void _OnWorldLoaded() {
+		var lapManager = this.GetNodeConst<Lap>("LAP");
+		if (lapManager == null) {
+			_lapCounter.QueueFree();
+			_lapCounter = null;
+		}
+	}
+
     public void _OnLapPassed(int lapCount, int maxLaps) {
         _lapCounter.Text = $"lap {lapCount}/{maxLaps}";
 	}
 
-	public void _OnRaceFinished(float finishTime, string playerName = "") {
+	public void _OnRaceFinished(float finishTime, string playerName) {
 		_overlayUI.Show();
 		var raceFinishLabel = _overlayUI.GetNode<Label>("Label");
 
 		raceFinishLabel.Text = $"{Math.Round(finishTime, 3)}s";
 		if (playerName != "") {
 			raceFinishLabel.Text = $"{playerName} has won\n" + raceFinishLabel.Text;
-		}
-	}
-
-    void _OnWorldLoaded() {
-		var lapManager = this.GetNodeConst<Lap>("LAP");
-		if (lapManager == null) {
-			_lapCounter.QueueFree();
-			_lapCounter = null;
 		}
 	}
 

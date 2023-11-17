@@ -28,7 +28,10 @@ public partial class Player : RigidBody2D, IPlayer {
     
 
     public override void _Ready() {
+        Paths.AddNodePath("PLAYER", GetPath());
+        
         // signals
+        this.GetNodeConst<ReplayPlayer>("REPLAY_PLAYER").ReplayOnly += _OnReplayOnly;
         if (Multiplayer.GetPeers().Length != 0) {
             var playerManager = this.GetNodeConst<PlayerManager>("PLAYER_MANAGER");
             WeaponShot += playerManager._OnWeaponShot;
