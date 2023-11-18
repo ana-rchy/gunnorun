@@ -69,7 +69,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer", "_worldLineTimer")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer")]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -89,7 +89,6 @@ _unhingedKnight = NodePath("../SubtitleImages/Knight")
 _liveLeak = NodePath("../SubtitleImages/LiveLeak")
 _MIHColors = ExtResource("6_vf5yt")
 _MIHTimer = NodePath("MIHTimer")
-_worldLineTimer = NodePath("WorldLineTimer")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
