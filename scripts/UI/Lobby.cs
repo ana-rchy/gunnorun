@@ -59,7 +59,7 @@ public partial class Lobby : Node {
 
         var panel = (StyleBoxFlat) _slot1.GetNode<Panel>("ReadyIndicator").GetThemeStylebox("panel");
         panel.BgColor = buttonPressed ? new Color("0ecc00") : new Color("cc0000");
-        _readyButton.Text = !buttonPressed ? "Unready" : "Ready";
+        _readyButton.Text = buttonPressed ? "Unready" : "Ready";
 
         EmitSignal(SignalName.ReadyToggled, Global.PlayerData.ReadyStatus);
     }

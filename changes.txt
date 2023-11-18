@@ -49,3 +49,10 @@ bug fixes:
 - manually saved replays would record past the finish point
 - lap counter starts at 0, meaning 1 more lap than expected. `Loop` keeps same amount of laps (6)
 - hp could regen past 100
+
+// a2.44 //
+main changes:
+- multiplayer now runs infinitely; goes to next map after player wins
+
+bug fixes:
+- fixed lobby button saying "ready" when ready and "unready" when unready
