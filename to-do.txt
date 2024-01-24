@@ -6,8 +6,8 @@ alpha:
 - queuing up reloads
 - controller support?
 - more settings
-- music player
-- continuous multiplayer (dont have to reconnect after each match)
+- music player?
+- better multiplayer (map voting, votekick, etc)
 
 
 beta:
@@ -34,3 +34,4 @@ done:
 - unbinding
 - grinding particles
 - pausing
+- continuous multiplayer

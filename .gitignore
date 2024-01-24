@@ -4,3 +4,4 @@
 # rest
 export/
 .vscode/
+*.csproj.old

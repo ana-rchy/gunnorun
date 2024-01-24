@@ -1,0 +1,1 @@
+- reload bar still sometimes shows as full fsr

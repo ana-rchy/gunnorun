@@ -7,6 +7,7 @@ public partial class MatchManager : Node {
 
     [Rpc] void Client_LoadWorld(string worldName) {
         Global.PlayerData.ReadyStatus = false;
+        worldName = worldName.Replace(".remap", "");
         GetTree().ChangeSceneToFile($"{_worldDir}/{worldName}.tscn");
 
         foreach (var player in Global.OtherPlayerData) {

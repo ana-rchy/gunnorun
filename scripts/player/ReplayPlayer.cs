@@ -13,6 +13,8 @@ public partial class ReplayPlayer : Node2D {
     GC.Array<int> _framesList;
     GC.Array<Vector2> _mousePositionsList;
 
+    bool _unloading;
+
     public override void _EnterTree() {
         Paths.AddNodePath("REPLAY_PLAYER", GetPath());
     }
@@ -31,6 +33,7 @@ public partial class ReplayPlayer : Node2D {
         string replayPath = Global.ReplayName == null ? $"user://replays/{Global.CurrentWorld}_best_replay.grp"
             : $"user://imported_replays/{Global.ReplayName}";
         if (!FileAccess.FileExists(replayPath) || Multiplayer.GetPeers().Length != 0) {
+            _unloading = true; // cause it still runs once when on multiplayer for some reason
             QueueFree();
             return;
         }
@@ -59,6 +62,10 @@ public partial class ReplayPlayer : Node2D {
 
     int _replayDataIndex = 0;
     public override void _PhysicsProcess(double delta) {
+        if (_unloading) {
+            return;
+        }
+        
         if (_replayDataIndex >= _positionsList.Count && Global.ReplayOnly == false) {
             SetPhysicsProcess(false);
             _finishMarker.Show();

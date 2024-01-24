@@ -56,3 +56,10 @@ main changes:
 
 bug fixes:
 - fixed lobby button saying "ready" when ready and "unready" when unready
+
+// a2.441 //
+small changes:
+- changed grinding particle color slightly
+
+bug fixes:
+- fixed multiplayer not actually working cause of some weird exporting issue
