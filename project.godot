@@ -22,9 +22,9 @@ config/windows_native_icon="res://sprites/ui/windows_icon.ico"
 
 [autoload]
 
-Server="*res://scenes/Server.tscn"
 Global="*res://scripts/Global.cs"
 Inputs="*res://scenes/Inputs.tscn"
+Server="*res://scenes/Server.tscn"
 
 [display]
 

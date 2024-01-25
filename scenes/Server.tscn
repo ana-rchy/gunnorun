@@ -1,25 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://yqkn2mr0id7g"]
+[gd_scene load_steps=4 format=3 uid="uid://brexcav580tv6"]
 
 [ext_resource type="Script" path="res://scripts/networking/Client.cs" id="1_mvbva"]
-[ext_resource type="Script" path="res://scripts/networking/PlayerManager.cs" id="2_560by"]
-[ext_resource type="Script" path="res://scripts/networking/LobbyManager.cs" id="3_paiy0"]
-[ext_resource type="Script" path="res://scripts/networking/MatchManager.cs" id="4_k6wkw"]
+[ext_resource type="Script" path="res://scripts/networking/StateMachine.cs" id="2_ee8x2"]
+[ext_resource type="Script" path="res://scripts/networking/states/InLobby.cs" id="3_4cc55"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_mvbva")
 _menuScene = "res://scenes/UI/Menu.tscn"
 _lobbyScene = "res://scenes/UI/Lobby.tscn"
 
-[node name="PlayerManager" type="Node" parent="."]
-script = ExtResource("2_560by")
-_puppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
+[node name="States" type="Node" parent="." node_paths=PackedStringArray("_inLobby")]
+script = ExtResource("2_ee8x2")
+_inLobby = NodePath("InLobby")
 
-[node name="LobbyManager" type="Node" parent="." node_paths=PackedStringArray("_playerManager")]
-script = ExtResource("3_paiy0")
-_worldsDir = "res://scenes/worlds"
-_playerManager = NodePath("../PlayerManager")
+[node name="InLobby" type="Node" parent="States"]
+script = ExtResource("3_4cc55")
 
-[node name="MatchManager" type="Node" parent="." node_paths=PackedStringArray("_playerManager")]
-script = ExtResource("4_k6wkw")
-_worldDir = "res://scenes/worlds"
-_playerManager = NodePath("../PlayerManager")
+[node name="LoadingWorld" type="Node" parent="States"]
+
+[node name="StartingGame" type="Node" parent="States"]
+
+[node name="InGame" type="Node" parent="States"]
