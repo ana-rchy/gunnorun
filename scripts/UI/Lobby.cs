@@ -10,7 +10,7 @@ public partial class Lobby : Node {
         Paths.AddNodePath("LOBBY", GetPath());
 
         if (Multiplayer.GetPeers().Length != 0) {
-            ReadyToggled += this.GetNodeConst<LobbyManager>("LOBBY_MANAGER")._OnReadyToggled;
+            ReadyToggled += this.GetNodeConst<InLobby>("LOBBY_MANAGER")._OnReadyToggled;
         }
 
         _slot1.GetNode<Label>("Username").Text = Global.PlayerData.Username;

@@ -8,6 +8,10 @@ public partial class Client : Node {
 	[Export(PropertyHint.File)] string _menuScene;
 	[Export(PropertyHint.File)] string _lobbyScene;
 
+	public override void _Ready() {
+		Multiplayer.ServerDisconnected += _OnServerDisconnected;
+	}
+
 	//---------------------------------------------------------------------------------//
 	#region | funcs
 
@@ -61,6 +65,10 @@ public partial class Client : Node {
 
 	//---------------------------------------------------------------------------------//
 	#region | signals
+
+	void _OnServerDisconnected() {
+		LeaveServer();
+	}
 
 	public void _OnJoinPressed(string ip, int port) {
 		JoinServer(ip, port);

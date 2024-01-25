@@ -8,6 +8,19 @@ public partial class InLobby : State {
         Paths.AddNodePath("LOBBY_MANAGER", GetPath());
     }
 
+    public override void Update() {}
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    void UpdatePlayerStatus(long id, bool ready) {
+        var player = Global.OtherPlayerData[id];
+        player.ReadyStatus = ready;
+        Global.OtherPlayerData[id] = player;
+    }
+
+    #endregion
+
 	//---------------------------------------------------------------------------------//
     #region | rpc
 
@@ -17,10 +30,7 @@ public partial class InLobby : State {
 		if (!IsActiveState()) return;
 
         if (Multiplayer.GetUniqueId() != id) {
-            var player = Global.OtherPlayerData[id];
-            player.ReadyStatus = ready;
-            Global.OtherPlayerData[id] = player;
-
+            UpdatePlayerStatus(id, ready);
             this.GetNodeConst<Lobby>("LOBBY").RefreshList();
         }
     }

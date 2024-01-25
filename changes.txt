@@ -63,3 +63,9 @@ small changes:
 
 bug fixes:
 - fixed multiplayer not actually working cause of some weird exporting issue
+
+// a2.45 //
+bug fixes:
+- ACTUALLY fixed multiplayer
+- now returns to menu after server gets shutdown
+- 
