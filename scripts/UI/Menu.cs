@@ -4,6 +4,7 @@ using Godot;
 
 public partial class Menu : Node {
 	[Export] TabContainer _tabContainer;
+	[Export] TextureButton _discordButton;
 	[Export] ColorRect _settingsPanel;
 	[Export] ColorRect _helpPanel;
 
@@ -18,6 +19,20 @@ public partial class Menu : Node {
 
 	void _OnTabChanged(int index) {
 		_selectedTab = index;
+	}
+
+	void _OnDiscordHover() {
+		var color = _discordButton.Modulate;
+		_discordButton.Modulate = Color.FromHsv(color.H, color.S, 0.8f);
+	}
+
+	void _OnDiscordUnhover() {
+		var color = _discordButton.Modulate;
+		_discordButton.Modulate = Color.FromHsv(color.H, color.S, 0.5f);
+	}
+
+	void _OnDiscordPressed() {
+		OS.ShellOpen("https://discord.gg/AEBSmD7dzr");
 	}
 
 	void _OnSaveLastReplayPressed() {

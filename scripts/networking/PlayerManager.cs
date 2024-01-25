@@ -16,6 +16,7 @@ public partial class PlayerManager : Node {
 
     void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
         var newPlayer = GD.Load<PackedScene>(_puppetPlayerScene).Instantiate();
+        GD.Print(this.GetNodeConst("WORLD"));
         this.GetNodeConst("WORLD").CallDeferred("add_child", newPlayer);
 
         newPlayer.Name = id.ToString();

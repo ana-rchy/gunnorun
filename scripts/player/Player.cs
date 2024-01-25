@@ -24,7 +24,9 @@ public partial class Player : RigidBody2D, IPlayer {
     public Weapon CurrentWeapon { get; private set; }
     public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
     public int HP { get; private set; } = 100;
+    
     Weapon[] _weapons;
+    Weapon _reloadBuffer;
     
 
     public override void _Ready() {
@@ -70,8 +72,12 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     public override void _PhysicsProcess(double delta) {
-        if (Input.IsActionJustPressed("Reload") && ReloadTimer.IsStopped()) {
-            CurrentWeapon.ReloadWeapon(this);
+        if (Input.IsActionJustPressed("Reload")) {
+            if (ReloadTimer.IsStopped()) {
+                CurrentWeapon.ReloadWeapon(this);
+            } else if (!CurrentWeapon.Reloading) {
+                _reloadBuffer = CurrentWeapon;
+            }
         } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && HP > 0) {
             LastMousePos = GetGlobalMousePosition();
             CurrentWeapon.Shoot(this);

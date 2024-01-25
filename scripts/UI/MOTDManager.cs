@@ -123,12 +123,18 @@ public partial class MOTDManager : RichTextLabel {
 			"I FUCKING HATE NANAYAAAAAAAAAAAAAAAAAAAAAAAAA",
 			"「MADE IN HEAVEN」",
 			"1.130426β",
+			"FIRE IN THE GUN",
+			"Clearly,",
+			"Robot's Ultimatum",
+			"Have I truly become a gunner?",
+			"sprunk'd",
+			"i am become gun, destroyer of runs",
+			"check out [url=https://github.com/automancy/automancy]automancy[/url]"
 		};
 
 		var rnd = new RandomNumberGenerator();
-		var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
-		//Text = MotdMessages[MotdMessages.Length - 1];
-		//var uncenteredText = Text = "1.130426β";
+		//var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
+		var uncenteredText = Text = _motdMessages[_motdMessages.Length - 1];
 
 		Text = $"[center]{Text}[/center]";
 		CallDeferred(nameof(ResizeText));
@@ -225,6 +231,10 @@ public partial class MOTDManager : RichTextLabel {
 
 	//---------------------------------------------------------------------------------//
     #region | signals
+
+	void _OnMetaClicked(Variant meta) {
+		OS.ShellOpen(meta.ToString());
+	}
 
 	void _OnMIHTimeout() {
 		_MIHTimer.WaitTime = Math.Round(Math.Clamp(_MIHTimer.WaitTime * 0.9f, 1, 5), 2);

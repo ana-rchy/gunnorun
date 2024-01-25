@@ -5,6 +5,7 @@ public abstract class Weapon {
     public string Name { get; protected set; }
     public int? Ammo { get; protected set; }
     public float Range { get; protected set; }
+    public bool Reloading { get; protected set; }
     
     protected float Knockback;
     protected float ReelbackStrength;
@@ -35,6 +36,7 @@ public abstract class Weapon {
     }
 
     public async void ReloadWeapon(Player player) {
+        Reloading = true;
         if (Ammo == 100 || Ammo == null) {
             return;
         }
@@ -46,6 +48,7 @@ public abstract class Weapon {
         await player.Sleep(Reload); // prevent having ammo to fire while should be reloading
 
         Ammo = BaseAmmo;
+        Reloading = false;
     }
 
     protected void CheckPlayerHit(Player player, Vector2 playerPosToMousePos) {

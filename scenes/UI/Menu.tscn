@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cyjasptaqt1b5"]
+[gd_scene load_steps=27 format=3 uid="uid://cyjasptaqt1b5"]
 
 [ext_resource type="Theme" uid="uid://vln2mlgupyio" path="res://resources/themes/LobbyTheme.tres" id="1_kgwbg"]
 [ext_resource type="Texture2D" uid="uid://dne7d1ny8apqy" path="res://sprites/ui/Title.png" id="2_ilbaw"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://scripts/UI/panels/SettingsPanel.cs" id="16_pom1n"]
 [ext_resource type="PackedScene" uid="uid://dxoaa5m0fde5w" path="res://scenes/UI/UI components/KeybindButton.tscn" id="16_r84rk"]
 [ext_resource type="Script" path="res://scripts/UI/panels/HelpPanel.cs" id="18_jgm5r"]
+[ext_resource type="Texture2D" uid="uid://bjew6xy8mbn78" path="res://sprites/ui/discord.png" id="19_sg6u3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tcqtv"]
 shader = ExtResource("6_j2a7j")
@@ -43,7 +44,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="Menu" type="Control" node_paths=PackedStringArray("_tabContainer", "_settingsPanel", "_helpPanel")]
+[node name="Menu" type="Control" node_paths=PackedStringArray("_tabContainer", "_discordButton", "_settingsPanel", "_helpPanel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,6 +54,7 @@ grow_vertical = 2
 theme = ExtResource("1_kgwbg")
 script = ExtResource("4_dav64")
 _tabContainer = NodePath("TabContainer")
+_discordButton = NodePath("Discord")
 _settingsPanel = NodePath("Settings/ColorRect")
 _helpPanel = NodePath("Help/ColorRect")
 
@@ -69,7 +71,8 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer", "_worldLineTimer")]
+top_level = true
 layout_mode = 0
 offset_left = 10.0
 offset_top = 300.0
@@ -89,6 +92,7 @@ _unhingedKnight = NodePath("../SubtitleImages/Knight")
 _liveLeak = NodePath("../SubtitleImages/LiveLeak")
 _MIHColors = ExtResource("6_vf5yt")
 _MIHTimer = NodePath("MIHTimer")
+_worldLineTimer = NodePath("WorldLineTimer")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
 stream = ExtResource("5_amtii")
@@ -110,6 +114,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -3.0
+offset_right = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -418,6 +424,18 @@ grow_vertical = 0
 texture = ExtResource("7_8sbie")
 expand_mode = 5
 script = ExtResource("8_2wb56")
+
+[node name="Discord" type="TextureButton" parent="."]
+modulate = Color(0.5, 0.5, 0.5, 1)
+texture_filter = 2
+layout_mode = 0
+offset_left = 17.5
+offset_top = 965.0
+offset_right = 417.5
+offset_bottom = 1365.0
+scale = Vector2(0.125, 0.125)
+texture_normal = ExtResource("19_sg6u3")
+texture_pressed = ExtResource("19_sg6u3")
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
@@ -738,6 +756,7 @@ R - reload
 L - return to menu    Tab - respawn"
 horizontal_alignment = 1
 
+[connection signal="meta_clicked" from="Subtitle" to="Subtitle" method="_OnMetaClicked"]
 [connection signal="timeout" from="Subtitle/MIHTimer" to="Subtitle" method="_OnMIHTimeout"]
 [connection signal="timeout" from="Subtitle/WorldLineTimer" to="Subtitle" method="_OnWorldLineTimeout"]
 [connection signal="tab_changed" from="TabContainer" to="." method="_OnTabChanged"]
@@ -752,6 +771,9 @@ horizontal_alignment = 1
 [connection signal="pressed" from="TabContainer/Multiplayer/Panel/Join" to="TabContainer/Multiplayer/Panel" method="_OnJoinPressed"]
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel" method="_OnColorChanged"]
 [connection signal="color_changed" from="TabContainer/Multiplayer/Panel/PlayerColor" to="TabContainer/Multiplayer/Panel/PlayerPreview" method="_OnColorChanged"]
+[connection signal="mouse_entered" from="Discord" to="." method="_OnDiscordHover"]
+[connection signal="mouse_exited" from="Discord" to="." method="_OnDiscordUnhover"]
+[connection signal="pressed" from="Discord" to="." method="_OnDiscordPressed"]
 [connection signal="pressed" from="SaveLastReplay" to="." method="_OnSaveLastReplayPressed"]
 [connection signal="pressed" from="SaveLastReplay" to="TabContainer/Singleplayer/Panel" method="_OnSaveLastReplayPressed"]
 [connection signal="pressed" from="Settings" to="." method="_OnSettingsPressed"]
