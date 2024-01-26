@@ -73,17 +73,19 @@ public partial class InGame : State {
         player.ChangeHP(newHP);
     }
 
-    [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
+
+    [Rpc] void Client_PlayerFrameChanged(long id, int frame) {
         if (id == Multiplayer.GetUniqueId() || !IsActiveState()) {
             return;
         }
 
-        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
-        puppetPlayer.EmitSignal(PuppetPlayer.SignalName.OnGround, onGround, xVel);
+        var playerSprite = GetNode<AnimatedSprite2D>($"{Paths.GetNodePath("WORLD")}/{id}/Sprite");
+
+        playerSprite.Frame = frame;
     }
 
     [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
-        if (id == Multiplayer.GetUniqueId()) {
+        if (id == Multiplayer.GetUniqueId() || !IsActiveState()) {
             return;
         }
 
@@ -96,6 +98,26 @@ public partial class InGame : State {
         
         var lapManager = this.GetNodeConst<Lap>("LAP");
         lapManager.EmitSignal(Lap.SignalName.LapPassed, lap, maxLaps);
+    }
+
+
+
+    [Rpc] void Client_PlayerWon(long id, double time) {
+        if (!IsActiveState()) return;
+
+        var name = Multiplayer.GetUniqueId() == id ? Global.PlayerData.Username : Global.OtherPlayerData[id].Username;
+        
+        var playerUI = GetNode<PlayerUI>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}/PlayerUI");
+        playerUI._OnRaceFinished((float) Math.Round(time, 3), name);
+    }
+
+    [Rpc] void Client_LoadWorld(string worldName) {
+        if (!IsActiveState()) return;
+
+        Global.PlayerData.ReadyStatus = false;
+        worldName = worldName.Replace(".remap", "");
+
+        StateMachine.ChangeState("LoadingWorld", new() {{ "world", worldName }} );
     }
 
     #endregion
