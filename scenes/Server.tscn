@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://brexcav580tv6"]
+[gd_scene load_steps=6 format=3 uid="uid://brexcav580tv6"]
 
 [ext_resource type="Script" path="res://scripts/networking/Client.cs" id="1_mvbva"]
 [ext_resource type="Script" path="res://scripts/networking/StateMachine.cs" id="2_ee8x2"]
 [ext_resource type="Script" path="res://scripts/networking/states/InLobby.cs" id="3_4cc55"]
+[ext_resource type="Script" path="res://scripts/networking/states/LoadingWorld.cs" id="4_axss3"]
+[ext_resource type="Script" path="res://scripts/networking/states/InGame.cs" id="5_g67ff"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_mvbva")
@@ -17,7 +19,8 @@ _inLobby = NodePath("InLobby")
 script = ExtResource("3_4cc55")
 
 [node name="LoadingWorld" type="Node" parent="States"]
-
-[node name="StartingGame" type="Node" parent="States"]
+script = ExtResource("4_axss3")
+_puppetPlayerScene = "res://scenes/player/PuppetPlayer.tscn"
 
 [node name="InGame" type="Node" parent="States"]
+script = ExtResource("5_g67ff")

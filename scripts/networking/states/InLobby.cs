@@ -8,8 +8,6 @@ public partial class InLobby : State {
         Paths.AddNodePath("LOBBY_MANAGER", GetPath());
     }
 
-    public override void Update() {}
-
     //---------------------------------------------------------------------------------//
     #region | funcs
 
@@ -36,7 +34,9 @@ public partial class InLobby : State {
     }
 
 	[Rpc] void Client_StartGame(string worldName) {
-		StateMachine.ChangeState("LoadingWorld", new Dictionary<string, object>() {{ "world", worldName }} );
+        if (!IsActiveState()) return;
+        
+		StateMachine.ChangeState("LoadingWorld", new() {{ "world", worldName }} );
 	}
 
     #endregion

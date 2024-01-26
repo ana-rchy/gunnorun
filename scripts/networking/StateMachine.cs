@@ -19,11 +19,13 @@ public partial class StateMachine : Node {
 	public void ChangeState(string state, Dictionary<string, object> message = null) {
 		var stateNode = GetNodeOrNull<State>(state);
 		if (stateNode == null) {
-			Console.WriteLine($"server state {state} doesnt exist");
+			GD.Print($"SERVER: state {state} doesnt exist");
 			return;
 		}
 
 		CurrentState = stateNode;
 		CurrentState.Enter(message);
+
+		GD.Print($"SERVER: changing state to {state}");
 	}
 }
