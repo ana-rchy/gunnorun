@@ -34,13 +34,13 @@ public partial class Player : RigidBody2D, IPlayer {
         
         // signals
         this.GetNodeConst<ReplayPlayer>("REPLAY_PLAYER").ReplayOnly += _OnReplayOnly;
-        // if (Multiplayer.GetPeers().Length != 0) {
-        //     var playerManager = this.GetNodeConst<PlayerManager>("PLAYER_MANAGER");
-        //     WeaponShot += playerManager._OnWeaponShot;
-        //     OtherPlayerHit += playerManager._OnOtherPlayerHit;
-        //     HPChangedMP += playerManager._OnHPChanged;
-        //     OnGround += playerManager._OnGround;
-        // }
+        if (Multiplayer.GetPeers().Length != 0) {
+            var playerManager = this.GetNodeConst<InGame>("IN_GAME_STATE");
+            WeaponShot += playerManager._OnWeaponShot;
+            OtherPlayerHit += playerManager._OnOtherPlayerHit;
+            HPChangedMP += playerManager._OnHPChanged;
+            OnGround += playerManager._OnGround;
+        }
 
         // etc
         _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };

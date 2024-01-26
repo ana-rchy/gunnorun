@@ -1,1 +1,2 @@
 - reload bar still sometimes shows as full fsr
+- intangibility only happens for person that was killed

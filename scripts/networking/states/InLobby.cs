@@ -5,7 +5,7 @@ using static Godot.MultiplayerApi;
 
 public partial class InLobby : State {
 	public override void _Ready() {
-        Paths.AddNodePath("LOBBY_MANAGER", GetPath());
+        Paths.AddNodePath("IN_LOBBY_STATE", GetPath());
     }
 
     //---------------------------------------------------------------------------------//

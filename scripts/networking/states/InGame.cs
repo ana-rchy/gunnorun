@@ -1,14 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 using static Godot.MultiplayerApi;
 using static Godot.MultiplayerPeer;
 using MsgPack.Serialization;
 
 public partial class InGame : State {
+    public override void _Ready() {
+        Paths.AddNodePath("IN_GAME_STATE", GetPath());
+    }
+
+    //---------------------------------------------------------------------------------//
+    #region | rpc
+
 	[Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_WeaponShot(string name, float rotation, float range) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_PlayerOnGround(bool onGround, float xVel) {}
 
 	[Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
+        if (!IsActiveState()) return;
+        
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
         Dictionary<long, Vector2> puppetPositions = serializer.UnpackSingleObject(puppetPositionsSerialized);
         puppetPositions.Remove(Multiplayer.GetUniqueId());
@@ -25,4 +40,104 @@ public partial class InGame : State {
             Rpc(nameof(Server_UpdatePlayerPosition), player.Position);
         }
     }
+
+    [Rpc] void Client_WeaponShot(long id, string name, float rotation, float range) {
+        if (id == Multiplayer.GetUniqueId() || !IsActiveState()) {
+            return;
+        }
+
+        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        switch (name) {
+            case "Murasama":
+                puppetPlayer.GetNode<ParticlesManager>("Particles").EmitMurasamaParticles();
+                break;
+            default:
+                puppetPlayer.SpawnTracer(rotation, range);
+                break;
+        }
+    }
+
+    [Rpc] void Client_Intangibility(float time) {
+        if (!IsActiveState()) return;
+        
+        var player = GetNode<Player>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}");
+        Task.Run(() => {
+            _ = player.Intangibility(time);
+        });
+    }
+
+    [Rpc] void Client_PlayerHPChanged(long id, int newHP) {
+        if (!IsActiveState()) return;
+
+        var player = GetNode<IPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        player.ChangeHP(newHP);
+    }
+
+    [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
+        if (id == Multiplayer.GetUniqueId() || !IsActiveState()) {
+            return;
+        }
+
+        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        puppetPlayer.EmitSignal(PuppetPlayer.SignalName.OnGround, onGround, xVel);
+    }
+
+    [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
+        if (id == Multiplayer.GetUniqueId()) {
+            return;
+        }
+
+        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
+        puppetPlayer.EmitSignal(PuppetPlayer.SignalName.OnGround, onGround, xVel);
+    }
+
+    [Rpc] void Client_LapChanged(int lap, int maxLaps) {
+        if (!IsActiveState()) return;
+        
+        var lapManager = this.GetNodeConst<Lap>("LAP");
+        lapManager.EmitSignal(Lap.SignalName.LapPassed, lap, maxLaps);
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
+
+    public void _OnWeaponShot(Player player) {
+        if (!IsActiveState()) return;
+
+        var playerPosToMousePos = player.GlobalPosition.DirectionTo(player.GetGlobalMousePosition());
+        Rpc(nameof(Server_WeaponShot), player.CurrentWeapon.Name,
+            new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
+    }
+
+    public void _OnOtherPlayerHit(long playerID, int newHP, string weaponName) {
+        if (!IsActiveState()) return;
+
+        Rpc(nameof(Server_PlayerHPChanged), playerID, newHP);
+
+        if (weaponName == "Murasama") {
+            Rpc(nameof(Server_Intangibility), playerID, Murasama.INTANGIBILITY_TIME);
+        }
+    }
+
+    public void _OnHPChanged(int newHP) {
+        if (!IsActiveState()) return;
+        
+        Rpc(nameof(Server_PlayerHPChanged), Multiplayer.GetUniqueId(), newHP);
+    }
+
+    public void _OnPlayerFrameChanged(int frame) {
+        if (!IsActiveState()) return;
+
+        Rpc(nameof(Server_PlayerFrameChanged), frame);
+    }
+
+    public void _OnGround(bool onGround, float xVel) {
+        if (!IsActiveState()) return;
+
+        Rpc(nameof(Server_PlayerOnGround), onGround, xVel);
+    }
+
+    #endregion
 }

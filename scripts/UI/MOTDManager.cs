@@ -135,8 +135,8 @@ public partial class MOTDManager : RichTextLabel {
 		};
 
 		var rnd = new RandomNumberGenerator();
-		//var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
-		var uncenteredText = Text = _motdMessages[_motdMessages.Length - 1];
+		var uncenteredText = Text = _motdMessages[rnd.RandiRange(0, _motdMessages.Length - 1)];
+		//var uncenteredText = Text = _motdMessages[_motdMessages.Length - 1];
 
 		Text = $"[center]{Text}[/center]";
 		CallDeferred(nameof(ResizeText));
