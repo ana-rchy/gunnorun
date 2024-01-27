@@ -11,6 +11,7 @@ public partial class InLobby : State {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
+    // side-effects
     void UpdatePlayerStatus(long id, bool ready) {
         var player = Global.OtherPlayerData[id];
         player.ReadyStatus = ready;

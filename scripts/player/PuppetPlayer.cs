@@ -23,11 +23,13 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
 
     //---------------------------------------------------------------------------------//
     #region | funcs
-
+    
+    // ???
     public int GetHP() {
         return HP;
     }
 
+    // side-effects
     public async void ChangeHP(int newHP, bool callerIsClient = false) {
         if (HP <= 0) {
             return;
@@ -67,7 +69,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     #endregion
 
     //---------------------------------------------------------------------------------//
-    #region | funcs
+    #region | signals
 
     [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel = 0);
 

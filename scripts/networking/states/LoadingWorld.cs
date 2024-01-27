@@ -16,6 +16,7 @@ public partial class LoadingWorld : State {
 		}
 	}
 
+	// side-effects
 	void AddPuppetPlayers() {
 		foreach (var player in Global.OtherPlayerData) {
 			CreateNewPuppetPlayer(player.Key, player.Value.Username, player.Value.Color);

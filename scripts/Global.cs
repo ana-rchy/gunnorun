@@ -7,35 +7,6 @@ public partial class Global : Node {
         DirAccess.MakeDirAbsolute("user://replays");
         DirAccess.MakeDirAbsolute("user://replays/debug");
         DirAccess.MakeDirAbsolute("user://imported_replays");
-
-        // keybinds config loading
-        if (!FileAccess.FileExists("user://config.cfg")) {
-            return;
-        }
-        
-        var config = new ConfigFile();
-        var err = config.Load("user://config.cfg");
-        if (err != Error.Ok) {
-            GD.Print("cant open config file");
-        }
-
-        foreach (var action in config.GetSectionKeys("Keybinds")) {
-            string value = (string) config.GetValue("Keybinds", action);
-            var bind = value[1..];
-            InputMap.ActionEraseEvents(action);
-
-            if (value.StartsWith('m')) {
-                var mouseEvent = new InputEventMouseButton();
-                mouseEvent.ButtonIndex = (Godot.MouseButton) Enum.Parse(typeof(Godot.MouseButton), bind);
-                InputMap.ActionAddEvent(action, mouseEvent);
-            } else if (value.StartsWith('k')) {
-                var keyEvent = new InputEventKey();
-                keyEvent.Keycode = (Godot.Key) Enum.Parse(typeof(Godot.Key), bind);
-                InputMap.ActionAddEvent(action, keyEvent);
-            } else if (bind == "None") {
-                InputMap.ActionEraseEvents(action);
-            }
-        }
     }
 
     //---------------------------------------------------------------------------------//

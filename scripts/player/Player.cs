@@ -12,7 +12,7 @@ public partial class Player : RigidBody2D, IPlayer {
     [Export] AnimatedSprite2D _sprite;
     [Export] Label _username;
 
-    const float MAXIMUM_VELOCITY = 4000f;
+    const float MAXIMUM_SPEED = 4000f;
     const float SPAWN_INTANGIBILITY_TIME = 2f;
     const int HP_REGEN = 5;
     const float DEATH_TIME = 3f;
@@ -43,13 +43,8 @@ public partial class Player : RigidBody2D, IPlayer {
         }
 
         // etc
-        _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
-        CurrentWeapon = _weapons[CurrentWeaponIndex];
-        EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
-        _username.Text = Global.PlayerData.Username;
-        var playerColor = Global.PlayerData.Color;
-        ((ShaderMaterial) _sprite.Material)
-            .SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
+        SetupWeapons();
+        SetupPlayer();
 
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
@@ -92,15 +87,15 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
-        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_VELOCITY) {
-            var velocitySoftCap = LinearVelocity.Normalized() * MAXIMUM_VELOCITY;
-            var reelbackStrength = 1 - ( 1 / (0.0000001f * state.LinearVelocity.DistanceTo(velocitySoftCap) + 1) ); // just plug this shit into desmos man
-            state.LinearVelocity = state.LinearVelocity.MoveToward(velocitySoftCap, state.LinearVelocity.DistanceTo(velocitySoftCap) * reelbackStrength);
+        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_SPEED) {
+            var values = GetReeledbackVelocity(LinearVelocity, state.LinearVelocity, MAXIMUM_SPEED);
+            state.LinearVelocity = values.Item1;
 
-            DebugData = (DebugData.StateVel, velocitySoftCap, reelbackStrength);
+            DebugData = (DebugData.StateVel, values.Item2, values.Item3);
         }
 
         DebugData = (state.LinearVelocity, DebugData.VelSoftCap, DebugData.ReelbackStrength);
+        // two assignments so softcap/strength only change when the if block's active
     }
 
     #endregion
@@ -108,14 +103,28 @@ public partial class Player : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
+    // pure
+    (Vector2, Vector2, float) GetReeledbackVelocity(Vector2 linearVelocity, Vector2 stateLinearVelocity, float maximumSpeed) {
+        // velocity in current direction if capped to maximum speed
+        var velocitySoftCap = LinearVelocity.Normalized() * maximumSpeed;
+        // just plug this shit into desmos man
+        var reelbackStrength = 1 - ( 1 / (0.0000001f * stateLinearVelocity.DistanceTo(velocitySoftCap) + 1) );
+        // move back velocity towards the capped velocity, by the reelback strength
+        return (stateLinearVelocity.MoveToward(velocitySoftCap, stateLinearVelocity.DistanceTo(velocitySoftCap) * reelbackStrength),
+                velocitySoftCap,
+                reelbackStrength);
+    }
+
+    // also pure? kinda?
+    public int GetHP() {
+        return HP;
+    }
+
+    // side-effects
     public async Task Intangibility(float time) {
         SetCollisionMaskValue(4, false);
         await this.Sleep(time);
         SetCollisionMaskValue(4, true);
-    }
-
-    public int GetHP() {
-        return HP;
     }
 
     public async void ChangeHP(int newHP, bool callerIsClient = false) {
@@ -135,6 +144,19 @@ public partial class Player : RigidBody2D, IPlayer {
             HP = 100;
             _ = Intangibility(SPAWN_INTANGIBILITY_TIME);
         }
+    }
+
+    void SetupWeapons() {
+        _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
+        CurrentWeapon = _weapons[CurrentWeaponIndex];
+        EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
+    }
+
+    void SetupPlayer() {
+        _username.Text = Global.PlayerData.Username;
+        var playerColor = Global.PlayerData.Color;
+        ((ShaderMaterial) _sprite.Material)
+            .SetShaderParameter("color", new Vector3(playerColor.R, playerColor.G, playerColor.B));
     }
 
     void Regen() {

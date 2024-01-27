@@ -22,6 +22,7 @@ public partial class Lobby : Node {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
+    // side-effects
     public void RefreshList() {
         var players = new List<Global.PlayerDataStruct>(Global.OtherPlayerData.Values);
 

@@ -6,11 +6,24 @@ public partial class SettingsPanel : Panel {
 
     public override void _Input(InputEvent e) {
         var mousePos = GetGlobalMousePosition();
-        if (Input.IsMouseButtonPressed(MouseButton.Left) &&
-            (mousePos.X < Position.X || mousePos.X > Position.X + Size.X || mousePos.Y < Position.Y || mousePos.Y > Position.Y + Size.Y)) { // outside the panel
+        if (IsClickedOutsidePanel(mousePos)) {
             GetParent<ColorRect>().Hide();
         }
     }
+
+    //---------------------------------------------------------------------------------//
+    #region | funcs
+
+    // pure
+    bool IsClickedOutsidePanel (Vector2 mousePos) {
+        return Input.IsMouseButtonPressed(MouseButton.Left) &&
+               (mousePos.X < Position.X || mousePos.X > Position.X + Size.X || mousePos.Y < Position.Y || mousePos.Y > Position.Y + Size.Y);
+    }
+
+    #endregion
+
+    //---------------------------------------------------------------------------------//
+    #region | signals
 
     void _OnResetToDefaults() {
 		InputMap.LoadFromProjectSettings();
@@ -20,4 +33,6 @@ public partial class SettingsPanel : Panel {
 			button.Text = InputMap.ActionGetEvents(button.Name)[0].AsText();
         }
 	}
+
+    #endregion
 }

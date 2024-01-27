@@ -39,7 +39,8 @@ public partial class ReplayPlayer : Node2D {
         }
 
 
-        ReadFromReplayFile(replayPath);
+        SetReplayData(ReadFromReplayFile(replayPath));
+
         SetPhysicsProcess(false);
 
         if (Global.ReplayOnly == true) {
@@ -74,9 +75,7 @@ public partial class ReplayPlayer : Node2D {
             _replayDataIndex = 0;
         }
 
-        Position = _positionsList[_replayDataIndex];
-        _sprite.Frame = _framesList[_replayDataIndex];
-        _crosshair.GlobalPosition = _mousePositionsList[_replayDataIndex];
+        UpdateReplayer(_replayDataIndex);
 
         _replayDataIndex++;
     }
@@ -86,6 +85,25 @@ public partial class ReplayPlayer : Node2D {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
+    // pure
+    (GC.Array<Vector2>, GC.Array<int>, GC.Array<Vector2>) ReadFromReplayFile(string replayPath) {
+        using var replayFile = FileAccess.Open(replayPath, FileAccess.ModeFlags.Read);
+        var dictionary = (GC.Dictionary<string, Variant>) replayFile.GetVar();
+
+        var positionsList = (GC.Array<Vector2>) dictionary["Positions"];
+        var framesList = (GC.Array<int>) dictionary["Frames"];
+        var mousePositionsList = (GC.Array<Vector2>) dictionary["MousePositions"];
+
+        return (positionsList, framesList, mousePositionsList);
+    }
+
+    // side-effects
+    void SetReplayData((GC.Array<Vector2>, GC.Array<int>, GC.Array<Vector2>) replayData) {
+        _positionsList = replayData.Item1;
+        _framesList = replayData.Item2;
+        _mousePositionsList = replayData.Item3;
+    }
+
     void AddReplayOnlyCamera() {
         var camera = new Camera2D();
         camera.Zoom = new Vector2(0.5f, 0.5f);
@@ -93,13 +111,10 @@ public partial class ReplayPlayer : Node2D {
         AddChild(camera);
     }
 
-    void ReadFromReplayFile(string replayPath) {
-        using var replayFile = FileAccess.Open(replayPath, FileAccess.ModeFlags.Read);
-        var dictionary = (GC.Dictionary<string, Variant>) replayFile.GetVar();
-
-        _positionsList = (GC.Array<Vector2>) dictionary["Positions"];
-        _framesList = (GC.Array<int>) dictionary["Frames"];
-        _mousePositionsList = (GC.Array<Vector2>) dictionary["MousePositions"];
+    void UpdateReplayer(int index) {
+        Position = _positionsList[index];
+        _sprite.Frame = _framesList[index];
+        _crosshair.GlobalPosition = _mousePositionsList[index];
     }
 
     #endregion

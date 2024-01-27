@@ -8,6 +8,7 @@ public partial class GrindingParticles : GpuParticles2D {
     public override void _Ready() {
         _emissionThreshold *= Amount;
     }
+    
     //---------------------------------------------------------------------------------//
     #region | signals
 

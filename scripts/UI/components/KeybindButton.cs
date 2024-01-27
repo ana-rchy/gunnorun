@@ -45,7 +45,8 @@ public partial class KeybindButton : Button {
 
 	//---------------------------------------------------------------------------------//
     #region | funcs
-	
+
+	// side-effects
 	void ChangeBind(InputEvent e) {
 		if (e is InputEventMouseButton) {
 			((InputEventMouseButton) e).DoubleClick = false;

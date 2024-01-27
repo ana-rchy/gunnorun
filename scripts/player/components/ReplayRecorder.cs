@@ -29,6 +29,7 @@ public partial class ReplayRecorder : Node2D {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
+    // side-effects
     void SaveReplay(double finishTime) {
         using var timeFile = FileAccess.Open($"user://{Global.CurrentWorld}_time.gsd", FileAccess.ModeFlags.Write);
         timeFile.StoreDouble(finishTime);

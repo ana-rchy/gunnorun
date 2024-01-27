@@ -206,6 +206,7 @@ public partial class MOTDManager : RichTextLabel {
 	//---------------------------------------------------------------------------------//
     #region | funcs
 
+	// side-effects
 	void ResizeText() {
 		if (Size.X > 1900) {
 			var fontSize = (int) (-0.021 * (Size.X - 1900)) + 50; // magic numbers woo

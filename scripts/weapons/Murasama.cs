@@ -17,7 +17,7 @@ public class Murasama : Weapon {
 
         ReelbackStrength = 0f;
     }
-
+    
     public override void Shoot(Player player) {
         player.EmitSignal(Player.SignalName.WeaponShot, player);
         

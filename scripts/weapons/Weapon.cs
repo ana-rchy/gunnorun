@@ -16,9 +16,8 @@ public abstract class Weapon {
     protected int Damage;
 
     public virtual void Shoot(Player player) {
-        if (Ammo <= 0) {
-            return;
-        }
+        if (Ammo <= 0) return;
+
         Ammo--;
         player.EmitSignal(Player.SignalName.WeaponShot, player);
 
@@ -37,9 +36,7 @@ public abstract class Weapon {
 
     public async void ReloadWeapon(Player player) {
         Reloading = true;
-        if (Ammo == 100 || Ammo == null) {
-            return;
-        }
+        if (Ammo == 100 || Ammo == null) return;
 
         player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload, (int) BaseAmmo);
         Ammo = 0; // prevent firing remaining ammo while reloading
@@ -61,6 +58,7 @@ public abstract class Weapon {
         }
     }
 
+    // pure!!!
     float GetMomentumMultiplier(Vector2 currentVelocity, Vector2 mousePosToPlayerPos) {
         float angleDelta = currentVelocity.AngleTo(mousePosToPlayerPos);
         if (Mathf.RadToDeg(angleDelta) <= 45) { // if less than 45 degrees change, keep all momentum

@@ -11,13 +11,12 @@ public partial class SingleplayerPanel : MainPanel {
 
     public static int SelectedWorldIndex { get; private set; } = 0;
     public static int SelectedReplayIndex { get; private set; } = 0;
-    string a;
 
     public override void _Ready() {
         base._Ready();
 
-        UpdateBestTime();
-        CheckImportedReplays();
+        _bestTime.Text = GetBestTimeText();
+        UpdateImportedReplays();
         _mapSelect.Selected = SelectedWorldIndex;
         _replaySelect.Selected = SelectedReplayIndex;
         if (LevelTimer.Time != 0) {
@@ -28,17 +27,19 @@ public partial class SingleplayerPanel : MainPanel {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    void UpdateBestTime() {
+    // pure
+    string GetBestTimeText() {
         var timePath = $"user://{Global.CurrentWorld}_time.gsd";
         if (FileAccess.FileExists(timePath)) {
             using var timeFile = FileAccess.Open(timePath, FileAccess.ModeFlags.Read);
-            _bestTime.Text = $"best time: {timeFile.GetDouble()}s";
+            return $"best time: {timeFile.GetDouble()}s";
         } else {
-            _bestTime.Text = "";
+            return "";
         }
     }
 
-    void CheckImportedReplays() {
+    // side-effects
+    void UpdateImportedReplays() {
         var allFiles = DirAccess.GetFilesAt("user://imported_replays/");
         var replayFiles = allFiles.Where( file => file.EndsWith(".grp") );
 
@@ -70,8 +71,8 @@ public partial class SingleplayerPanel : MainPanel {
         SelectedWorldIndex = _mapSelect.Selected;
         Global.CurrentWorld = _mapSelect.GetItemText(index);
 
-        UpdateBestTime();
-        CheckImportedReplays();
+        _bestTime.Text = GetBestTimeText();
+        UpdateImportedReplays();
     }
 
     void _OnReplaySelected(int index) {
@@ -92,7 +93,7 @@ public partial class SingleplayerPanel : MainPanel {
     }
 
     void _OnSaveLastReplayPressed() {
-        CheckImportedReplays();
+        UpdateImportedReplays();
     }
 
     #endregion

@@ -11,7 +11,7 @@ public partial class Checkpoints : Node {
             return;
         }
         
-        RefreshCheckpoints();
+        UnpassedCheckpoints = GetAllCheckpoints();
 
         foreach (Area2D checkpoint in UnpassedCheckpoints) {
             checkpoint.BodyEntered += (Node2D body) => UnpassedCheckpoints.Remove(checkpoint);
@@ -21,8 +21,9 @@ public partial class Checkpoints : Node {
     //---------------------------------------------------------------------------------//
     #region | funcs
 
-    void RefreshCheckpoints() {
-        UnpassedCheckpoints = new List<Node>(FindChildren("*", "Area2D"));
+    // state-unpure (dependent on world)
+    List<Node> GetAllCheckpoints() {
+        return new List<Node>(FindChildren("*", "Area2D"));
     }
 
     #endregion
@@ -31,7 +32,7 @@ public partial class Checkpoints : Node {
     #region | signals
 
     void _OnLapPassed(int lapCount) {
-        RefreshCheckpoints();
+        UnpassedCheckpoints = GetAllCheckpoints();
     }
 
     #endregion
