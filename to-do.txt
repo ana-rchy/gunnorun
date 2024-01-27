@@ -2,12 +2,14 @@ alpha:
 - ui/graphics improvements (shaders/particles/etc)
 - easier server hosting
 - weapon selecting
-- parallax
+- parallax bg
 - queuing up reloads
+- cancelling reloads
 - controller support?
 - more settings
 - music player?
 - better multiplayer (map voting, votekick, etc)
+- switch to worldenvironment to change background color and such, and fix the mih bug keeping the bg a certain color 
 
 
 beta:
