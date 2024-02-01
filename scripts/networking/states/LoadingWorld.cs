@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class LoadingWorld : State {
-	[Export(PropertyHint.File)] string _puppetPlayerScene;
-	
-	public override void Enter(Dictionary<string, object> message) {
-		GetTree().ChangeSceneToFile($"res://scenes/worlds/{message["world"]}.tscn");
-	}
+    [Export(PropertyHint.File)] string _puppetPlayerScene;
 
-	public override void Update() {
-		if (this.GetNodeConst("WORLD") != null) {
-			AddPuppetPlayers();
-			StateMachine.ChangeState("InGame");
-		}
-	}
+    public override void Enter(Dictionary<string, object> message) {
+        GetTree().ChangeSceneToFile($"res://scenes/worlds/{message["world"]}.tscn");
+    }
 
-	// side-effects
-	void AddPuppetPlayers() {
-		foreach (var player in Global.OtherPlayerData) {
-			CreateNewPuppetPlayer(player.Key, player.Value.Username, player.Value.Color);
-		}
-	}
+    public override void Update() {
+        if (this.GetNodeConst("WORLD") != null) {
+            AddPuppetPlayers();
+            StateMachine.ChangeState("InGame");
+        }
+    }
 
-	void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
+    // side-effects
+    void AddPuppetPlayers() {
+        foreach (var player in Global.OtherPlayerData) {
+            CreateNewPuppetPlayer(player.Key, player.Value.Username, player.Value.Color);
+        }
+    }
+
+    void CreateNewPuppetPlayer(long id, string username, Color playerColor) {
         var newPlayer = GD.Load<PackedScene>(_puppetPlayerScene).Instantiate();
         this.GetNodeConst("WORLD").CallDeferred("add_child", newPlayer);
 
