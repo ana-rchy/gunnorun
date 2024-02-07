@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=21 format=3 uid="uid://cir4wtbahb0if"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
 [ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/components/PlayerUI.tscn" id="2_0rg58"]
@@ -10,10 +10,35 @@
 [ext_resource type="Script" path="res://scripts/player/components/DebugRecorder.cs" id="5_voyw7"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
 [ext_resource type="Script" path="res://scripts/player/components/ParticlesManager.cs" id="6_xmwqc"]
-[ext_resource type="PackedScene" uid="uid://ckhnodfr5nnta" path="res://scenes/player/components/GrindingParticles.tscn" id="7_a5ymy"]
+[ext_resource type="Script" path="res://scripts/player/components/GrindingParticles.cs" id="7_yqifc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3j7k5"]
 friction = 0.1
+
+[sub_resource type="Gradient" id="Gradient_xgnap"]
+offsets = PackedFloat32Array(0, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.858268, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gvy32"]
+gradient = SubResource("Gradient_xgnap")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xo1rn"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 40.0
+initial_velocity_min = -125.0
+initial_velocity_max = -125.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 200, 0)
+scale_min = 8.0
+scale_max = 12.0
+color = Color(1, 0.626667, 0.3, 0.784314)
+color_ramp = SubResource("GradientTexture1D_gvy32")
+hue_variation_min = -0.07
+hue_variation_max = 0.08
 
 [sub_resource type="Gradient" id="Gradient_jpn1k"]
 offsets = PackedFloat32Array(0, 0.2, 0.85, 1)
@@ -106,15 +131,18 @@ collision_mask = 8
 target_position = Vector2(0, 110)
 hit_from_inside = true
 
-[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("_grindingParticles", "_murasamaParticles")]
+[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("_murasamaParticles")]
 z_index = 1
 script = ExtResource("6_xmwqc")
-_grindingParticlesScene = "res://scenes/player/components/GrindingParticles.tscn"
-_grindingParticles = NodePath("GrindingParticles")
 _murasamaParticles = NodePath("MurasamaParticles")
 
-[node name="GrindingParticles" parent="Particles" instance=ExtResource("7_a5ymy")]
+[node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
 position = Vector2(0, 105)
+emitting = false
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_xo1rn")
+fixed_fps = 60
+script = ExtResource("7_yqifc")
 
 [node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]
 emitting = false
@@ -161,6 +189,7 @@ horizontal_alignment = 1
 
 [connection signal="Death" from="." to="PlayerUI" method="_OnDeath"]
 [connection signal="HPChanged" from="." to="PlayerUI" method="_OnHPChanged"]
+[connection signal="OnGround" from="." to="Particles/GrindingParticles" method="_OnGround"]
 [connection signal="WeaponChanged" from="." to="PlayerUI" method="_OnWeaponChanged"]
 [connection signal="WeaponReloading" from="." to="PlayerUI" method="_OnWeaponReloading"]
 [connection signal="WeaponShot" from="." to="PlayerUI" method="_OnWeaponShot"]

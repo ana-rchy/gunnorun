@@ -1,2 +1,3 @@
 - reload bar still sometimes shows as full fsr
 - grinding particles show up on other clients weirdly at high speeds
+- can reload rpg when full

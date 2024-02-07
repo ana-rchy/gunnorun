@@ -19,7 +19,6 @@ public partial class InGame : State {
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
-    [Rpc(RpcMode.AnyPeer)] void Server_PlayerOnGround(bool onGround, float xVel) {}
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         if (!IsActiveState()) return;
@@ -84,15 +83,6 @@ public partial class InGame : State {
         playerSprite.Frame = frame;
     }
 
-    [Rpc] void Client_PlayerOnGround(long id, bool onGround, float xVel) {
-        if (id == Multiplayer.GetUniqueId() || !IsActiveState()) {
-            return;
-        }
-
-        var puppetPlayer = GetNode<PuppetPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
-        puppetPlayer.EmitSignal(PuppetPlayer.SignalName.OnGround, onGround, xVel);
-    }
-
     [Rpc] void Client_LapChanged(int lap, int maxLaps) {
         if (!IsActiveState()) return;
         
@@ -153,12 +143,6 @@ public partial class InGame : State {
         if (!IsActiveState()) return;
 
         Rpc(nameof(Server_PlayerFrameChanged), frame);
-    }
-
-    public void _OnGround(bool onGround, float xVel) {
-        if (!IsActiveState()) return;
-
-        Rpc(nameof(Server_PlayerOnGround), onGround, xVel);
     }
 
     #endregion

@@ -2,28 +2,24 @@ using Godot;
 using System;
 
 public partial class GrindingParticles : GpuParticles2D {
-    [Export] int _emissionThreshold = 80;
+    [Export] float _maxSpeed = 2000;
     Random _rand = new();
 
     public override void _Ready() {
-        _emissionThreshold *= Amount;
+        Emitting = true;
     }
     
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    public void _OnGround(bool onGround, float xVel) {
+    void _OnGround(bool onGround, float xVel) {
         if (onGround) {
             var speed = MathF.Abs(xVel);
 
-            if (speed > _emissionThreshold) {
-                Position = new Vector2(_rand.Next(-55, 55+1) / 2, Position.Y);
-                Emitting = true;
-            } else {
-                Emitting = false;
-            }
+            Position = new(55 - _rand.NextSingle() * 110, Position.Y);
+            AmountRatio = speed / _maxSpeed;
         } else {
-            Emitting = false;
+            AmountRatio = 0;
         }
     }
 

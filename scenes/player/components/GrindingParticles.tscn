@@ -28,8 +28,8 @@ hue_variation_min = -0.07
 hue_variation_max = 0.08
 
 [node name="GrindingParticles" type="GPUParticles2D"]
-emitting = false
-amount = 4
+amount = 64
 process_material = SubResource("ParticleProcessMaterial_xo1rn")
 fixed_fps = 60
 script = ExtResource("1_bc5j6")
+_maxSpeed = 2000.0

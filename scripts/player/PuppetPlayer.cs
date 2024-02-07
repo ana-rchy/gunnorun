@@ -4,6 +4,7 @@ using Godot;
 
 public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     [Export(PropertyHint.File)] string _tracerScene;
+    [Export] RayCast2D _groundRaycast;
     [Export] ColorRect _greenHP;
 
     const float SPAWN_INTANGIBILITY_TIME = 2f;
@@ -13,6 +14,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     public int HP { get; private set; } = 100;
 
     double _timer;
+    Vector2 _lastPosition = new Vector2(0, 0);
 
     public override void _PhysicsProcess(double delta) {
         if (_timer >= Global.TICK_RATE) {
@@ -20,8 +22,15 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
             tween.TweenProperty(this, "global_position", PuppetPosition, Global.TICK_RATE);
             _timer -= Global.TICK_RATE;
         }
+
+        if (_groundRaycast.IsColliding()) {
+            EmitSignal(SignalName.OnGround, true, (Position.X - _lastPosition.X) / delta);
+        } else {
+            EmitSignal(SignalName.OnGround, false, 0);
+        }
         
         _timer += delta;
+        _lastPosition = Position;
     }
 
     //---------------------------------------------------------------------------------//
@@ -76,7 +85,7 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel = 0);
+    [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel);
 
     #endregion
 }

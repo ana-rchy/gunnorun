@@ -39,7 +39,6 @@ public partial class Player : RigidBody2D, IPlayer {
             WeaponShot += inGameManager._OnWeaponShot;
             OtherPlayerHit += inGameManager._OnOtherPlayerHit;
             HPChangedMP += inGameManager._OnHPChanged;
-            OnGround += inGameManager._OnGround;
         }
 
         // etc
