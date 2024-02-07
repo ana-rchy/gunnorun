@@ -4,7 +4,7 @@ using Godot;
 using static Godot.MultiplayerApi;
 
 public partial class InLobby : State {
-	public override void _Ready() {
+    public override void _Ready() {
         Paths.AddNodePath("IN_LOBBY_STATE", GetPath());
     }
 
@@ -20,13 +20,13 @@ public partial class InLobby : State {
 
     #endregion
 
-	//---------------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------------//
     #region | rpc
 
     [Rpc(RpcMode.AnyPeer)] void Server_UpdateStatus(bool ready) {}
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
-		if (!IsActiveState()) return;
+        if (!IsActiveState()) return;
 
         if (Multiplayer.GetUniqueId() != id) {
             UpdatePlayerStatus(id, ready);
@@ -34,11 +34,11 @@ public partial class InLobby : State {
         }
     }
 
-	[Rpc] void Client_StartGame(string worldName) {
+    [Rpc] void Client_StartGame(string worldName) {
         if (!IsActiveState()) return;
         
-		StateMachine.ChangeState("LoadingWorld", new() {{ "world", worldName }} );
-	}
+        StateMachine.ChangeState("LoadingWorld", new() {{ "world", worldName }} );
+    }
 
     #endregion
 
@@ -46,7 +46,7 @@ public partial class InLobby : State {
     #region | signals
 
     public void _OnReadyToggled(bool readyStatus) {
-		if (!IsActiveState()) return;
+        if (!IsActiveState()) return;
 
         Rpc(nameof(Server_UpdateStatus), readyStatus);
     }

@@ -14,14 +14,14 @@ public partial class InGame : State {
     //---------------------------------------------------------------------------------//
     #region | rpc
 
-	[Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
+    [Rpc(RpcMode.AnyPeer, TransferMode = TransferModeEnum.UnreliableOrdered)] void Server_UpdatePlayerPosition(Vector2 position) {}
     [Rpc(RpcMode.AnyPeer)] void Server_WeaponShot(string name, float rotation, float range) {}
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerOnGround(bool onGround, float xVel) {}
 
-	[Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
+    [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         if (!IsActiveState()) return;
         
         var serializer = MessagePackSerializer.Get<Dictionary<long, Vector2>>();
@@ -57,10 +57,10 @@ public partial class InGame : State {
         }
     }
 
-    [Rpc] void Client_Intangibility(float time) {
+    [Rpc] void Client_Intangibility(long id, float time) {
         if (!IsActiveState()) return;
         
-        var player = GetNode<Player>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}");
+        var player = GetNode<IPlayer>($"{Paths.GetNodePath("WORLD")}/{id}");
         Task.Run(() => {
             _ = player.Intangibility(time);
         });

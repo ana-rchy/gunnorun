@@ -35,11 +35,11 @@ public partial class Player : RigidBody2D, IPlayer {
         // signals
         this.GetNodeConst<ReplayPlayer>("REPLAY_PLAYER").ReplayOnly += _OnReplayOnly;
         if (Multiplayer.GetPeers().Length != 0) {
-            var playerManager = this.GetNodeConst<InGame>("IN_GAME_STATE");
-            WeaponShot += playerManager._OnWeaponShot;
-            OtherPlayerHit += playerManager._OnOtherPlayerHit;
-            HPChangedMP += playerManager._OnHPChanged;
-            OnGround += playerManager._OnGround;
+            var inGameManager = this.GetNodeConst<InGame>("IN_GAME_STATE");
+            WeaponShot += inGameManager._OnWeaponShot;
+            OtherPlayerHit += inGameManager._OnOtherPlayerHit;
+            HPChangedMP += inGameManager._OnHPChanged;
+            OnGround += inGameManager._OnGround;
         }
 
         // etc
@@ -48,7 +48,7 @@ public partial class Player : RigidBody2D, IPlayer {
 
         if (Multiplayer.GetPeers().Length != 0) {
             SetDeferred("name", Multiplayer.GetUniqueId().ToString());
-            Task.Run(() => Intangibility(SPAWN_INTANGIBILITY_TIME));
+            _ = Intangibility(SPAWN_INTANGIBILITY_TIME);
         }
     }
 
@@ -122,8 +122,10 @@ public partial class Player : RigidBody2D, IPlayer {
 
     // side-effects
     public async Task Intangibility(float time) {
+        SetCollisionLayerValue(2, false);
         SetCollisionMaskValue(4, false);
         await this.Sleep(time);
+        SetCollisionLayerValue(2, true);
         SetCollisionMaskValue(4, true);
     }
 
@@ -139,7 +141,7 @@ public partial class Player : RigidBody2D, IPlayer {
         HP = newHP;
 
         if (HP <= 0) {
-            EmitSignal(SignalName.OnDeath, DEATH_TIME);
+            EmitSignal(SignalName.Death, DEATH_TIME);
             await this.Sleep(DEATH_TIME);
             HP = 100;
             _ = Intangibility(SPAWN_INTANGIBILITY_TIME);
@@ -178,7 +180,7 @@ public partial class Player : RigidBody2D, IPlayer {
     [Signal] public delegate void HPChangedEventHandler(int newHP);
     [Signal] public delegate void HPChangedMPEventHandler(int newHP);
     [Signal] public delegate void OnGroundEventHandler(bool onGround, float xVel);
-    [Signal] public delegate void OnDeathEventHandler(float deathTime);
+    [Signal] public delegate void DeathEventHandler(float deathTime);
 
     void _OnReplayOnly() {
         QueueFree();

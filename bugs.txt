@@ -1,3 +1,2 @@
 - reload bar still sometimes shows as full fsr
-- intangibility only happens for person that was killed
 - grinding particles show up on other clients weirdly at high speeds

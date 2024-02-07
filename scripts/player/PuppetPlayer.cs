@@ -6,6 +6,9 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     [Export(PropertyHint.File)] string _tracerScene;
     [Export] ColorRect _greenHP;
 
+    const float SPAWN_INTANGIBILITY_TIME = 2f;
+    const float DEATH_TIME = 3f;
+
     public Vector2 PuppetPosition { get; set; }
     public int HP { get; private set; } = 100;
 
@@ -30,6 +33,14 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
     }
 
     // side-effects
+    public async Task Intangibility(float time) {
+        SetCollisionLayerValue(4, false);
+        SetCollisionMaskValue(2, false);
+        await this.Sleep(time);
+        SetCollisionLayerValue(4, true);
+        SetCollisionMaskValue(2, true);
+    }
+
     public async void ChangeHP(int newHP, bool callerIsClient = false) {
         if (HP <= 0) {
             return;
@@ -39,10 +50,10 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         _greenHP.Size = new Vector2((HP / 100f) * 200f, 20f);
 
         if (HP <= 0) {
-            await this.Sleep(3f);
+            await this.Sleep(DEATH_TIME);
             HP = 100;
             _greenHP.Size = new Vector2(200f, 20f);
-            SpawnInvuln();
+            _ = Intangibility(SPAWN_INTANGIBILITY_TIME);
         }
     }
 
@@ -58,12 +69,6 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         tracerArea.SetCollisionMaskValue(2, true);
 
         this.GetNodeConst("WORLD").AddChild(tracer);
-    }
-
-    async void SpawnInvuln() {
-        SetCollisionLayerValue(2, false);
-        await this.Sleep(2f);
-        SetCollisionLayerValue(2, true);
     }
 
     #endregion
