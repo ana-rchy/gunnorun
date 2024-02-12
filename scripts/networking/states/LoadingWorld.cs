@@ -6,7 +6,9 @@ public partial class LoadingWorld : State {
     [Export(PropertyHint.File)] string _puppetPlayerScene;
 
     public override void Enter(Dictionary<string, object> message) {
-        GetTree().ChangeSceneToFile($"res://scenes/worlds/{message["world"]}.tscn");
+        var worldName = ((string) message["world"]).Replace(".remap", "");
+
+        GetTree().ChangeSceneToFile($"res://scenes/worlds/{worldName}.tscn");
     }
 
     public override void Update() {

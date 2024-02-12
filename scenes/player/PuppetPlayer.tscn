@@ -98,10 +98,11 @@ _murasamaParticles = NodePath("MurasamaParticles")
 
 [node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
 position = Vector2(0, 105)
+emitting = false
 amount = 64
 process_material = SubResource("ParticleProcessMaterial_8oyxt")
 fixed_fps = 60
-visibility_rect = Rect2(-2500, -100, 5000, 2000)
+visibility_rect = Rect2(-3000, -2000, 6000, 4000)
 script = ExtResource("5_44had")
 
 [node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]

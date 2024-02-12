@@ -58,6 +58,12 @@ _discordButton = NodePath("Discord")
 _settingsPanel = NodePath("Settings/ColorRect")
 _helpPanel = NodePath("Help/ColorRect")
 
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
 [node name="Title" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -71,7 +77,7 @@ grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ilbaw")
 
-[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer", "_worldLineTimer")]
+[node name="Subtitle" type="RichTextLabel" parent="." node_paths=PackedStringArray("_doorKnock", "_vineBoom", "_navalInvasion", "_unhingedKnight", "_liveLeak", "_MIHTimer", "_background", "_worldLineTimer")]
 top_level = true
 layout_mode = 0
 offset_left = 10.0
@@ -92,6 +98,7 @@ _unhingedKnight = NodePath("../SubtitleImages/Knight")
 _liveLeak = NodePath("../SubtitleImages/LiveLeak")
 _MIHColors = ExtResource("6_vf5yt")
 _MIHTimer = NodePath("MIHTimer")
+_background = NodePath("../Background")
 _worldLineTimer = NodePath("WorldLineTimer")
 
 [node name="DoorKnock" type="AudioStreamPlayer" parent="Subtitle"]
@@ -447,7 +454,7 @@ offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.44"
+text = "Alpha - a2.5.0"
 
 [node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1

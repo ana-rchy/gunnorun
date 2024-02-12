@@ -9,6 +9,8 @@ using MsgPack.Serialization;
 public partial class InGame : State {
     public override void _Ready() {
         Paths.AddNodePath("IN_GAME_STATE", GetPath());
+
+        Multiplayer.PeerDisconnected += _OnPeerDisconnected;
     }
 
     //---------------------------------------------------------------------------------//
@@ -19,12 +21,6 @@ public partial class InGame : State {
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
-    
-    [Rpc] void Client_PlayerLeft(long id) {
-		Global.OtherPlayerData.Remove(id);
-
-        GetNode($"{Paths.GetNodePath("WORLD")}/{id}").QueueFree();
-    }
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         if (!IsActiveState()) return;
@@ -120,6 +116,10 @@ public partial class InGame : State {
 
     //---------------------------------------------------------------------------------//
     #region | signals
+
+    void _OnPeerDisconnected(long id) {
+        GetNode($"{Paths.GetNodePath("WORLD")}/{id}").QueueFree();
+    }
 
     public void _OnWeaponShot(Player player) {
         if (!IsActiveState()) return;

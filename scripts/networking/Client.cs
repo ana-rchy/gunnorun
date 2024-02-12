@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Godot;
-using static Godot.MultiplayerApi;
 
 public partial class Client : Node {
 	[Export(PropertyHint.File)] string _menuScene;
+	[Export] StateMachine _stateMachine;
 
 	public override void _Ready() {
 		Multiplayer.ServerDisconnected += _OnServerDisconnected;
@@ -29,9 +28,16 @@ public partial class Client : Node {
 	//---------------------------------------------------------------------------------//
 	#region | signals
 
+	void _OnPeerDisconnected(long id) {
+		Global.OtherPlayerData.Remove(id);
+	}
+
 	void _OnServerDisconnected() {
 		LeaveServer();
+		_stateMachine.ChangeState("InLobby");
+		Global.PlayerData.ReadyStatus = false;
 	}
+
 
 	public void _OnJoinPressed(string ip, int port) {
 		JoinServer(ip, port);

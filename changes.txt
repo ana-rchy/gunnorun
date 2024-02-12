@@ -64,11 +64,17 @@ small changes:
 bug fixes:
 - fixed multiplayer not actually working cause of some weird exporting issue
 
-// a2.45 //
+// a2.5.0 //
+changes:
+- versioning format changed
+
 bug fixes:
 - ACTUALLY fixed multiplayer
 - now returns to menu after server gets shutdown
+- couldnt return to server after leaving it
+- couldnt finish maps after switching to the next one
 - grinding particles from other players may not show up
-- grinding particles from other players dissapear when they go out of the camera's range
+- grinding particles from other players disappear when they go out of the camera's range
 - RPG was reloadable while full
 - could reload 2+ weapons at once
+- MOTD easter eggs would cause background color to stay changed

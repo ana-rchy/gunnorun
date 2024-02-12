@@ -19,6 +19,8 @@ public class Murasama : Weapon {
     }
     
     public override void Shoot(Player player) {
+        if (!player.ActionTimer.IsStopped() || player.HP <= 0) return;
+
         player.EmitSignal(Player.SignalName.WeaponShot, player);
         
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player.LastMousePos);

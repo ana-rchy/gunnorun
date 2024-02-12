@@ -14,7 +14,6 @@ public partial class GrindingParticles : GpuParticles2D {
 
     void _OnGround(bool onGround, float xVel) {
         if (onGround) {
-            if (GetNode("../..") is PuppetPlayer) GD.Print(xVel);
             var speed = MathF.Abs(xVel);
 
             Position = new(55 - _rand.NextSingle() * 110, Position.Y);

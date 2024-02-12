@@ -141,7 +141,7 @@ emitting = false
 amount = 64
 process_material = SubResource("ParticleProcessMaterial_xo1rn")
 fixed_fps = 60
-visibility_rect = Rect2(-2500, -100, 5000, 2000)
+visibility_rect = Rect2(-3000, -2000, 6000, 4000)
 script = ExtResource("7_yqifc")
 
 [node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]

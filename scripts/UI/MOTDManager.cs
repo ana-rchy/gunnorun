@@ -9,10 +9,11 @@ public partial class MOTDManager : RichTextLabel {
     [Export] AudioStreamPlayer _navalInvasion;
     [Export] TextureRect _unhingedKnight;
     [Export] TextureRect _liveLeak;
-    [ExportGroup("colors")]
+    [ExportGroup("mih")]
     [Export(PropertyHint.ResourceType)] Gradient _MIHColors;
     [Export] Timer _MIHTimer;
     [ExportGroup("etc")]
+    [Export] ColorRect _background;
     [Export] Timer _worldLineTimer;
 
     string[] _motdMessages;
@@ -20,7 +21,6 @@ public partial class MOTDManager : RichTextLabel {
     public override async void _Ready() {
         AddThemeFontSizeOverride("normal_font_size", 50);
         AddThemeFontSizeOverride("italics_font_size", 50);
-        RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
 
         _motdMessages = new string[] {
             "[color=#aa0000]▇▅▆▇▆▅▅█[/color]",
@@ -131,7 +131,12 @@ public partial class MOTDManager : RichTextLabel {
             "i am become gun, destroyer of runs",
             "check out [url=https://github.com/automancy/automancy]automancy[/url]",
             "[INFOHAZARD DETECTED]",
-            "YOU WOULDNT SEND A ROBOT PIC WITH YOUR GUN ON AND ONE WITHOUT THEM AND THREE DIFFERENT PICTURE OF YOUR GUN IS ANY POSITION AND A NORMAL PIC OF YOUR BARREL FROM THE FRONT AND ONE WHERE IT'S SPREAD A BUT OPEN AND A PICTURE OF YOU FINGERING THE TRIGGER AND A PIC OF YOU DOING A KISSING FACE BUT ALSO WITH YOUR GUN IN IT AND A PIC OF YOUR BARREL AND GRIP FROM BEHIND IN ONE SHOT AND A PICK YOUR FULL FRONT BODY IN JUST A STRAP AND IRON SIGHTS AND A PIC OF YOUR GRIP OR YOUR BARREL ARE ALL UP AND A PIC OF YOUR BARREL WHILE YOURE IN THE CAVERNS AND ANOTHER TRIGGER PIC WHILE WHILE YOURE IN THE CAVERNS AND WHATEVER ALL THE GUNNY THINGS YOU WANT AND A VIDEO OF YOU SHOOTING WITH JUST A REALLY SHORT SUPPRESOR AND ONE OF YOU PRESSING THE TRIGGER AND ONE OF YOU ACTUALLY RELOADING AND ONE OF YOU PLAY WITH YOUR BARREL... WHILE NOT WEARING A SHIRT"
+            "YOU WOULDNT SEND A ROBOT PIC WITH YOUR GUN ON AND ONE WITHOUT THEM AND THREE DIFFERENT PICTURE OF YOUR GUN IS ANY POSITION AND A NORMAL PIC OF YOUR BARREL FROM THE FRONT AND ONE WHERE IT'S SPREAD A BUT OPEN AND A PICTURE OF YOU FINGERING THE TRIGGER AND A PIC OF YOU DOING A KISSING FACE BUT ALSO WITH YOUR GUN IN IT AND A PIC OF YOUR BARREL AND GRIP FROM BEHIND IN ONE SHOT AND A PICK YOUR FULL FRONT BODY IN JUST A STRAP AND IRON SIGHTS AND A PIC OF YOUR GRIP OR YOUR BARREL ARE ALL UP AND A PIC OF YOUR BARREL WHILE YOURE IN THE CAVERNS AND ANOTHER TRIGGER PIC WHILE WHILE YOURE IN THE CAVERNS AND WHATEVER ALL THE GUNNY THINGS YOU WANT AND A VIDEO OF YOU SHOOTING WITH JUST A REALLY SHORT SUPPRESOR AND ONE OF YOU PRESSING THE TRIGGER AND ONE OF YOU ACTUALLY RELOADING AND ONE OF YOU PLAY WITH YOUR BARREL... WHILE NOT WEARING A SHIRT",
+            "fuck bitches get gock",
+            "amalgodot crossover when",
+            "now with 2% more lobotomyposting",
+            "YOU IS WIN :clueless:",
+            "me everytime after the gunotomy :D :D :D"
         };
 
         var rnd = new RandomNumberGenerator();
@@ -174,7 +179,7 @@ public partial class MOTDManager : RichTextLabel {
                     _liveLeak.Show();
                     break;
                 case "[color=#0cff04]CAVERN LIGHT SEVERED\nYOU ARE A GUN AUTOMATON ANIMATED BY NEUROTRANSMITTERS[/color]":
-                    RenderingServer.SetDefaultClearColor(new Color("000000"));
+                    _background.Color = new Color("000000");
                     break;
                 case "10":
                     _ = Countdown(uncenteredText);
@@ -197,10 +202,6 @@ public partial class MOTDManager : RichTextLabel {
                 throw;
             }
         }
-    }
-
-    public override void _ExitTree() {
-        RenderingServer.SetDefaultClearColor(new Color("1e1e1e"));
     }
 
     //---------------------------------------------------------------------------------//
@@ -226,7 +227,7 @@ public partial class MOTDManager : RichTextLabel {
     Task MadeInHeavenBackground(Timer timer) {
         while (true) {
             var progression = Math.Abs(timer.TimeLeft - timer.WaitTime) / timer.WaitTime;
-            RenderingServer.SetDefaultClearColor(_MIHColors.Sample((float) progression).Darkened(0.6f));
+            _background.SetDeferred("color", _MIHColors.Sample((float) progression).Darkened(0.6f));
         }
     }
 
@@ -241,7 +242,6 @@ public partial class MOTDManager : RichTextLabel {
 
     void _OnMIHTimeout() {
         _MIHTimer.WaitTime = Math.Round(Math.Clamp(_MIHTimer.WaitTime * 0.9f, 1, 5), 2);
-        GD.Print(_MIHTimer.WaitTime);
         _MIHTimer.Start(); // choppy without manual start
     }
 

@@ -9,6 +9,8 @@ public partial class InLobby : State {
 
     public override void _Ready() {
         Paths.AddNodePath("IN_LOBBY_STATE", GetPath());
+
+        Multiplayer.PeerDisconnected += _OnPeerDisconnected;
     }
 
     //---------------------------------------------------------------------------------//
@@ -47,12 +49,6 @@ public partial class InLobby : State {
 		}
 	}
 
-    [Rpc] void Client_PlayerLeft(long id) {
-        Global.OtherPlayerData.Remove(id);
-
-        this.GetNodeConst<Lobby>("LOBBY").RefreshList();
-    }
-
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
         if (Multiplayer.GetUniqueId() != id) {
@@ -69,6 +65,10 @@ public partial class InLobby : State {
 
     //---------------------------------------------------------------------------------//
     #region | signals
+
+    void _OnPeerDisconnected(long id) {
+        this.GetNodeConst<Lobby>("LOBBY").RefreshList();
+    }
 
     public void _OnReadyToggled(bool readyStatus) {
         if (!IsActiveState()) return;
