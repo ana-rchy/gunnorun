@@ -68,4 +68,7 @@ bug fixes:
 bug fixes:
 - ACTUALLY fixed multiplayer
 - now returns to menu after server gets shutdown
-- 
+- grinding particles from other players may not show up
+- grinding particles from other players dissapear when they go out of the camera's range
+- RPG was reloadable while full
+- could reload 2+ weapons at once

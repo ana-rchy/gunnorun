@@ -63,16 +63,14 @@ public partial class Player : RigidBody2D, IPlayer {
                 EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
             }
         }
+
+        if (Input.IsActionJustPressed("Reload")) {
+            CurrentWeapon.ReloadWeapon(this);
+        }
     }
 
     public override void _PhysicsProcess(double delta) {
-        if (Input.IsActionJustPressed("Reload")) {
-            if (ReloadTimer.IsStopped()) {
-                CurrentWeapon.ReloadWeapon(this);
-            } else if (!CurrentWeapon.Reloading) {
-                _reloadBuffer = CurrentWeapon;
-            }
-        } else if (Input.IsActionPressed("Shoot") && ActionTimer.IsStopped() && HP > 0) {
+        if (Input.IsActionPressed("Shoot")) {
             LastMousePos = GetGlobalMousePosition();
             CurrentWeapon.Shoot(this);
         }
