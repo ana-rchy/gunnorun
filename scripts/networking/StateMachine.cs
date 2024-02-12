@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class StateMachine : Node {
-	[Export] State _inLobby;
+	[Export] State _startingState;
 
 	public State CurrentState { get; private set; }
 
 	public override void _Ready() {
 		State.StateMachine = this;
-		CurrentState = _inLobby;
+		CurrentState = _startingState;
 	}
 
 	public override void _Process(double _) {

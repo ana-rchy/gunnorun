@@ -19,6 +19,12 @@ public partial class InGame : State {
     [Rpc(RpcMode.AnyPeer)] void Server_Intangibility(long id, float time) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerHPChanged(long id, int newHP) {}
     [Rpc(RpcMode.AnyPeer)] void Server_PlayerFrameChanged(byte frame) {}
+    
+    [Rpc] void Client_PlayerLeft(long id) {
+		Global.OtherPlayerData.Remove(id);
+
+        GetNode($"{Paths.GetNodePath("WORLD")}/{id}").QueueFree();
+    }
 
     [Rpc(TransferMode = TransferModeEnum.UnreliableOrdered)] void Client_UpdatePuppetPositions(byte[] puppetPositionsSerialized) {
         if (!IsActiveState()) return;

@@ -9,14 +9,14 @@
 [node name="Server" type="Node"]
 script = ExtResource("1_mvbva")
 _menuScene = "res://scenes/UI/Menu.tscn"
-_lobbyScene = "res://scenes/UI/Lobby.tscn"
 
-[node name="States" type="Node" parent="." node_paths=PackedStringArray("_inLobby")]
+[node name="States" type="Node" parent="." node_paths=PackedStringArray("_startingState")]
 script = ExtResource("2_ee8x2")
-_inLobby = NodePath("InLobby")
+_startingState = NodePath("InLobby")
 
 [node name="InLobby" type="Node" parent="States"]
 script = ExtResource("3_4cc55")
+_lobbyScene = "res://scenes/UI/Lobby.tscn"
 
 [node name="LoadingWorld" type="Node" parent="States"]
 script = ExtResource("4_axss3")

@@ -15,14 +15,14 @@ height = 210.0
 shader = ExtResource("2_r2d5f")
 shader_parameter/color = null
 
-[sub_resource type="Gradient" id="Gradient_741ad"]
+[sub_resource type="Gradient" id="Gradient_kl5gk"]
 offsets = PackedFloat32Array(0, 0.9, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.858268, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_xjete"]
-gradient = SubResource("Gradient_741ad")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ho22n"]
+gradient = SubResource("Gradient_kl5gk")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hj5ql"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8oyxt"]
 particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
@@ -36,7 +36,7 @@ gravity = Vector3(0, 200, 0)
 scale_min = 8.0
 scale_max = 12.0
 color = Color(1, 0.626667, 0.3, 0.784314)
-color_ramp = SubResource("GradientTexture1D_xjete")
+color_ramp = SubResource("GradientTexture1D_ho22n")
 hue_variation_min = -0.07
 hue_variation_max = 0.08
 
@@ -101,7 +101,7 @@ _murasamaParticles = NodePath("MurasamaParticles")
 position = Vector2(0, 105)
 emitting = false
 amount = 64
-process_material = SubResource("ParticleProcessMaterial_hj5ql")
+process_material = SubResource("ParticleProcessMaterial_8oyxt")
 fixed_fps = 60
 script = ExtResource("5_44had")
 
