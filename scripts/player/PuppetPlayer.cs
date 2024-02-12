@@ -20,17 +20,18 @@ public partial class PuppetPlayer : CharacterBody2D, IPlayer {
         if (_timer >= Global.TICK_RATE) {
             var tween = CreateTween();
             tween.TweenProperty(this, "global_position", PuppetPosition, Global.TICK_RATE);
+
+            if (_groundRaycast.IsColliding()) {
+                EmitSignal(SignalName.OnGround, true, (GlobalPosition.X - _lastPosition.X) / Global.TICK_RATE);
+            } else {
+                EmitSignal(SignalName.OnGround, false, 0);
+            }
+
+            _lastPosition = GlobalPosition;
             _timer -= Global.TICK_RATE;
         }
 
-        if (_groundRaycast.IsColliding()) {
-            EmitSignal(SignalName.OnGround, true, (Position.X - _lastPosition.X) / delta);
-        } else {
-            EmitSignal(SignalName.OnGround, false, 0);
-        }
-        
         _timer += delta;
-        _lastPosition = Position;
     }
 
     //---------------------------------------------------------------------------------//
