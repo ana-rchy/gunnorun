@@ -21,16 +21,16 @@ public abstract class Weapon {
         Ammo--;
         player.EmitSignal(Player.SignalName.WeaponShot, player);
 
-        var mousePosToPlayerPos = Player.LastMousePos.DirectionTo(player.GlobalPosition);
-        player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, mousePosToPlayerPos))
-            + mousePosToPlayerPos.Normalized() * Knockback;
+        var knockbackDirection = Player.LastMousePos.DirectionTo(player.GlobalPosition);
+        player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, knockbackDirection))
+            + knockbackDirection.Normalized() * Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
 
-        ShootTracer(player, -mousePosToPlayerPos);
+        ShootTracer(player, -knockbackDirection);
         player.ActionTimer.Start(Refire);
 
         if (player.Multiplayer.GetPeers().Length != 0) {
-            CheckPlayerHit(player, -mousePosToPlayerPos);
+            CheckPlayerHit(player, -knockbackDirection);
         }
     }
 

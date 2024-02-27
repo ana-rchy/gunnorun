@@ -12,7 +12,8 @@ public partial class Player : RigidBody2D, IPlayer {
     [Export] AnimatedSprite2D _sprite;
     [Export] Label _username;
 
-    const float MAXIMUM_SPEED = 4000f;
+    const float VEL_SOFT_CAP = 4000f;
+    const float DRAG_MULTIPLIER = 1f;
     const float SPAWN_INTANGIBILITY_TIME = 2f;
     const int HP_REGEN = 5;
     const float DEATH_TIME = 3f;
@@ -75,6 +76,10 @@ public partial class Player : RigidBody2D, IPlayer {
             CurrentWeapon.Shoot(this);
         }
 
+        // desmos: c(ap) = [any], m(ultiplier) = [any], f(x) = x / (x + (c/m))
+        var excessSpeed = Math.Clamp(LinearVelocity.Length() - VEL_SOFT_CAP, 0, double.PositiveInfinity);
+        ApplyForce(-LinearVelocity.Normalized() * (float) (excessSpeed / (excessSpeed + VEL_SOFT_CAP/DRAG_MULTIPLIER)));
+
         Regen();
         if (_groundRaycast.IsColliding()) {
             EmitSignal(SignalName.OnGround, true, LinearVelocity.X);
@@ -84,9 +89,9 @@ public partial class Player : RigidBody2D, IPlayer {
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState2D state) {
-        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > MAXIMUM_SPEED) {
-            var values = GetReeledbackVelocity(LinearVelocity, state.LinearVelocity, MAXIMUM_SPEED);
-            state.LinearVelocity = values.Item1;
+        if (LinearVelocity.DistanceTo(new Vector2(0, 0)) > VEL_SOFT_CAP) {
+            var values = GetReeledbackVelocity(LinearVelocity, state.LinearVelocity, VEL_SOFT_CAP);
+            // state.LinearVelocity = values.Item1;
 
             DebugData = (DebugData.StateVel, values.Item2, values.Item3);
         }
