@@ -25,6 +25,8 @@ public abstract class Weapon {
         player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, knockbackDirection))
             + knockbackDirection.Normalized() * Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
+        
+        //player.ApplyImpulse(knockbackDirection.Normalized() * Knockback);
 
         ShootTracer(player, -knockbackDirection);
         player.ActionTimer.Start(Refire);

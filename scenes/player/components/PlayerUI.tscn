@@ -1,8 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://d3kncxrrmiqob"]
+[gd_scene load_steps=15 format=3 uid="uid://d3kncxrrmiqob"]
 
 [ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="1_m6o6h"]
 [ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="3_2ms82"]
+[ext_resource type="Texture2D" uid="uid://bhgh2lws731e1" path="res://sprites/player/crosshair_unfocused.png" id="3_ppxca"]
+[ext_resource type="Texture2D" uid="uid://pfcvhduy7n4g" path="res://sprites/player/crosshair_focused.png" id="4_fu14g"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6afp1"]
 resource_local_to_scene = true
@@ -31,6 +33,20 @@ font_size = 60
 [sub_resource type="LabelSettings" id="LabelSettings_ti3t6"]
 resource_local_to_scene = true
 font_size = 60
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1sfnd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ppxca")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fu14g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("_levelTime", "_lapCounter", "_HP", "_overlayUI")]
 script = ExtResource("2_5xriv")
@@ -185,6 +201,9 @@ grow_vertical = 0
 text = "Murasama"
 label_settings = SubResource("LabelSettings_ti3t6")
 vertical_alignment = 1
+
+[node name="Crosshair" type="AnimatedSprite2D" parent="Control"]
+sprite_frames = SubResource("SpriteFrames_1sfnd")
 
 [node name="OverlayUI" type="Control" parent="Control"]
 visible = false
