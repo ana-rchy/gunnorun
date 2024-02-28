@@ -97,6 +97,7 @@ limits/tcp/connect_timeout_seconds=10
 
 [physics]
 
+2d/run_on_separate_thread=true
 common/physics_ticks_per_second=240
 2d/physics_engine="Rapier2D"
 

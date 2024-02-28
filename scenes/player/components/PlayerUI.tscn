@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="3_2ms82"]
 [ext_resource type="Texture2D" uid="uid://bhgh2lws731e1" path="res://sprites/player/crosshair_unfocused.png" id="3_ppxca"]
 [ext_resource type="Texture2D" uid="uid://pfcvhduy7n4g" path="res://sprites/player/crosshair_focused.png" id="4_fu14g"]
+[ext_resource type="Script" path="res://scripts/player/components/Crosshair.cs" id="5_k2yvp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6afp1"]
 resource_local_to_scene = true
@@ -33,20 +34,6 @@ font_size = 60
 [sub_resource type="LabelSettings" id="LabelSettings_ti3t6"]
 resource_local_to_scene = true
 font_size = 60
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_1sfnd"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_ppxca")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_fu14g")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("_levelTime", "_lapCounter", "_HP", "_overlayUI")]
 script = ExtResource("2_5xriv")
@@ -202,8 +189,31 @@ text = "Murasama"
 label_settings = SubResource("LabelSettings_ti3t6")
 vertical_alignment = 1
 
-[node name="Crosshair" type="AnimatedSprite2D" parent="Control"]
-sprite_frames = SubResource("SpriteFrames_1sfnd")
+[node name="Crosshair" type="Node" parent="Control" node_paths=PackedStringArray("_unfocusedCursor", "_focusedCursor")]
+script = ExtResource("5_k2yvp")
+_modulateColor = Color(1, 0, 1, 1)
+_unfocusedCursor = NodePath("Unfocused")
+_focusedCursor = NodePath("Focused")
+
+[node name="Unfocused" type="SubViewport" parent="Control/Crosshair"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(32, 32)
+render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite2D" parent="Control/Crosshair/Unfocused"]
+position = Vector2(16, 16)
+texture = ExtResource("3_ppxca")
+
+[node name="Focused" type="SubViewport" parent="Control/Crosshair"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(32, 32)
+render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite2D" parent="Control/Crosshair/Focused"]
+position = Vector2(16, 16)
+texture = ExtResource("4_fu14g")
 
 [node name="OverlayUI" type="Control" parent="Control"]
 visible = false
