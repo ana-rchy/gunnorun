@@ -454,7 +454,7 @@ offset_top = -56.0
 offset_right = 320.0
 offset_bottom = -20.0
 grow_vertical = 0
-text = "Alpha - a2.5.0"
+text = "Alpha - a2.6.0"
 
 [node name="SaveLastReplay" type="Button" parent="."]
 layout_mode = 1
@@ -505,33 +505,32 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="Panel" parent="Settings/ColorRect" node_paths=PackedStringArray("_binds")]
+[node name="Panel" type="Panel" parent="Settings/ColorRect" node_paths=PackedStringArray("_binds", "_crosshairColorPicker")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.396
-anchor_top = 0.315
-anchor_right = 0.604
-anchor_bottom = 0.685
-offset_left = -100.32
-offset_top = -20.2
-offset_right = 100.32
-offset_bottom = 20.2
+anchor_left = 0.344
+anchor_top = 0.296
+anchor_right = 0.656
+anchor_bottom = 0.759
+offset_left = -0.480042
+offset_top = 0.320007
+offset_right = 0.47998
+offset_bottom = -4.72009
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_gwevq")
 script = ExtResource("16_pom1n")
 _binds = NodePath("Binds")
+_crosshairColorPicker = NodePath("CrosshairColor/Picker")
 
 [node name="BindNames" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_top = 15.0
-offset_right = -100.0
-offset_bottom = -60.0
-grow_horizontal = 2
+offset_top = 16.0
+offset_right = 200.0
+offset_bottom = 440.0
 grow_vertical = 2
+theme_override_constants/separation = 13
 
 [node name="Shoot" type="Label" parent="Settings/ColorRect/Panel/BindNames"]
 layout_mode = 2
@@ -576,14 +575,12 @@ horizontal_alignment = 1
 [node name="Binds" type="VBoxContainer" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.037
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 0.962
-offset_left = -100.0
-offset_top = 0.200001
+offset_left = -400.0
+offset_top = 18.663
 offset_right = -6.10352e-05
-offset_bottom = -44.8
+offset_bottom = 435.238
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 13
@@ -628,6 +625,45 @@ layout_mode = 2
 text = "a"
 text_overrun_behavior = 1
 
+[node name="CrosshairColor" type="Control" parent="Settings/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -169.5
+offset_top = -109.0
+offset_right = 169.5
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Text" type="Label" parent="Settings/ColorRect/Panel/CrosshairColor"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -16.5
+offset_right = 240.0
+offset_bottom = 16.5
+grow_vertical = 2
+text = "Crosshair color"
+horizontal_alignment = 1
+
+[node name="Picker" type="ColorPickerButton" parent="Settings/ColorRect/Panel/CrosshairColor"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
 [node name="Default" type="Button" parent="Settings/ColorRect/Panel"]
 layout_mode = 1
 anchors_preset = 7
@@ -636,9 +672,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -145.0
-offset_top = -50.0
+offset_top = -54.0
 offset_right = 145.0
-offset_bottom = -10.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "reset to defaults"
@@ -661,6 +697,7 @@ text = "Help"
 
 [node name="ColorRect" type="ColorRect" parent="Help"]
 visible = false
+z_index = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -18.0
@@ -784,6 +821,7 @@ horizontal_alignment = 1
 [connection signal="pressed" from="SaveLastReplay" to="." method="_OnSaveLastReplayPressed"]
 [connection signal="pressed" from="SaveLastReplay" to="TabContainer/Singleplayer/Panel" method="_OnSaveLastReplayPressed"]
 [connection signal="pressed" from="Settings" to="." method="_OnSettingsPressed"]
+[connection signal="color_changed" from="Settings/ColorRect/Panel/CrosshairColor/Picker" to="Settings/ColorRect/Panel" method="_OnCrosshairColorChanged"]
 [connection signal="pressed" from="Settings/ColorRect/Panel/Default" to="Settings/ColorRect/Panel" method="_OnResetToDefaults"]
 [connection signal="pressed" from="Help" to="." method="_OnHelpPressed"]
 [connection signal="pressed" from="Help/ColorRect/Panel/SaveLastRunDebugData" to="Help/ColorRect/Panel" method="_OnSaveDebug"]

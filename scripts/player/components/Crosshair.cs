@@ -2,7 +2,6 @@ using Godot;
 using System;
 
 public partial class Crosshair : Node {
-    [Export] Color _modulate = new Color(255, 255, 255);
     [Export] SubViewport _unfocusedCursor, _focusedCursor;
     Sprite2D _unfocusedSprite, _focusedSprite;
 
@@ -10,8 +9,8 @@ public partial class Crosshair : Node {
         _unfocusedSprite = _unfocusedCursor.GetNode<Sprite2D>("Sprite");
         _focusedSprite = _focusedCursor.GetNode<Sprite2D>("Sprite");
 
-        _unfocusedSprite.Modulate = _modulate;
-        _focusedSprite.Modulate = _modulate;
+        _unfocusedSprite.Modulate = Settings.CrosshairColor;
+        _focusedSprite.Modulate = Settings.CrosshairColor;
     }
 
     public override void _Process(double _) {

@@ -15,18 +15,17 @@ public partial class KeybindButton : Button {
     public override void _Input(InputEvent e) {
         if (_changingBind && e.IsPressed()) {
             if (InputMap.ActionGetEvents(Name).Count == 0 ||
-                InputMap.ActionGetEvents(Name)[0].AsText() != e.AsText())
-            {
+                    InputMap.ActionGetEvents(Name)[0].AsText() != e.AsText()) {
                 ChangeBind(e);
             } else {
                 Unbind();
-                }
-
-                SaveKeybindConfig();
-
-                ButtonPressed = false;
-                _OnToggled(false);
             }
+
+            SaveKeybindConfig();
+
+            ButtonPressed = false;
+            _OnToggled(false);
+        }
     }
 
     //---------------------------------------------------------------------------------//

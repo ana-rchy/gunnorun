@@ -25,6 +25,7 @@ config/windows_native_icon="res://sprites/ui/windows_icon.ico"
 Global="*res://scripts/Global.cs"
 Inputs="*res://scenes/Inputs.tscn"
 Server="*res://scenes/Server.tscn"
+Settings="*res://scripts/Settings.cs"
 
 [display]
 
@@ -35,6 +36,14 @@ window/stretch/mode="viewport"
 [dotnet]
 
 project/assembly_name="Gunnorun"
+
+[file_customization]
+
+folder_colors={
+"res://scenes/": "purple",
+"res://scripts/": "green",
+"res://sprites/": "blue"
+}
 
 [input]
 

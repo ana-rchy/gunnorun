@@ -78,3 +78,15 @@ bug fixes:
 - RPG was reloadable while full
 - could reload 2+ weapons at once
 - MOTD easter eggs would cause background color to stay changed
+
+// a2.6.0 //
+major changes:
+- physics reworked
+
+smaller changes:
+- custom crosshair cursor added (change color in settings)
+- settings bind names text adjusted to match more closely to the bind buttons
+
+bug fixes:
+- other players' colors wouldnt display correctly
+- MOTD text would display over help panel

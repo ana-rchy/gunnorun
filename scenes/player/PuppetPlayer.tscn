@@ -12,6 +12,7 @@ radius = 55.0
 height = 210.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lrhgl"]
+resource_local_to_scene = true
 shader = ExtResource("2_r2d5f")
 shader_parameter/color = null
 

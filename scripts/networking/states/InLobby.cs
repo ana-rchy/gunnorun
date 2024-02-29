@@ -5,7 +5,7 @@ using static Godot.MultiplayerApi;
 using MsgPack.Serialization;
 
 public partial class InLobby : State {
-	[Export(PropertyHint.File)] string _lobbyScene;
+    [Export(PropertyHint.File)] string _lobbyScene;
 
     public override void _Ready() {
         Paths.AddNodePath("IN_LOBBY_STATE", GetPath());
@@ -28,26 +28,26 @@ public partial class InLobby : State {
     //---------------------------------------------------------------------------------//
     #region | rpc
     
-	[Rpc(RpcMode.AnyPeer)] void Server_NewPlayerData(string username, Color color) {}
+    [Rpc(RpcMode.AnyPeer)] void Server_NewPlayerData(string username, Color color) {}
     [Rpc(RpcMode.AnyPeer)] void Server_UpdateStatus(bool ready) {}
 
     [Rpc] void Client_Setup(byte[] serializedPlayerData) {
-		var serializer = MessagePackSerializer.Get<Dictionary<long, Global.PlayerDataStruct>>();
-		var playerData = serializer.UnpackSingleObject(serializedPlayerData);
+        var serializer = MessagePackSerializer.Get<Dictionary<long, Global.PlayerDataStruct>>();
+        var playerData = serializer.UnpackSingleObject(serializedPlayerData);
 
-		Global.OtherPlayerData = playerData;
+        Global.OtherPlayerData = playerData;
 
-		GetTree().ChangeSceneToFile(_lobbyScene);
-		Rpc(nameof(Server_NewPlayerData), Global.PlayerData.Username, Global.PlayerData.Color);
-	}
+        GetTree().ChangeSceneToFile(_lobbyScene);
+        Rpc(nameof(Server_NewPlayerData), Global.PlayerData.Username, Global.PlayerData.Color);
+    }
 
     [Rpc] void Client_NewPlayer(long id, string username, Color color) {
-		if (Multiplayer.GetUniqueId() != id) {
-			Global.OtherPlayerData.TryAdd(id, new Global.PlayerDataStruct(username, color));
+        if (Multiplayer.GetUniqueId() != id) {
+            Global.OtherPlayerData.TryAdd(id, new Global.PlayerDataStruct(username, color));
 
-			this.GetNodeConst<Lobby>("LOBBY").RefreshList();
-		}
-	}
+            this.GetNodeConst<Lobby>("LOBBY").RefreshList();
+        }
+    }
 
 
     [Rpc] void Client_UpdateStatus(long id, bool ready) {
