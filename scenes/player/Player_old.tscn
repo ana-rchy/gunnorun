@@ -1,0 +1,204 @@
+[gd_scene load_steps=21 format=3 uid="uid://cir4wtbahb0if"]
+
+[ext_resource type="Script" path="res://scripts/player/main/Player.cs" id="1_gjffp"]
+[ext_resource type="PackedScene" uid="uid://bwa3y5nki76gw" path="res://scenes/player/components/PlayerUI.tscn" id="2_m08uh"]
+[ext_resource type="Script" path="res://scripts/player_old/components/LevelTimer.cs" id="3_80esj"]
+[ext_resource type="Script" path="res://scripts/player_old/components/ReplayRecorder.cs" id="4_ardvv"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="4_f6y2i"]
+[ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="4_nwgk2"]
+[ext_resource type="Script" path="res://scripts/player_old/components/GunRotation.cs" id="5_tl440"]
+[ext_resource type="Script" path="res://scripts/player_old/components/DebugRecorder.cs" id="5_voyw7"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
+[ext_resource type="Script" path="res://scripts/player_old/components/ParticlesManager.cs" id="6_xmwqc"]
+[ext_resource type="Script" path="res://scripts/player_old/components/GrindingParticles.cs" id="7_yqifc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3j7k5"]
+friction = 0.1
+
+[sub_resource type="Gradient" id="Gradient_xgnap"]
+offsets = PackedFloat32Array(0, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.858268, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gvy32"]
+gradient = SubResource("Gradient_xgnap")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xo1rn"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 40.0
+initial_velocity_min = -125.0
+initial_velocity_max = -125.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 200, 0)
+scale_min = 8.0
+scale_max = 12.0
+color = Color(1, 0.626667, 0.3, 0.784314)
+color_ramp = SubResource("GradientTexture1D_gvy32")
+hue_variation_min = -0.07
+hue_variation_max = 0.08
+
+[sub_resource type="Gradient" id="Gradient_jpn1k"]
+offsets = PackedFloat32Array(0, 0.2, 0.85, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.62037, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0epy5"]
+gradient = SubResource("Gradient_jpn1k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b4rb8"]
+lifetime_randomness = 0.1
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 90.0
+flatness = 1.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, -400, 0)
+damping_min = 5.0
+damping_max = 15.0
+scale_min = 22.0
+scale_max = 26.0
+color = Color(0.890196, 0.176471, 0, 0.705882)
+color_ramp = SubResource("GradientTexture1D_0epy5")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+turbulence_noise_speed_random = 0.11
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvp6s"]
+radius = 55.0
+height = 210.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4dg2j"]
+shader = ExtResource("5_yasl1")
+shader_parameter/color = null
+
+[node name="Player" type="RigidBody2D"]
+z_index = 1
+z_as_relative = false
+position = Vector2(0, -1)
+collision_layer = 2
+collision_mask = 9
+physics_material_override = SubResource("PhysicsMaterial_3j7k5")
+lock_rotation = true
+script = ExtResource("1_gjffp")
+TracerScene = "res://scenes/player/components/Tracer.tscn"
+
+[node name="PlayerUI" parent="." instance=ExtResource("2_m08uh")]
+
+[node name="Weapons" parent="PlayerUI/Control" index="0"]
+_weaponSprite = Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":-1,"anchor_left":0.026,"anchor_top":0.81,"anchor_right":0.226,"anchor_bottom":0.943,"offset_left":0.079998,"offset_top":0.199951,"offset_right":-319.92,"offset_bottom":-79.44,"grow_horizontal":1,"grow_vertical":0,"rotation":0.0,"scale":Vector2(6, 6),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":Resource("res://sprites/player/weapons/Shotgun.png"),"expand_mode":0,"stretch_mode":4,"flip_h":false,"flip_v":false,"script":null)
+
+_weaponName = Object(Label,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":2,"anchor_left":0.0,"anchor_top":1.0,"anchor_right":0.0,"anchor_bottom":1.0,"offset_left":30.0,"offset_top":-245.0,"offset_right":330.0,"offset_bottom":-209.0,"grow_horizontal":1,"grow_vertical":0,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":4,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":2,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","theme_override_font_sizes/font_size":35,"text":"Shotgun","label_settings":null,"horizontal_alignment":0,"vertical_alignment":0,"autowrap_mode":0,"justification_flags":163,"clip_text":false,"text_overrun_behavior":0,"uppercase":false,"tab_stops":PackedFloat32Array(),"lines_skipped":0,"max_lines_visible":-1,"visible_characters":-1,"visible_characters_behavior":0,"visible_ratio":1.0,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+_ammoCount = Object(Label,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":2,"anchor_left":0.0,"anchor_top":1.0,"anchor_right":0.0,"anchor_bottom":1.0,"offset_left":350.0,"offset_top":-90.0,"offset_right":450.0,"offset_bottom":-49.0,"grow_horizontal":1,"grow_vertical":0,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":4,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":2,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","theme_override_font_sizes/font_size":40,"text":"100","label_settings":null,"horizontal_alignment":0,"vertical_alignment":0,"autowrap_mode":0,"justification_flags":163,"clip_text":false,"text_overrun_behavior":0,"uppercase":false,"tab_stops":PackedFloat32Array(),"lines_skipped":0,"max_lines_visible":-1,"visible_characters":-1,"visible_characters_behavior":0,"visible_ratio":1.0,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+
+[node name="Crosshair" parent="PlayerUI/Control" index="1"]
+_unfocusedCursor = Object(SubViewport,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","disable_3d":true,"use_xr":false,"own_world_3d":false,"world_3d":null,"transparent_bg":true,"handle_input_locally":true,"snap_2d_transforms_to_pixel":false,"snap_2d_vertices_to_pixel":false,"msaa_2d":0,"msaa_3d":0,"screen_space_aa":0,"use_taa":false,"use_debanding":false,"use_occlusion_culling":false,"mesh_lod_threshold":1.0,"debug_draw":0,"use_hdr_2d":false,"scaling_3d_mode":0,"scaling_3d_scale":1.0,"texture_mipmap_bias":0.0,"fsr_sharpness":0.2,"vrs_mode":0,"vrs_texture":null,"canvas_item_default_texture_filter":1,"canvas_item_default_texture_repeat":0,"audio_listener_enable_2d":false,"audio_listener_enable_3d":false,"physics_object_picking":false,"physics_object_picking_sort":false,"gui_disable_input":false,"gui_snap_controls_to_pixels":true,"gui_embed_subwindows":false,"sdf_oversize":1,"sdf_scale":1,"positional_shadow_atlas_size":2048,"positional_shadow_atlas_16_bits":true,"positional_shadow_atlas_quad_0":2,"positional_shadow_atlas_quad_1":2,"positional_shadow_atlas_quad_2":3,"positional_shadow_atlas_quad_3":4,"canvas_cull_mask":4294967295,"size":Vector2i(64, 64),"size_2d_override":Vector2i(0, 0),"size_2d_override_stretch":false,"render_target_clear_mode":0,"render_target_update_mode":3,"script":null)
+
+_focusedCursor = Object(SubViewport,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","disable_3d":true,"use_xr":false,"own_world_3d":false,"world_3d":null,"transparent_bg":true,"handle_input_locally":true,"snap_2d_transforms_to_pixel":false,"snap_2d_vertices_to_pixel":false,"msaa_2d":0,"msaa_3d":0,"screen_space_aa":0,"use_taa":false,"use_debanding":false,"use_occlusion_culling":false,"mesh_lod_threshold":1.0,"debug_draw":0,"use_hdr_2d":false,"scaling_3d_mode":0,"scaling_3d_scale":1.0,"texture_mipmap_bias":0.0,"fsr_sharpness":0.2,"vrs_mode":0,"vrs_texture":null,"canvas_item_default_texture_filter":1,"canvas_item_default_texture_repeat":0,"audio_listener_enable_2d":false,"audio_listener_enable_3d":false,"physics_object_picking":false,"physics_object_picking_sort":false,"gui_disable_input":false,"gui_snap_controls_to_pixels":true,"gui_embed_subwindows":false,"sdf_oversize":1,"sdf_scale":1,"positional_shadow_atlas_size":2048,"positional_shadow_atlas_16_bits":true,"positional_shadow_atlas_quad_0":2,"positional_shadow_atlas_quad_1":2,"positional_shadow_atlas_quad_2":3,"positional_shadow_atlas_quad_3":4,"canvas_cull_mask":4294967295,"size":Vector2i(64, 64),"size_2d_override":Vector2i(0, 0),"size_2d_override_stretch":false,"render_target_clear_mode":0,"render_target_update_mode":3,"script":null)
+
+
+[node name="OverlayUI" parent="PlayerUI/Control" index="2"]
+_label = Object(Label,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":8,"anchor_left":0.5,"anchor_top":0.5,"anchor_right":0.5,"anchor_bottom":0.5,"offset_left":-20.0,"offset_top":-20.0,"offset_right":1900.0,"offset_bottom":1060.0,"grow_horizontal":2,"grow_vertical":2,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":4,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":2,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","theme_override_fonts/font":ExtResource("4_f6y2i"),"theme_override_font_sizes/font_size":110,"text":"","label_settings":null,"horizontal_alignment":1,"vertical_alignment":1,"autowrap_mode":3,"justification_flags":163,"clip_text":false,"text_overrun_behavior":0,"uppercase":false,"tab_stops":PackedFloat32Array(),"lines_skipped":0,"max_lines_visible":-1,"visible_characters":-1,"visible_characters_behavior":0,"visible_ratio":1.0,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="ActionTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="RegenTimer" type="Timer" parent="Timers"]
+wait_time = 1.5
+one_shot = true
+
+[node name="LevelTimer" type="Node" parent="Timers"]
+script = ExtResource("3_80esj")
+
+[node name="ReplayRecorder" type="Node2D" parent="."]
+script = ExtResource("4_ardvv")
+_sprite = Object(AnimatedSprite2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":1,"texture_repeat":0,"material":SubResource("ShaderMaterial_4dg2j"),"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(10, 10),"skew":0.0,"sprite_frames":ExtResource("4_nwgk2"),"animation":&"GunRotation","autoplay":"","frame":0,"frame_progress":0.0,"speed_scale":1.0,"centered":true,"offset":Vector2(0, 0),"flip_h":false,"flip_v":false,"script":ExtResource("5_tl440"))
+
+
+[node name="DebugRecorder" type="Node" parent="."]
+script = ExtResource("5_voyw7")
+_player = Object(RigidBody2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":1,"z_as_relative":false,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, -1),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"disable_mode":0,"collision_layer":2,"collision_mask":9,"collision_priority":1.0,"input_pickable":false,"mass":1.0,"physics_material_override":SubResource("PhysicsMaterial_3j7k5"),"gravity_scale":1.0,"center_of_mass_mode":0,"center_of_mass":Vector2(0, 0),"inertia":0.0,"sleeping":false,"can_sleep":true,"lock_rotation":true,"freeze":false,"freeze_mode":0,"custom_integrator":false,"continuous_cd":0,"max_contacts_reported":0,"contact_monitor":false,"linear_velocity":Vector2(0, 0),"linear_damp_mode":0,"linear_damp":0.0,"angular_velocity":0.0,"angular_damp_mode":0,"angular_damp":0.0,"constant_force":Vector2(0, 0),"constant_torque":0.0,"script":ExtResource("1_gjffp"),"TracerScene":"res://scenes/player/components/Tracer.tscn","ActionTimer":null,"ReloadTimer":null,"WeaponRaycast":null,"_regenTimer":null,"_groundRaycast":null,"_sprite":null,"_username":null)
+
+
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="WeaponRaycast" type="RayCast2D" parent="Raycasts"]
+target_position = Vector2(0, 0)
+collision_mask = 8
+
+[node name="GroundRaycast" type="RayCast2D" parent="Raycasts"]
+target_position = Vector2(0, 110)
+
+[node name="Particles" type="Node2D" parent="."]
+z_index = 1
+script = ExtResource("6_xmwqc")
+_murasamaParticles = Object(GPUParticles2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"emitting":false,"amount":100,"amount_ratio":1.0,"sub_emitter":NodePath(""),"process_material":SubResource("ParticleProcessMaterial_b4rb8"),"texture":null,"lifetime":1.5,"one_shot":false,"preprocess":0.0,"speed_scale":1.0,"explosiveness":0.0,"randomness":0.5,"fixed_fps":60,"interpolate":true,"fract_delta":true,"interp_to_end":0.0,"collision_base_size":1.0,"visibility_rect":Rect2(-100, -100, 200, 200),"local_coords":false,"draw_order":1,"trail_enabled":false,"trail_lifetime":0.05,"trail_sections":8,"trail_section_subdivisions":4,"script":null)
+
+
+[node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
+position = Vector2(0, 105)
+emitting = false
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_xo1rn")
+fixed_fps = 60
+visibility_rect = Rect2(-3000, -2000, 6000, 4000)
+script = ExtResource("7_yqifc")
+
+[node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_b4rb8")
+lifetime = 1.5
+randomness = 0.5
+fixed_fps = 60
+trail_lifetime = 0.05
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2(1.90735e-06, 0)
+shape = SubResource("CapsuleShape2D_hvp6s")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_4dg2j")
+scale = Vector2(10, 10)
+sprite_frames = ExtResource("4_nwgk2")
+animation = &"GunRotation"
+script = ExtResource("5_tl440")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="Username" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.5
+offset_top = 110.0
+offset_right = 137.5
+offset_bottom = 164.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_f6y2i")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+
+[editable path="PlayerUI"]

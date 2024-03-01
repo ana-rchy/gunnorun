@@ -99,8 +99,8 @@ public partial class InGame : State {
 
         var name = Multiplayer.GetUniqueId() == id ? Global.PlayerData.Username : Global.OtherPlayerData[id].Username;
         
-        var playerUI = GetNode<PlayerUI>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}/PlayerUI");
-        playerUI._OnRaceFinished((float) Math.Round(time, 3), name);
+        //var playerUI = GetNode<PlayerUI>($"{Paths.GetNodePath("WORLD")}/{Multiplayer.GetUniqueId()}/PlayerUI");
+        //playerUI._OnRaceFinished((float) Math.Round(time, 3), name);
     }
 
     [Rpc] void Client_LoadWorld(string worldName) {

@@ -2,10 +2,10 @@
 
 [ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="2_5t7wj"]
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="2_r2d5f"]
-[ext_resource type="Script" path="res://scripts/player/PuppetPlayer.cs" id="3_s52n3"]
+[ext_resource type="Script" path="res://scripts/player_old/PuppetPlayer.cs" id="3_s52n3"]
 [ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="3_tlkmi"]
-[ext_resource type="Script" path="res://scripts/player/components/ParticlesManager.cs" id="4_uun5c"]
-[ext_resource type="Script" path="res://scripts/player/components/GrindingParticles.cs" id="5_44had"]
+[ext_resource type="Script" path="res://scripts/player_old/components/ParticlesManager.cs" id="4_uun5c"]
+[ext_resource type="Script" path="res://scripts/player_old/components/GrindingParticles.cs" id="5_44had"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ke068"]
 radius = 55.0

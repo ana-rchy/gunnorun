@@ -8,8 +8,12 @@ public static class Paths {
         { "WORLD", "/root/World" },
     };
 
-    public static void AddNodePath(string name, string path) {
-        NodePaths.TryAdd(name, path);
+    public static void AddNodePath(string name, string path, bool overwrite = false) {
+        var err = NodePaths.TryAdd(name, path);
+
+        if (overwrite && NodePaths != null) {
+            NodePaths[name] = path;
+        }
     }
 
     public static T GetNodeConst<T>(this Node node, string name) where T : Node {

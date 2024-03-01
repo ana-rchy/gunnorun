@@ -1,169 +1,35 @@
-[gd_scene load_steps=21 format=3 uid="uid://cir4wtbahb0if"]
+[gd_scene load_steps=10 format=3 uid="uid://cdbnyl7r6c4nx"]
 
-[ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_gjffp"]
-[ext_resource type="PackedScene" uid="uid://d3kncxrrmiqob" path="res://scenes/player/components/PlayerUI.tscn" id="2_0rg58"]
-[ext_resource type="Script" path="res://scripts/player/components/LevelTimer.cs" id="3_80esj"]
-[ext_resource type="Script" path="res://scripts/player/components/ReplayRecorder.cs" id="4_ardvv"]
-[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="4_f6y2i"]
-[ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="4_nwgk2"]
-[ext_resource type="Script" path="res://scripts/player/components/GunRotation.cs" id="5_tl440"]
-[ext_resource type="Script" path="res://scripts/player/components/DebugRecorder.cs" id="5_voyw7"]
-[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="5_yasl1"]
-[ext_resource type="Script" path="res://scripts/player/components/ParticlesManager.cs" id="6_xmwqc"]
-[ext_resource type="Script" path="res://scripts/player/components/GrindingParticles.cs" id="7_yqifc"]
+[ext_resource type="Script" path="res://scripts/player/main/Player.cs" id="1_4abq2"]
+[ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="1_dxd4c"]
+[ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="2_g5cx4"]
+[ext_resource type="Script" path="res://scripts/player_old/components/GunRotation.cs" id="3_vhxvk"]
+[ext_resource type="Script" path="res://scripts/player/main/WeaponManager.cs" id="5_ygs25"]
+[ext_resource type="Script" path="res://scripts/player/main/MovementManager.cs" id="6_wyit0"]
+[ext_resource type="Script" path="res://scripts/player/main/HPManager.cs" id="7_s4hwx"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3j7k5"]
-friction = 0.1
-
-[sub_resource type="Gradient" id="Gradient_xgnap"]
-offsets = PackedFloat32Array(0, 0.9, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.858268, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gvy32"]
-gradient = SubResource("Gradient_xgnap")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xo1rn"]
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(1, 1, 1)
-direction = Vector3(0, 1, 0)
-spread = 40.0
-initial_velocity_min = -125.0
-initial_velocity_max = -125.0
-angular_velocity_min = -360.0
-angular_velocity_max = 360.0
-gravity = Vector3(0, 200, 0)
-scale_min = 8.0
-scale_max = 12.0
-color = Color(1, 0.626667, 0.3, 0.784314)
-color_ramp = SubResource("GradientTexture1D_gvy32")
-hue_variation_min = -0.07
-hue_variation_max = 0.08
-
-[sub_resource type="Gradient" id="Gradient_jpn1k"]
-offsets = PackedFloat32Array(0, 0.2, 0.85, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.62037, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_0epy5"]
-gradient = SubResource("Gradient_jpn1k")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b4rb8"]
-lifetime_randomness = 0.1
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(1, 1, 1)
-direction = Vector3(0, -1, 0)
-spread = 90.0
-flatness = 1.0
-initial_velocity_min = 50.0
-initial_velocity_max = 100.0
-angular_velocity_min = -50.0
-angular_velocity_max = 50.0
-gravity = Vector3(0, -400, 0)
-damping_min = 5.0
-damping_max = 15.0
-scale_min = 22.0
-scale_max = 26.0
-color = Color(0.890196, 0.176471, 0, 0.705882)
-color_ramp = SubResource("GradientTexture1D_0epy5")
-hue_variation_min = -0.05
-hue_variation_max = 0.05
-turbulence_noise_speed_random = 0.11
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvp6s"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vyoxx"]
 radius = 55.0
 height = 210.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4dg2j"]
-shader = ExtResource("5_yasl1")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rtm6d"]
+shader = ExtResource("1_dxd4c")
 shader_parameter/color = null
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("ActionTimer", "ReloadTimer", "WeaponRaycast", "_regenTimer", "_groundRaycast", "_sprite", "_username")]
-z_index = 1
-z_as_relative = false
-position = Vector2(0, -1)
-collision_layer = 2
-collision_mask = 9
-physics_material_override = SubResource("PhysicsMaterial_3j7k5")
-lock_rotation = true
-script = ExtResource("1_gjffp")
-TracerScene = "res://scenes/player/components/Tracer.tscn"
-ActionTimer = NodePath("Timers/ActionTimer")
-ReloadTimer = NodePath("Timers/ReloadTimer")
-WeaponRaycast = NodePath("Raycasts/WeaponRaycast")
-_regenTimer = NodePath("Timers/RegenTimer")
-_groundRaycast = NodePath("Raycasts/GroundRaycast")
-_sprite = NodePath("Sprite")
-_username = NodePath("Username")
-
-[node name="PlayerUI" parent="." instance=ExtResource("2_0rg58")]
-
-[node name="Timers" type="Node" parent="."]
-
-[node name="ActionTimer" type="Timer" parent="Timers"]
-one_shot = true
-
-[node name="ReloadTimer" type="Timer" parent="Timers"]
-one_shot = true
-
-[node name="RegenTimer" type="Timer" parent="Timers"]
-wait_time = 1.5
-one_shot = true
-
-[node name="LevelTimer" type="Node" parent="Timers"]
-script = ExtResource("3_80esj")
-
-[node name="ReplayRecorder" type="Node2D" parent="." node_paths=PackedStringArray("_sprite")]
-script = ExtResource("4_ardvv")
-_sprite = NodePath("../Sprite")
-
-[node name="DebugRecorder" type="Node" parent="." node_paths=PackedStringArray("_player")]
-script = ExtResource("5_voyw7")
-_player = NodePath("..")
-
-[node name="Raycasts" type="Node2D" parent="."]
-
-[node name="WeaponRaycast" type="RayCast2D" parent="Raycasts"]
-target_position = Vector2(0, 0)
-collision_mask = 8
-
-[node name="GroundRaycast" type="RayCast2D" parent="Raycasts"]
-target_position = Vector2(0, 110)
-
-[node name="Particles" type="Node2D" parent="." node_paths=PackedStringArray("_murasamaParticles")]
-z_index = 1
-script = ExtResource("6_xmwqc")
-_murasamaParticles = NodePath("MurasamaParticles")
-
-[node name="GrindingParticles" type="GPUParticles2D" parent="Particles"]
-position = Vector2(0, 105)
-emitting = false
-amount = 64
-process_material = SubResource("ParticleProcessMaterial_xo1rn")
-fixed_fps = 60
-visibility_rect = Rect2(-3000, -2000, 6000, 4000)
-script = ExtResource("7_yqifc")
-
-[node name="MurasamaParticles" type="GPUParticles2D" parent="Particles"]
-emitting = false
-amount = 100
-process_material = SubResource("ParticleProcessMaterial_b4rb8")
-lifetime = 1.5
-randomness = 0.5
-fixed_fps = 60
-trail_lifetime = 0.05
+[node name="Player" type="RigidBody2D"]
+script = ExtResource("1_4abq2")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.90735e-06, 0)
-shape = SubResource("CapsuleShape2D_hvp6s")
+shape = SubResource("CapsuleShape2D_vyoxx")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-material = SubResource("ShaderMaterial_4dg2j")
+material = SubResource("ShaderMaterial_rtm6d")
 scale = Vector2(10, 10)
-sprite_frames = ExtResource("4_nwgk2")
+sprite_frames = ExtResource("2_g5cx4")
 animation = &"GunRotation"
-script = ExtResource("5_tl440")
+script = ExtResource("3_vhxvk")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
@@ -171,27 +37,11 @@ process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="Username" type="Label" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -137.5
-offset_top = 110.0
-offset_right = 137.5
-offset_bottom = 164.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("4_f6y2i")
-theme_override_font_sizes/font_size = 50
-horizontal_alignment = 1
+[node name="WeaponManager" type="Node" parent="."]
+script = ExtResource("5_ygs25")
 
-[connection signal="Death" from="." to="PlayerUI" method="_OnDeath"]
-[connection signal="HPChanged" from="." to="PlayerUI" method="_OnHPChanged"]
-[connection signal="OnGround" from="." to="Particles/GrindingParticles" method="_OnGround"]
-[connection signal="WeaponChanged" from="." to="PlayerUI" method="_OnWeaponChanged"]
-[connection signal="WeaponReloading" from="." to="PlayerUI" method="_OnWeaponReloading"]
-[connection signal="WeaponShot" from="." to="PlayerUI" method="_OnWeaponShot"]
-[connection signal="WeaponShot" from="." to="Particles" method="_OnWeaponShot"]
-[connection signal="TimeChanged" from="Timers/LevelTimer" to="PlayerUI" method="_OnTimeChanged"]
+[node name="MovementManager" type="Node" parent="."]
+script = ExtResource("6_wyit0")
+
+[node name="HPManager" type="Node" parent="."]
+script = ExtResource("7_s4hwx")

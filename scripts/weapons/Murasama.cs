@@ -18,7 +18,7 @@ public class Murasama : Weapon {
         ReelbackStrength = 0f;
     }
     
-    public override void Shoot(Player player) {
+    public override void Shoot(Player player, string tracerScene) {
         if (!player.ActionTimer.IsStopped() || player.HP <= 0) return;
 
         player.EmitSignal(Player.SignalName.WeaponShot, player);

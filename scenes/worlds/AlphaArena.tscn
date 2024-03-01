@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_4q12d"]
 [ext_resource type="Texture2D" uid="uid://dynvi6gep8qve" path="res://sprites/placeholder tilesheets/kenney/empty-tiles.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://82selfdamypb" path="res://sprites/placeholder tilesheets/kenney/penis!.png" id="5"]
-[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="5_tpfhh"]
+[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player_old.tscn" id="5_tpfhh"]
 
 [sub_resource type="Gradient" id="Gradient_v47n7"]
 offsets = PackedFloat32Array(1)

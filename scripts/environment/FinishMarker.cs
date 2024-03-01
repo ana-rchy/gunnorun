@@ -9,7 +9,7 @@ public partial class FinishMarker : Node {
             ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        RaceFinished += this.GetNodeConst<PlayerUI>("PLAYER_UI")._OnRaceFinished;
+        RaceFinished += this.GetNodeConst<OverlayUI>("OVERLAY_UI")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<LevelTimer>("LEVEL_TIMER")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<DebugRecorder>("DEBUG_RECORDER")._OnRaceFinished;
     }

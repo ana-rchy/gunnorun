@@ -14,9 +14,9 @@ public partial class Lap : Node {
 
         Paths.AddNodePath("LAP", GetPath());
 
-        var playerUI = this.GetNodeConst<PlayerUI>("PLAYER_UI");
-        LapPassed += playerUI._OnLapPassed;
-        RaceFinished += playerUI._OnRaceFinished;
+        //var playerUI = this.GetNodeConst<PlayerUI>("PLAYER_UI");
+        //LapPassed += playerUI._OnLapPassed;
+        //RaceFinished += playerUI._OnRaceFinished;
         RaceFinished += this.GetNodeConst<LevelTimer>("LEVEL_TIMER")._OnRaceFinished;
         RaceFinished += this.GetNodeConst<DebugRecorder>("DEBUG_RECORDER")._OnRaceFinished;
 

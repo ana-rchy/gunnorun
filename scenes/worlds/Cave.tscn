@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/environment/World.cs" id="1_pkcox"]
 [ext_resource type="PackedScene" uid="uid://bl82ay0qwbbd8" path="res://scenes/player/ReplayPlayer.tscn" id="2_7rigj"]
-[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player.tscn" id="2_i51n6"]
+[ext_resource type="PackedScene" uid="uid://cir4wtbahb0if" path="res://scenes/player/Player_old.tscn" id="2_i51n6"]
 [ext_resource type="Texture2D" uid="uid://b76y88u6h7yif" path="res://sprites/tilesheets/cave.png" id="2_sclao"]
 [ext_resource type="Script" path="res://scripts/environment/Checkpoints.cs" id="4_m5jp1"]
 [ext_resource type="Script" path="res://scripts/environment/FinishMarker.cs" id="5_m8mhh"]

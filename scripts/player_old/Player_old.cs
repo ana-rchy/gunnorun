@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 
-public partial class Player : RigidBody2D, IPlayer {
+public partial class Player_old : RigidBody2D, IPlayer {
     [Export(PropertyHint.File)] public string TracerScene { get; private set; }
     [Export] public Timer ActionTimer { get; private set; }
     [Export] public Timer ReloadTimer { get; private set; }
@@ -23,9 +23,9 @@ public partial class Player : RigidBody2D, IPlayer {
         = (new Vector2(0, 0), new Vector2(0, 0), 0f);
 
     public Weapon CurrentWeapon { get; private set; }
-    public static int CurrentWeaponIndex { get; private set; } = 0; // needed to preserve weapon choice, but w/o weapon data
     public int HP { get; private set; } = 100;
     
+    static int CurrentWeaponIndex = 0; // needed to preserve weapon choice, but w/o weapon data
     Weapon[] _weapons;
     Weapon _reloadBuffer;
     
@@ -61,7 +61,7 @@ public partial class Player : RigidBody2D, IPlayer {
                 CurrentWeapon = _weapons[i-1];
                 CurrentWeaponIndex = i-1;
 
-                EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
+                EmitSignal(SignalName.WeaponChanged, this);
             }
         }
 
@@ -106,6 +106,7 @@ public partial class Player : RigidBody2D, IPlayer {
     #region | funcs
 
     // pure
+    // deprecated
     (Vector2, Vector2, float) GetReeledbackVelocity(Vector2 linearVelocity, Vector2 stateLinearVelocity, float maximumSpeed) {
         // velocity in current direction if capped to maximum speed
         var velocitySoftCap = LinearVelocity.Normalized() * maximumSpeed;
@@ -117,7 +118,7 @@ public partial class Player : RigidBody2D, IPlayer {
                 reelbackStrength);
     }
 
-    // also pure? kinda?
+    // state-unpure
     public int GetHP() {
         return HP;
     }
@@ -153,7 +154,7 @@ public partial class Player : RigidBody2D, IPlayer {
     void SetupWeapons() {
         _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = _weapons[CurrentWeaponIndex];
-        EmitSignal(SignalName.WeaponChanged, CurrentWeapon.Name);
+        EmitSignal(SignalName.WeaponChanged, this);
     }
 
     void SetupPlayer() {
@@ -176,8 +177,8 @@ public partial class Player : RigidBody2D, IPlayer {
     #region | signals
 
     [Signal] public delegate void WeaponShotEventHandler(Player player);
-    [Signal] public delegate void WeaponReloadingEventHandler(string weaponName, float reloadTime, int baseAmmo);
-    [Signal] public delegate void WeaponChangedEventHandler(string weaponName);
+    [Signal] public delegate void WeaponReloadingEventHandler(Player player);
+    [Signal] public delegate void WeaponChangedEventHandler(Player player);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
     [Signal] public delegate void HPChangedMPEventHandler(int newHP);

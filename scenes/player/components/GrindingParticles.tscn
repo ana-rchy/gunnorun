@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ckhnodfr5nnta"]
 
-[ext_resource type="Script" path="res://scripts/player/components/GrindingParticles.cs" id="1_bc5j6"]
+[ext_resource type="Script" path="res://scripts/player_old/components/GrindingParticles.cs" id="1_bc5j6"]
 
 [sub_resource type="Gradient" id="Gradient_xgnap"]
 offsets = PackedFloat32Array(0, 0.9, 1)

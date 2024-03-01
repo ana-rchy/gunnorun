@@ -1,46 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://d3kncxrrmiqob"]
+[gd_scene load_steps=10 format=3 uid="uid://bwa3y5nki76gw"]
 
-[ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="1_m6o6h"]
-[ext_resource type="Script" path="res://scripts/player/components/PlayerUI.cs" id="2_5xriv"]
-[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="3_2ms82"]
-[ext_resource type="Texture2D" uid="uid://bhgh2lws731e1" path="res://sprites/player/crosshair_unfocused.png" id="3_ppxca"]
-[ext_resource type="Texture2D" uid="uid://pfcvhduy7n4g" path="res://sprites/player/crosshair_focused.png" id="4_fu14g"]
-[ext_resource type="Script" path="res://scripts/player/components/Crosshair.cs" id="5_k2yvp"]
+[ext_resource type="Script" path="res://scripts/player_old/components/player ui/PlayerUI.cs" id="1_h8l8m"]
+[ext_resource type="Theme" uid="uid://cg7wcp8cfys7j" path="res://resources/themes/UITheme.tres" id="2_qvtvp"]
+[ext_resource type="Script" path="res://scripts/player_old/components/player ui/WeaponUI.cs" id="3_qo78c"]
+[ext_resource type="Script" path="res://scripts/player_old/components/player ui/Crosshair.cs" id="4_c20db"]
+[ext_resource type="Texture2D" uid="uid://l0dnybjyrjfs" path="res://sprites/player/weapons/Shotgun.png" id="4_o8csy"]
+[ext_resource type="Texture2D" uid="uid://bhgh2lws731e1" path="res://sprites/player/crosshair_unfocused.png" id="5_cnksl"]
+[ext_resource type="Texture2D" uid="uid://pfcvhduy7n4g" path="res://sprites/player/crosshair_focused.png" id="6_kbw7i"]
+[ext_resource type="FontFile" uid="uid://cyloshjk6itvx" path="res://resources/fonts/Terminus.ttf" id="8_84n8s"]
+[ext_resource type="Script" path="res://scripts/player_old/components/player ui/OverlayUI.cs" id="8_xbbsd"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_6afp1"]
-resource_local_to_scene = true
-font_size = 60
-
-[sub_resource type="LabelSettings" id="LabelSettings_jbo04"]
-resource_local_to_scene = true
-font_size = 60
-
-[sub_resource type="LabelSettings" id="LabelSettings_dpbqp"]
-font_size = 60
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w28l7"]
-bg_color = Color(1, 1, 1, 0.294118)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puq3g"]
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_18t6x"]
-resource_local_to_scene = true
-font_size = 60
-
-[sub_resource type="LabelSettings" id="LabelSettings_7r8a0"]
-font_size = 60
-
-[sub_resource type="LabelSettings" id="LabelSettings_ti3t6"]
-resource_local_to_scene = true
-font_size = 60
-
-[node name="PlayerUI" type="CanvasLayer" node_paths=PackedStringArray("_levelTime", "_lapCounter", "_HP", "_overlayUI")]
-script = ExtResource("2_5xriv")
-_levelTime = NodePath("Control/LevelTime")
-_lapCounter = NodePath("Control/LapCounter")
-_HP = NodePath("Control/HP")
-_overlayUI = NodePath("Control/OverlayUI")
+[node name="PlayerUI" type="CanvasLayer"]
+script = ExtResource("1_h8l8m")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -49,149 +20,67 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_m6o6h")
+theme = ExtResource("2_qvtvp")
 
-[node name="LevelTime" type="Label" parent="Control"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = 380.0
-offset_bottom = 109.0
-
-[node name="LapCounter" type="Label" parent="Control"]
-visible = false
-layout_mode = 0
-offset_left = 30.0
-offset_top = 110.0
-offset_right = 255.0
-offset_bottom = 189.0
-text = "lap 1/3"
-
-[node name="HP" type="Label" parent="Control"]
+[node name="Weapons" type="Control" parent="Control" node_paths=PackedStringArray("_weaponSprite", "_weaponName", "_ammoCount")]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -143.0
-offset_top = 30.0
-offset_right = -30.0
-offset_bottom = 109.0
-grow_horizontal = 0
-text = "100"
-horizontal_alignment = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -1080.0
+offset_right = 1920.0
+grow_vertical = 0
+theme = ExtResource("2_qvtvp")
+script = ExtResource("3_qo78c")
+_weaponSpritesDir = "res://sprites/player/weapons"
+_weaponSprite = NodePath("CurrentWeapon")
+_weaponName = NodePath("WeaponName")
+_ammoCount = NodePath("AmmoCount")
 
-[node name="Weapons" type="Control" parent="Control"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CurrentWeapon" type="TextureRect" parent="Control/Weapons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.026
+anchor_top = 0.81
+anchor_right = 0.226
+anchor_bottom = 0.943
+offset_left = 0.079998
+offset_top = 0.199951
+offset_right = -319.92
+offset_bottom = -79.44
+grow_vertical = 0
+scale = Vector2(6, 6)
+texture = ExtResource("4_o8csy")
+stretch_mode = 4
 
-[node name="Shotgun" type="Label" parent="Control/Weapons"]
+[node name="WeaponName" type="Label" parent="Control/Weapons"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 30.0
-offset_top = 736.0
+offset_top = -245.0
 offset_right = 330.0
-offset_bottom = 800.0
+offset_bottom = -209.0
 grow_vertical = 0
+theme_override_font_sizes/font_size = 35
 text = "Shotgun"
-label_settings = SubResource("LabelSettings_6afp1")
-vertical_alignment = 1
 
-[node name="Machinegun" type="Label" parent="Control/Weapons"]
+[node name="AmmoCount" type="Label" parent="Control/Weapons"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 806.0
-offset_right = 330.0
-offset_bottom = 870.0
+offset_left = 350.0
+offset_top = -90.0
+offset_right = 450.0
+offset_bottom = -49.0
 grow_vertical = 0
-text = "Machinegun"
-label_settings = SubResource("LabelSettings_jbo04")
-vertical_alignment = 1
-
-[node name="Ammo" type="Label" parent="Control/Weapons/Machinegun"]
-layout_mode = 0
-offset_left = 330.0
-offset_right = 420.0
-offset_bottom = 64.0
+theme_override_font_sizes/font_size = 40
 text = "100"
-label_settings = SubResource("LabelSettings_dpbqp")
-
-[node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/Machinegun"]
-visible = false
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 460.0
-offset_top = -17.0
-offset_right = 710.0
-offset_bottom = 13.0
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_w28l7")
-theme_override_styles/fill = SubResource("StyleBoxFlat_puq3g")
-max_value = 1.0
-show_percentage = false
-
-[node name="RPG" type="Label" parent="Control/Weapons"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 876.0
-offset_right = 330.0
-offset_bottom = 940.0
-grow_vertical = 0
-text = "RPG"
-label_settings = SubResource("LabelSettings_18t6x")
-vertical_alignment = 1
-
-[node name="Ammo" type="Label" parent="Control/Weapons/RPG"]
-layout_mode = 0
-offset_left = 330.0
-offset_right = 420.0
-offset_bottom = 64.0
-text = "1"
-label_settings = SubResource("LabelSettings_7r8a0")
-
-[node name="ProgressBar" type="ProgressBar" parent="Control/Weapons/RPG"]
-visible = false
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 460.0
-offset_top = -17.0
-offset_right = 710.0
-offset_bottom = 13.0
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_w28l7")
-theme_override_styles/fill = SubResource("StyleBoxFlat_puq3g")
-max_value = 1.0
-show_percentage = false
-
-[node name="Murasama" type="Label" parent="Control/Weapons"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 946.0
-offset_right = 330.0
-offset_bottom = 1010.0
-grow_vertical = 0
-text = "Murasama"
-label_settings = SubResource("LabelSettings_ti3t6")
-vertical_alignment = 1
 
 [node name="Crosshair" type="Node" parent="Control" node_paths=PackedStringArray("_unfocusedCursor", "_focusedCursor")]
-script = ExtResource("5_k2yvp")
-_modulate = Color(1, 0, 0.466667, 1)
+script = ExtResource("4_c20db")
 _unfocusedCursor = NodePath("Unfocused")
 _focusedCursor = NodePath("Focused")
 
@@ -205,7 +94,7 @@ render_target_update_mode = 3
 texture_filter = 1
 position = Vector2(32, 32)
 scale = Vector2(2, 2)
-texture = ExtResource("3_ppxca")
+texture = ExtResource("5_cnksl")
 
 [node name="Focused" type="SubViewport" parent="Control/Crosshair"]
 disable_3d = true
@@ -217,13 +106,16 @@ render_target_update_mode = 3
 texture_filter = 1
 position = Vector2(32, 32)
 scale = Vector2(2, 2)
-texture = ExtResource("4_fu14g")
+texture = ExtResource("6_kbw7i")
 
-[node name="OverlayUI" type="Control" parent="Control"]
+[node name="OverlayUI" type="Control" parent="Control" node_paths=PackedStringArray("_label")]
 visible = false
+layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("8_xbbsd")
+_label = NodePath("Label")
 
 [node name="Overlay" type="ColorRect" parent="Control/OverlayUI"]
 layout_mode = 0
@@ -244,7 +136,7 @@ offset_right = 1900.0
 offset_bottom = 1060.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("3_2ms82")
+theme_override_fonts/font = ExtResource("8_84n8s")
 theme_override_font_sizes/font_size = 110
 horizontal_alignment = 1
 vertical_alignment = 1

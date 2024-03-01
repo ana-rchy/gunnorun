@@ -1,10 +1,12 @@
 using System;
 using Godot;
 
-public partial class PlayerUI : Node {
+public partial class PlayerUIold : Node {
     [Export] Label _levelTime;
     [Export] Label _lapCounter;
     [Export] Label _HP;
+    [Export] Label _weaponName;
+    [Export] Label _ammoCount;
     [Export] Control _overlayUI;
     Label _currentWeapon = null;
 
@@ -96,17 +98,17 @@ public partial class PlayerUI : Node {
         GetNode<Label>($"Control/Weapons/{weaponName}/Ammo").Text = BaseAmmo.ToString();
     }
 
-    void _OnWeaponChanged(string weaponName) {
-        if (_currentWeapon != null) {
-            _currentWeapon.LabelSettings.FontColor = new Color("#ffffff");
-        }
+    void _OnWeaponChanged() {
+        // if (_currentWeapon != null) {
+        //     _currentWeapon.LabelSettings.FontColor = new Color("#ffffff");
+        // }
 
-        _currentWeapon = GetNode<Label>($"Control/Weapons/{weaponName}");
-        _currentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
+        // _currentWeapon = GetNode<Label>($"Control/Weapons/{weaponName}");
+        // _currentWeapon.LabelSettings.FontColor = new Color("#ffed4d");
 
-        if (weaponName == "Murasama") {
-            _currentWeapon.LabelSettings.FontColor = new Color("#e32d00");
-        }
+        // if (weaponName == "Murasama") {
+        //     _currentWeapon.LabelSettings.FontColor = new Color("#e32d00");
+        // }
     }
 
     void _OnTimeChanged(float newTime) {

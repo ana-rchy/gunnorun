@@ -5,17 +5,17 @@ public abstract class Weapon {
     public string Name { get; protected set; }
     public int? Ammo { get; protected set; }
     public float Range { get; protected set; }
+    public float Reload { get; protected set; }
     public bool Reloading { get; protected set; }
     
     protected float Knockback;
     protected float ReelbackStrength;
     
     protected int? BaseAmmo;
-    protected float Reload;
     protected float Refire;
     protected int Damage;
 
-    public virtual void Shoot(Player player) {
+    public virtual void Shoot(Player player, string tracerScene) {
         if (Ammo <= 0 || !player.ActionTimer.IsStopped() || player.HP <= 0) return;
 
         Ammo--;
@@ -28,7 +28,7 @@ public abstract class Weapon {
         
         //player.ApplyImpulse(knockbackDirection.Normalized() * Knockback);
 
-        ShootTracer(player, -knockbackDirection);
+        ShootTracer(player, -knockbackDirection, tracerScene);
         player.ActionTimer.Start(Refire);
 
         if (player.Multiplayer.GetPeers().Length != 0) {
@@ -40,7 +40,7 @@ public abstract class Weapon {
         if (Ammo == BaseAmmo || Ammo == null || Reloading || !player.ReloadTimer.IsStopped()) return;
         Reloading = true;
 
-        player.EmitSignal(Player.SignalName.WeaponReloading, Name, Reload, (int) BaseAmmo);
+        player.EmitSignal(Player.SignalName.WeaponReloading, player);
         Ammo = 0; // prevent firing remaining ammo while reloading
 
         player.ReloadTimer.Start(Reload); // prevent reloading in quick succession, and reloading 2+ weapons
@@ -72,9 +72,8 @@ public abstract class Weapon {
         return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
     }
 
-    void ShootTracer(Player player, Vector2 playerPosToMousePos) {
-        var tracerScene = GD.Load<PackedScene>(player.TracerScene);
-        var tracer = tracerScene.Instantiate<Tracer>();
+    void ShootTracer(Player player, Vector2 playerPosToMousePos, string tracerScene) {
+        var tracer = GD.Load<PackedScene>(tracerScene).Instantiate<Tracer>();
 
         tracer.GlobalPosition = player.GlobalPosition;
         tracer.Rotation = new Vector2(0, 0).AngleToPoint(playerPosToMousePos);
