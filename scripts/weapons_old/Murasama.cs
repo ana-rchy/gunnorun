@@ -1,10 +1,10 @@
 using System;
 using Godot;
 
-public class Murasama : Weapon {
+public class Murasama_old : Weapon_old {
     public const float INTANGIBILITY_TIME = 0.3f;
 
-    public Murasama() {
+    public Murasama_old() {
         Name = "Murasama";
 
         Knockback = 1250f;
@@ -18,12 +18,12 @@ public class Murasama : Weapon {
         ReelbackStrength = 0f;
     }
     
-    public override void Shoot(Player player, string tracerScene) {
+    public override void Shoot(Player_old player, string tracerScene) {
         if (!player.ActionTimer.IsStopped() || player.HP <= 0) return;
 
-        player.EmitSignal(Player.SignalName.WeaponShot, player);
+        player.EmitSignal(Player_old.SignalName.WeaponShot, player);
         
-        var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player.LastMousePos);
+        var playerPosToMousePos = player.GlobalPosition.DirectionTo(Player_old.LastMousePos);
         player.LinearVelocity = (0.5f * player.LinearVelocity.DistanceTo(new Vector2(0, 0)) * playerPosToMousePos.Normalized())
             + playerPosToMousePos.Normalized() * Knockback;
         // ^ transfer 0.5 of previous speed into the new direction, and add on regular knock"back"

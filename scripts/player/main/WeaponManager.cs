@@ -1,16 +1,17 @@
-using Godot;
 using System;
+using System.Collections.Generic;
+using Godot;
 
 public partial class WeaponManager : Node {
-    [Export(PropertyHint.File)] public string TracerScene { get; private set; }
+    [Export(PropertyHint.File)] string _tracerScene;
     [Export] Player _player;
 
     public Weapon CurrentWeapon { get; private set; }
-    static int CurrentWeaponIndex = 0; // needed to preserve weapon choice, but w/o weapon data
-    Weapon[] _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
+    static string CurrentWeaponName = "Shotgun"; // needed to preserve weapon choice, but w/o weapon data
+    List<Weapon> _weapons;
 
     public override void _Ready() {
-        CurrentWeapon = _weapons[CurrentWeaponIndex];
+        _weapons = GetChildren();
     }
 
     //---------------------------------------------------------------------------------//
@@ -43,7 +44,7 @@ public partial class WeaponManager : Node {
 
     public override void _PhysicsProcess(double delta) {
         if (Input.IsActionPressed("Shoot")) {
-            CurrentWeapon.Shoot(_player);
+            CurrentWeapon.Shoot(_player, _tracerScene);
         }
     }
 
@@ -52,9 +53,9 @@ public partial class WeaponManager : Node {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    [Signal] public delegate void WeaponChangedEventHandler(Player player);
-    [Signal] public delegate void WeaponShotEventHandler(Player player);
-    [Signal] public delegate void WeaponReloadingEventHandler(Player player);
+    [Signal] public delegate void WeaponChangedEventHandler(Player_old player);
+    [Signal] public delegate void WeaponShotEventHandler(Player_old player);
+    [Signal] public delegate void WeaponReloadingEventHandler(Player_old player);
 
     #endregion
 }

@@ -17,7 +17,7 @@ public partial class ReplayRecorder : Node2D {
     public override void _PhysicsProcess(double delta) {
         _positionsList.Add(GlobalPosition);
         _framesList.Add((sbyte) _sprite.Frame);
-        _mousePositionsList.Add(Player.LastMousePos);
+        //_mousePositionsList.Add(Player.LastMousePos);
     }
 
     public override void _Input(InputEvent e) {

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public abstract class Weapon {
+public abstract class Weapon_old {
     public string Name { get; protected set; }
     public int? Ammo { get; protected set; }
     public float Range { get; protected set; }
@@ -15,13 +15,13 @@ public abstract class Weapon {
     protected float Refire;
     protected int Damage;
 
-    public virtual void Shoot(Player player, string tracerScene) {
+    public virtual void Shoot(Player_old player, string tracerScene) {
         if (Ammo <= 0 || !player.ActionTimer.IsStopped() || player.HP <= 0) return;
 
         Ammo--;
-        player.EmitSignal(Player.SignalName.WeaponShot, player);
+        player.EmitSignal(Player_old.SignalName.WeaponShot, player);
 
-        var knockbackDirection = Player.LastMousePos.DirectionTo(player.GlobalPosition);
+        var knockbackDirection = Player_old.LastMousePos.DirectionTo(player.GlobalPosition);
         player.LinearVelocity = (player.LinearVelocity * GetMomentumMultiplier(player.LinearVelocity, knockbackDirection))
             + knockbackDirection.Normalized() * Knockback;
         // ^ get the momentum-affected velocity, and add normal weapon knockback onto it
@@ -36,11 +36,11 @@ public abstract class Weapon {
         }
     }
 
-    public async void ReloadWeapon(Player player) {
+    public async void ReloadWeapon(Player_old player) {
         if (Ammo == BaseAmmo || Ammo == null || Reloading || !player.ReloadTimer.IsStopped()) return;
         Reloading = true;
 
-        player.EmitSignal(Player.SignalName.WeaponReloading, player);
+        player.EmitSignal(Player_old.SignalName.WeaponReloading, player);
         Ammo = 0; // prevent firing remaining ammo while reloading
 
         player.ReloadTimer.Start(Reload); // prevent reloading in quick succession, and reloading 2+ weapons
@@ -50,13 +50,13 @@ public abstract class Weapon {
         Reloading = false;
     }
 
-    protected void CheckPlayerHit(Player player, Vector2 playerPosToMousePos) {
+    protected void CheckPlayerHit(Player_old player, Vector2 playerPosToMousePos) {
         player.WeaponRaycast.TargetPosition = playerPosToMousePos.Normalized() * Range;
         player.WeaponRaycast.ForceRaycastUpdate();
 
         if (player.WeaponRaycast.IsColliding()) {
             var hitPlayer = (PuppetPlayer) player.WeaponRaycast.GetCollider();
-            player.EmitSignal(Player.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
+            player.EmitSignal(Player_old.SignalName.OtherPlayerHit, long.Parse(hitPlayer.Name), hitPlayer.HP - Damage, Name);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class Weapon {
         return MathF.Round((MathF.Cos(4/3 * angleDelta) + 1) / 2, 4); // scale the momentum over a range of 135*
     }
 
-    void ShootTracer(Player player, Vector2 playerPosToMousePos, string tracerScene) {
+    void ShootTracer(Player_old player, Vector2 playerPosToMousePos, string tracerScene) {
         var tracer = GD.Load<PackedScene>(tracerScene).Instantiate<Tracer>();
 
         tracer.GlobalPosition = player.GlobalPosition;

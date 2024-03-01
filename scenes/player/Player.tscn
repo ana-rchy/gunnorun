@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://resources/shaders/Player.gdshader" id="1_dxd4c"]
 [ext_resource type="SpriteFrames" uid="uid://bxe2vmmarljga" path="res://resources/animation/PlayerGunRotation.tres" id="2_g5cx4"]
 [ext_resource type="Script" path="res://scripts/player_old/components/GunRotation.cs" id="3_vhxvk"]
-[ext_resource type="Script" path="res://scripts/player/main/WeaponManager.cs" id="5_ygs25"]
+[ext_resource type="Script" path="res://scripts/player/main/weapons/Shotgun.cs" id="6_loh0e"]
 [ext_resource type="Script" path="res://scripts/player/main/MovementManager.cs" id="6_wyit0"]
 [ext_resource type="Script" path="res://scripts/player/main/HPManager.cs" id="7_s4hwx"]
 
@@ -37,8 +37,16 @@ process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="WeaponManager" type="Node" parent="."]
-script = ExtResource("5_ygs25")
+[node name="Weapons" type="Node" parent="."]
+
+[node name="Shotgun" type="Node" parent="Weapons"]
+script = ExtResource("6_loh0e")
+
+[node name="Machinegun" type="Node" parent="Weapons"]
+
+[node name="RPG" type="Node" parent="Weapons"]
+
+[node name="Murasama" type="Node" parent="Weapons"]
 
 [node name="MovementManager" type="Node" parent="."]
 script = ExtResource("6_wyit0")

@@ -35,9 +35,6 @@ public partial class HPManager : Node {
         }
 
         EmitSignal(SignalName.HPChanged, newHP);
-        if (Multiplayer.GetPeers().Length != 0 && callerIsClient) {
-            EmitSignal(SignalName.HPChangedMP, newHP);
-        }
         HP = newHP;
 
         if (HP <= 0) {
@@ -61,7 +58,6 @@ public partial class HPManager : Node {
     #region | signals
 
     [Signal] public delegate void HPChangedEventHandler(int newHP);
-    [Signal] public delegate void HPChangedMPEventHandler(int newHP);
     [Signal] public delegate void DeathEventHandler(float deathTime);
 
     void _OnReplayOnly() {

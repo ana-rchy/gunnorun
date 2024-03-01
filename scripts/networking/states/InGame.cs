@@ -125,8 +125,8 @@ public partial class InGame : State {
         if (!IsActiveState()) return;
 
         var playerPosToMousePos = player.GlobalPosition.DirectionTo(player.GetGlobalMousePosition());
-        Rpc(nameof(Server_WeaponShot), player.CurrentWeapon.Name,
-            new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
+        //Rpc(nameof(Server_WeaponShot), player.CurrentWeapon.Name,
+        //    new Vector2(0, 0).AngleToPoint(playerPosToMousePos), player.CurrentWeapon.Range);
     }
 
     public void _OnOtherPlayerHit(long playerID, int newHP, string weaponName) {

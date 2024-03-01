@@ -25,10 +25,10 @@ public partial class ParticlesManager : Node {
     #region | signals
 
     void _OnWeaponShot(Player player) {
-        if (player.CurrentWeapon.Name == "Murasama") {
+        /*if (player.CurrentWeapon.Name == "Murasama") {
             _ = player.Intangibility(0.3f);
             EmitMurasamaParticles();
-        }
+        }*/
     }
 
     #endregion

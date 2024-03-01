@@ -11,18 +11,18 @@ public partial class WeaponUI : Node {
     #region | signals
 
     void _OnWeaponChanged(Player player) {
-        _weaponName.Text = player.CurrentWeapon.Name;
-        _ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
-        _weaponSprite.Texture = (Texture2D) ResourceLoader.Load($"{_weaponSpritesDir}/{player.CurrentWeapon.Name}.png");
+        //_weaponName.Text = player.CurrentWeapon.Name;
+        //_ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
+        //_weaponSprite.Texture = (Texture2D) ResourceLoader.Load($"{_weaponSpritesDir}/{player.CurrentWeapon.Name}.png");
     }
 
     void _OnWeaponShot(Player player) {
-        _ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
+        //_ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
     }
 
     async void _OnWeaponReloading(Player player) {
-        await this.Sleep(player.CurrentWeapon.Reload);
-        _ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
+        //await this.Sleep(player.CurrentWeapon.Reload);
+        //_ammoCount.Text = player.CurrentWeapon.Ammo.ToString();
     }
 
     #endregion

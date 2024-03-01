@@ -60,13 +60,13 @@ public partial class PlayerUIold : Node {
             _lapCounter.Show();
         }
 
-        if (player.CurrentWeapon.Ammo == null) {
+        /*if (player.CurrentWeapon.Ammo == null) {
             return;
-        }
+        }*/
 
         try {
-            GetNode<Label>($"Control/Weapons/{player.CurrentWeapon.Name}/Ammo").Text
-            = player.CurrentWeapon.Ammo.ToString();
+        //    GetNode<Label>($"Control/Weapons/{player.CurrentWeapon.Name}/Ammo").Text
+        //    = player.CurrentWeapon.Ammo.ToString();
         } catch (Exception e) {
             if (e is ObjectDisposedException) {
                 GD.Print("bad object dispose :(");

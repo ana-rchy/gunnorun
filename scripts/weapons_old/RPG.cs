@@ -1,8 +1,8 @@
 using System;
 using Godot;
 
-public class RPG : Weapon {
-    public RPG() {
+public class RPG_old : Weapon_old {
+    public RPG_old() {
         Name = "RPG";
         
         Knockback = 11000f;

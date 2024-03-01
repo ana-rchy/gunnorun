@@ -22,22 +22,22 @@ public partial class Player_old : RigidBody2D, IPlayer {
     public static (Vector2 StateVel, Vector2 VelSoftCap, Single ReelbackStrength) DebugData { get; private set; }
         = (new Vector2(0, 0), new Vector2(0, 0), 0f);
 
-    public Weapon CurrentWeapon { get; private set; }
+    public Weapon_old CurrentWeapon { get; private set; }
     public int HP { get; private set; } = 100;
     
     static int CurrentWeaponIndex = 0; // needed to preserve weapon choice, but w/o weapon data
-    Weapon[] _weapons;
-    Weapon _reloadBuffer;
+    Weapon_old[] _weapons;
+    Weapon_old _reloadBuffer;
     
 
     public override void _Ready() {
-        Paths.AddNodePath("PLAYER", GetPath());
+        //Paths.AddNodePath("PLAYER", GetPath());
         
         // signals
         this.GetNodeConst<ReplayPlayer>("REPLAY_PLAYER").ReplayOnly += _OnReplayOnly;
         if (Multiplayer.GetPeers().Length != 0) {
             var inGameManager = this.GetNodeConst<InGame>("IN_GAME_STATE");
-            WeaponShot += inGameManager._OnWeaponShot;
+            //WeaponShot += inGameManager._OnWeaponShot;
             OtherPlayerHit += inGameManager._OnOtherPlayerHit;
             HPChangedMP += inGameManager._OnHPChanged;
         }
@@ -66,14 +66,14 @@ public partial class Player_old : RigidBody2D, IPlayer {
         }
 
         if (Input.IsActionJustPressed("Reload")) {
-            CurrentWeapon.ReloadWeapon(this);
+            //CurrentWeapon.ReloadWeapon(this);
         }
     }
 
     public override void _PhysicsProcess(double delta) {
         if (Input.IsActionPressed("Shoot")) {
             LastMousePos = GetGlobalMousePosition();
-            CurrentWeapon.Shoot(this);
+            //CurrentWeapon.Shoot(this);
         }
 
         // desmos: c(ap) = [any], m(ultiplier) = [any], f(x) = x / (x + (c/m))
@@ -152,7 +152,7 @@ public partial class Player_old : RigidBody2D, IPlayer {
     }
 
     void SetupWeapons() {
-        _weapons = new Weapon[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
+        //_weapons = new Weapon_old[] { new Shotgun(), new Machinegun(), new RPG(), new Murasama() };
         CurrentWeapon = _weapons[CurrentWeaponIndex];
         EmitSignal(SignalName.WeaponChanged, this);
     }
@@ -176,9 +176,9 @@ public partial class Player_old : RigidBody2D, IPlayer {
     //---------------------------------------------------------------------------------//
     #region | signals
 
-    [Signal] public delegate void WeaponShotEventHandler(Player player);
-    [Signal] public delegate void WeaponReloadingEventHandler(Player player);
-    [Signal] public delegate void WeaponChangedEventHandler(Player player);
+    [Signal] public delegate void WeaponShotEventHandler(Player_old player);
+    [Signal] public delegate void WeaponReloadingEventHandler(Player_old player);
+    [Signal] public delegate void WeaponChangedEventHandler(Player_old player);
     [Signal] public delegate void OtherPlayerHitEventHandler(long playerID, int damage, string weaponName);
     [Signal] public delegate void HPChangedEventHandler(int newHP);
     [Signal] public delegate void HPChangedMPEventHandler(int newHP);

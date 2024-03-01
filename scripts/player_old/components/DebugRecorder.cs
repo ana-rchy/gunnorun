@@ -22,13 +22,13 @@ public partial class DebugRecorder : Node {
 
     public override void _PhysicsProcess(double delta) {
         _positionsList.Add(_player.Position);
-        _mousePositionsList.Add(Player.LastMousePos);
+        //_mousePositionsList.Add(Player.LastMousePos);
         _velocityList.Add(_player.LinearVelocity);
-        _weaponList.Add(_player.CurrentWeapon.Name);
+        //_weaponList.Add(_player.CurrentWeapon.Name);
 
-        _stateVelocityList.Add(Player.DebugData.StateVel);
-        _velocityCapList.Add(Player.DebugData.VelSoftCap);
-        _reelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
+        //_stateVelocityList.Add(Player.DebugData.StateVel);
+        //_velocityCapList.Add(Player.DebugData.VelSoftCap);
+        //_reelbackStrengthList.Add(Player.DebugData.ReelbackStrength);
     }
     
     //---------------------------------------------------------------------------------//
